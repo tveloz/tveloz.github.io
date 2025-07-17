@@ -1,164 +1,632 @@
-#!/usr/bin/env node
-
-/**
- * Photo Manager Script for Academic Website
- * Helps manage photo carousel content and generates code for index.html
- */
-
-const fs = require('fs');
-const path = require('path');
-
-class PhotoManager {
-    constructor() {
-        this.photosConfigPath = 'data/photos.json';
-        this.picsDirectory = 'pics/';
-        this.indexHtmlPath = 'index.html';
-    }
-
-    // Load photos configuration
-    loadConfig() {
-        try {
-            if (fs.existsSync(this.photosConfigPath)) {
-                const config = JSON.parse(fs.readFileSync(this.photosConfigPath, 'utf8'));
-                return config;
-            } else {
-                console.log('📁 No photos.json found, creating default configuration...');
-                return this.createDefaultConfig();
-            }
-        } catch (error) {
-            console.error('❌ Error loading photos config:', error);
-            return this.createDefaultConfig();
-        }
-    }
-
-    // Create default configuration
-    createDefaultConfig() {
-        const defaultConfig = {
-            carousel_settings: {
-                rotation_speed: 8000,
-                transition_effect: "fade",
-                auto_start: true,
-                random_start: true,
-                pause_on_hover: true
-            },
-            photos: [
-                {
-                    id: "conference_2024",
-                    filename: "2.png",
-                    title: "Conference Participation",
-                    description: "Artificial General Intelligence Summit",
-                    location: "Panama City, Panama",
-                    date: "2024-01-15",
-                    tags: ["conference", "presentation", "research"],
-                    fallback_color: "#667eea",
-                    fallback_text: "Conference+Presentation",
-                    priority: 1
-                },
-                {
-                    id: "vub_lab_2024",
-                    filename: "1.jpg",
-                    title: "Collaborating from VUB",
-                    description: "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborationst Centre Leo Apostel",
-                    location: "UVA Amsterdam, The Nethrelands",
-                    date: "2024-01-10",
-                    tags: ["research", "lab", "VUB", "SYMP"],
-                    fallback_color: "#764ba2",
-                    fallback_text: "Research+Lab",
-                    priority: 2
-                },
-                {
-                    id: "face_2024",
-                    filename: "4.jpeg",
-                    title: "About me",
-                    description: "about me",
-                    location: "Brussels, Belgium",
-                    date: "2024-01-10",
-                    tags: ["me"],
-                    fallback_color: "#f093fb",
-                    fallback_text: "About me",
-                    priority: 3
-                },
-                {
-                    id: "collaboration_2024",
-                    filename: "3.jpg",
-                    title: "International Collaboration",
-                    description: "Research collaboration meeting with international partners",
-                    location: "Tokyo Japan",
-                    date: "2024-08-01",
-                    tags: ["collaboration", "international", "research"],
-                    fallback_color: "#4ade80",
-                    fallback_text: "Collaboration",
-                    priority: 4
-                }
-            ],
-            metadata: {
-                last_updated: new Date().toISOString().split('T')[0],
-                version: "1.0",
-                total_photos: 4
-            }
-        };
-
-        this.saveConfig(defaultConfig);
-        return defaultConfig;
-    }cd
-
-    // Save configuration
-    saveConfig(config) {
-        try {
-            // Ensure data directory exists
-            const dataDir = path.dirname(this.photosConfigPath);
-            if (!fs.existsSync(dataDir)) {
-                fs.mkdirSync(dataDir, { recursive: true });
-            }
-
-            // Update metadata
-            config.metadata.last_updated = new Date().toISOString().split('T')[0];
-            config.metadata.total_photos = config.photos.length;
-
-            fs.writeFileSync(this.photosConfigPath, JSON.stringify(config, null, 2));
-            console.log('✅ Photos configuration saved to', this.photosConfigPath);
-        } catch (error) {
-            console.error('❌ Error saving config:', error);
-        }
-    }
-
-    // Check which photos exist
-    checkPhotos() {
-        const config = this.loadConfig();
-        const results = {
-            existing: [],
-            missing: [],
-            total: config.photos.length
-        };
-
-        console.log('🔍 Checking photo files...\n');
-
-        config.photos.forEach(photo => {
-            const photoPath = path.join(this.picsDirectory, photo.filename);
-            if (fs.existsSync(photoPath)) {
-                results.existing.push(photo);
-                console.log(`✅ ${photo.filename} - ${photo.title}`);
-            } else {
-                results.missing.push(photo);
-                console.log(`❌ ${photo.filename} - ${photo.title} (MISSING)`);
-            }
-        });
-
-        console.log(`\n📊 Summary: ${results.existing.length}/${results.total} photos found`);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Tomás Veloz - Academic Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .section { display: none; }
+        .section.active { display: block; }
+        .loading { color: #6B7280; }
+        .nav-btn.active { color: #2563EB; border-bottom: 2px solid #2563EB; }
         
-        if (results.missing.length > 0) {
-            console.log('\n💡 Missing photos will use fallback placeholders');
-            console.log('   Upload photos to the pics/ directory with exact filenames');
+        /* Photo Carousel Styles */
+        .photo-carousel {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-
-        return results;
-    }
-
-    // Generate JavaScript code for HTML
-    generateCarouselCode() {
-        const config = this.loadConfig();
         
-        // Convert photos to the format expected by the HTML
+        .photo-carousel-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 20px 15px 15px;
+        }
+        
+        .carousel-description {
+            font-size: 0.875rem;
+            margin-bottom: 5px;
+        }
+        
+        .carousel-location {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+        }
+        
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s ease;
+            display: none;
+        }
+        
+        .photo-carousel:hover .carousel-controls {
+            display: block;
+        }
+        
+        .carousel-controls:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .carousel-prev {
+            left: 10px;
+        }
+        
+        .carousel-next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-xl font-bold text-gray-900">Dr. Tomás Veloz</h1>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="showSection('about')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">About</button>
+                    <button onclick="showSection('publications')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Publications</button>
+                    <button onclick="showSection('projects-and-awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Projects & Awards</button>
+                    <button onclick="showSection('events-and-dissemination')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Events & Dissemination</button>
+                    <button onclick="showSection('blog')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Blog</button>
+                    <button onclick="showSection('work-with-me')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Work with Me</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Auto-update indicator -->
+        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm text-blue-800">Website automatically updated via AI monitoring</span>
+                </div>
+                <span class="text-xs text-blue-600">Last update: <span id="lastUpdate">Loading...</span></span>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <section id="about" class="section active fade-in">
+            <div class="space-y-8">
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
+                        <!-- Photo Carousel -->
+                        <div class="photo-carousel">
+                            <div class="photo-carousel-inner">
+                                <div id="carouselSlides">
+                                    <!-- Slides will be dynamically generated -->
+                                </div>
+                                <div class="carousel-indicators" id="carouselIndicators">
+                                    <!-- Indicators will be dynamically generated -->
+                                </div>
+                                <button class="carousel-controls carousel-prev" onclick="changeSlide(-1)">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="carousel-controls carousel-next" onclick="changeSlide(1)">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <h1 class="text-4xl font-bold text-gray-900 mb-2">Dr. Tomás Veloz</h1>
+                            <p class="text-xl text-gray-600 mb-4">Full Stack Interdisciplinary Scientist</p>
+                            <p class="text-lg text-blue-600 mb-6">Bridging Physics, Mathematics, Cognitive Science & Complex Systems</p>
+                            
+                            <!-- Three Main Affiliations -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">UTEM Chile</div>
+                                        <div class="text-sm">Professor</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">VUB Belgium</div>
+                                        <div class="text-sm">Director, SYMP Group</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-heart mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">DICTA Foundation</div>
+                                        <div class="text-sm">Founder & Director</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <span>tomas.veloz@vub.ac.be</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-quote-left mr-2"></i>
+                                    <span id="citationCount" class="loading">Loading citations...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-3">
+                                <a href="#" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                    <i class="fas fa-download"></i>
+                                    <span>Download CV</span>
+                                </a>
+                                <a href="https://be.linkedin.com/in/tomas-veloz-028b6717" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fab fa-linkedin"></i>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Google Scholar</span>
+                                </a>
+                                <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fas fa-globe"></i>
+                                    <span>DICTA</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Section -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
+                    <div class="prose prose-gray max-w-none">
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the "Systemic Modeling and Applications" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            His work has generated more than <span id="publicationCount" class="loading">loading...</span> international publications with more than <span id="citationCountText" class="loading">loading...</span> academic citations, reflecting growing impact across multiple disciplines.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Research Areas -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Research Areas</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 rounded-lg border-l-4 border-blue-500 bg-blue-50">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-network-wired text-blue-600 mt-1"></i>
+                                <div>
+                                    <h3 class="font-semibold text-blue-900 mb-2">Chemical Organization Theory</h3>
+                                    <p class="text-blue-800 text-sm">Developing mathematical frameworks for analyzing self-organizing systems using reaction networks</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-lg border-l-4 border-purple-500 bg-purple-50">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-brain text-purple-600 mt-1"></i>
+                                <div>
+                                    <h3 class="font-semibold text-purple-900 mb-2">Quantum Cognition</h3>
+                                    <p class="text-purple-800 text-sm">Applying quantum structures to model cognitive and linguistic phenomena</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-lg border-l-4 border-green-500 bg-green-50">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-atom text-green-600 mt-1"></i>
+                                <div>
+                                    <h3 class="font-semibold text-green-900 mb-2">Reaction Networks</h3>
+                                    <p class="text-green-800 text-sm">Mathematical modeling of complex adaptive systems and emergent phenomena</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 rounded-lg border-l-4 border-orange-500 bg-orange-50">
+                            <div class="flex items-start space-x-3">
+                                <i class="fas fa-layer-group text-orange-600 mt-1"></i>
+                                <div>
+                                    <h3 class="font-semibold text-orange-900 mb-2">Interdisciplinary Science</h3>
+                                    <p class="text-orange-800 text-sm">Bridging physics, mathematics, cognitive science, and complex systems</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications" class="section">
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Publications</h2>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-600"><span id="totalPublications" class="loading">Loading...</span> publications</span>
+                        <span class="text-sm text-gray-600"><span id="totalCitations" class="loading">Loading...</span> citations</span>
+                    </div>
+                </div>
+                
+                <div id="publicationsList" class="space-y-6">
+                    <!-- Publications will be loaded dynamically -->
+                    <div class="text-center py-8">
+                        <i class="fas fa-spinner fa-spin text-2xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-600">Loading publications from Google Scholar...</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="text-blue-600 hover:text-blue-800 font-medium">
+                        View all publications on Google Scholar →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects and Awards Section -->
+        <section id="projects-and-awards" class="section">
+            <div class="space-y-6">
+                <!-- Current Projects -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Projects</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-blue-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">UM6P Institute for Advanced Studies Residency</h3>
+                            <p class="text-blue-600 font-medium mb-2">July - December 2025</p>
+                            <p class="text-gray-700">Research on goal-directedness and metasystem transitions at the Institute for Advanced Studies, Mohammed VI Polytechnic University, Morocco.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA 2024 Conference Organization</h3>
+                            <p class="text-purple-600 font-medium mb-2">International Quantum Structures Association</p>
+                            <p class="text-gray-700">Main organizer of the biennial IQSA conference at VUB, bringing together leading researchers in quantum structures and applications.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation Development</h3>
+                            <p class="text-green-600 font-medium mb-2">Ongoing</p>
+                            <p class="text-gray-700">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Awards -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Awards & Recognition</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-award text-yellow-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
+                                <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
+                                <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-trophy text-blue-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">Templeton Foundation Grant</h3>
+                                <p class="text-blue-600 font-medium mb-2">John Templeton Foundation (2020-2023)</p>
+                                <p class="text-gray-700">Co-PI for "The Origins of Goal-Directedness" project with Francis Heylighen</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-medal text-green-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">US Air Force Research Grant</h3>
+                                <p class="text-blue-600 font-medium mb-2">US Air Force (2020)</p>
+                                <p class="text-gray-700">Research leader for epidemiological modeling team during COVID-19</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events and Dissemination Section -->
+        <section id="events-and-dissemination" class="section">
+            <div class="space-y-6">
+                <!-- Upcoming Events -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="fas fa-calendar text-purple-500"></i>
+                                        <h3 class="text-lg font-semibold text-gray-900">UM6P Research Residency</h3>
+                                        <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">Upcoming</span>
+                                    </div>
+                                    <div class="space-y-2 text-gray-600 mb-3">
+                                        <p><i class="fas fa-map-marker-alt mr-1"></i> Mohammed VI Polytechnic University, Morocco</p>
+                                        <p><i class="fas fa-calendar mr-1"></i> July - December 2025</p>
+                                    </div>
+                                    <p class="text-gray-700">Research residency focusing on goal-directedness and metasystem transitions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Past Events -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events & Dissemination</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-blue-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">COT x Music Seminar Series</h3>
+                            <p class="text-blue-600 font-medium mb-2">CLEA/VUB • 2023</p>
+                            <p class="text-gray-700">Introduction to Chemical Organization Theory through musical applications</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Academic Tour: 5 Months, 4 Continents</h3>
+                            <p class="text-green-600 font-medium mb-2">Multiple Institutions • 2024-2025</p>
+                            <p class="text-gray-700">International academic tour visiting collaborators and institutions across Europe, Asia, and the Americas</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-orange-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Goal-Directedness Workshop</h3>
+                            <p class="text-orange-600 font-medium mb-2">BCAM, Bilbao • 2024</p>
+                            <p class="text-gray-700">Theoretical and experimental approaches to goal-directed behavior, funded by John Templeton Foundation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="section">
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Blog & Writings</h2>
+                
+                <div class="space-y-6">
+                    <div class="border-l-4 border-orange-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-edit text-orange-500"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900">The Three Transformations of the AI-spirit</h3>
+                                </div>
+                                <p class="text-orange-600 font-medium mb-2">Medium • November 2023</p>
+                                <p class="text-gray-700">Exploring the conceptual foundations of 'play' through bracketing and immersion in AI context</p>
+                            </div>
+                            <a href="https://medium.com/@tveloz/the-three-transformations-of-the-ai-spitrit-2aba1f5ad2a1" class="text-orange-600 hover:text-orange-800">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-blue-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-newspaper text-blue-500"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900">INTERDISCIPLINARIA Magazine Launch</h3>
+                                </div>
+                                <p class="text-blue-600 font-medium mb-2">DICTA Foundation • 2024</p>
+                                <p class="text-gray-700">Relaunched foundation magazine focused on interdisciplinary profiles and social impact</p>
+                            </div>
+                            <a href="https://dicta.cl" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="https://medium.com/@tveloz" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <i class="fab fa-medium"></i>
+                        <span>Follow on Medium</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                        <i class="fas fa-rss"></i>
+                        <span>Subscribe to Updates</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work with Me Section -->
+        <section id="work-with-me" class="section">
+            <div class="space-y-6">
+                <!-- Collaboration Opportunities -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Work with Me</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-graduation-cap text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">PhD & Research Supervision</h3>
+                                    <p class="text-gray-700 text-sm">Supervising graduate students in interdisciplinary research projects involving complex systems, quantum cognition, and reaction networks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-handshake text-green-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Research Collaboration</h3>
+                                    <p class="text-gray-700 text-sm">Collaborating with researchers worldwide on interdisciplinary projects bridging mathematics, physics, and cognitive science.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-briefcase text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Consulting Services</h3>
+                                    <p class="text-gray-700 text-sm">Providing expertise in AI, complex systems, and interdisciplinary research for organizations and institutions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-users text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation</h3>
+                                    <p class="text-gray-700 text-sm">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Academic Inquiries</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                    <span>tomas.veloz@vub.ac.be</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-university text-blue-600"></i>
+                                    <span>CLEA, VUB Brussels</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-university text-blue-600"></i>
+                                    <span>Mathematics Dept, UTEM Chile</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Foundation & Social Impact</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-globe text-green-600"></i>
+                                    <a href="https://dicta.cl" class="text-green-600 hover:text-green-800">dicta.cl</a>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-heart text-green-600"></i>
+                                    <span>Interdisciplinary Projects</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-users text-green-600"></i>
+                                    <span>Social Impact Initiatives</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-600 text-sm">
+                    © 2025 Dr. Tomás Veloz. All rights reserved.
+                </div>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <span class="text-xs text-gray-500">Powered by Academic Hub AI</span>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span class="text-xs text-gray-500">Auto-updating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
         // Photo carousel data - Auto-generated by photo-manager.js
         // Last updated: 2025-07-17
         const photoData = [
@@ -196,201 +664,233 @@ class PhotoManager {
           "random_start": true,
           "pause_on_hover": true
 };
+        
+        // Photo Carousel functionality
+        let currentSlide = 0;
+        let carouselInterval = null;
+        let isCarouselPaused = false;
 
-    // Carousel settings
-    const carouselSettings = {
-    "rotation_speed": 8000,
-    "transition_effect": "fade",
-    "auto_start": true,
-    "random_start": true,
-    "pause_on_hover": true
-    };
-
-        const jsCode = `
-        // Photo carousel data - Auto-generated by photo-manager.js
-        // Last updated: ${config.metadata.last_updated}
-        const photoData = ${JSON.stringify(photoData, null, 12)};
-
-        // Carousel settings
-        const carouselSettings = ${JSON.stringify(config.carousel_settings, null, 12)};`;
-
-        return jsCode;
-    }
-
-    // Update index.html with new photo data
-    updateIndexHtml() {
-        try {
-            if (!fs.existsSync(this.indexHtmlPath)) {
-                console.error('❌ index.html not found');
-                return false;
-            }
-
-            let html = fs.readFileSync(this.indexHtmlPath, 'utf8');
-            const newCode = this.generateCarouselCode();
-
-            // Find and replace the photoData array
-            const photoDataRegex = /\/\/ Photo carousel data[\s\S]*?const photoData = \[[\s\S]*?\];/;
+        function initializeCarousel() {
+            const slidesContainer = document.getElementById('carouselSlides');
+            const indicatorsContainer = document.getElementById('carouselIndicators');
             
-            if (photoDataRegex.test(html)) {
-                html = html.replace(photoDataRegex, newCode.trim());
-                fs.writeFileSync(this.indexHtmlPath, html);
-                console.log('✅ index.html updated with new photo data');
-                return true;
-            } else {
-                console.log('⚠️  Could not find photoData section in index.html');
-                console.log('📝 Generated code (copy manually):');
-                console.log('=====================================');
-                console.log(newCode);
-                console.log('=====================================');
-                return false;
+            // Create slides
+            photoData.forEach((photo, index) => {
+                // Create slide
+                const slide = document.createElement('div');
+                slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+                
+                const img = document.createElement('img');
+                img.onerror = function() {
+                    this.src = photo.fallback;
+                };
+                img.src = `pics/${photo.filename}`;
+                img.alt = photo.description;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'carousel-overlay';
+                overlay.innerHTML = `
+                    <div class="carousel-description">${photo.description}</div>
+                    <div class="carousel-location">${photo.location}</div>
+                `;
+                
+                slide.appendChild(img);
+                slide.appendChild(overlay);
+                slidesContainer.appendChild(slide);
+                
+                // Create indicator
+                const indicator = document.createElement('div');
+                indicator.className = `carousel-indicator ${index === 0 ? 'active' : ''}`;
+                indicator.onclick = () => goToSlide(index);
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            // Start auto-rotation if enabled
+            if (carouselSettings.auto_start) {
+                // Start from random slide if enabled
+                if (carouselSettings.random_start) {
+                    currentSlide = Math.floor(Math.random() * photoData.length);
+                    goToSlide(currentSlide);
+                }
+                startCarousel();
             }
-        } catch (error) {
-            console.error('❌ Error updating index.html:', error);
-            return false;
+            
+            // Add pause on hover
+            if (carouselSettings.pause_on_hover) {
+                const carousel = document.querySelector('.photo-carousel');
+                carousel.addEventListener('mouseenter', pauseCarousel);
+                carousel.addEventListener('mouseleave', resumeCarousel);
+            }
         }
-    }
 
-    // Add a new photo
-    addPhoto(photoData) {
-        const config = this.loadConfig();
-        
-        // Add new photo
-        const newPhoto = {
-            id: photoData.id || `photo_${Date.now()}`,
-            filename: photoData.filename,
-            title: photoData.title || 'New Photo',
-            description: photoData.description || 'Photo description',
-            location: photoData.location || 'Location',
-            date: photoData.date || new Date().toISOString().split('T')[0],
-            tags: photoData.tags || ['academic'],
-            fallback_color: photoData.fallback_color || '#667eea',
-            fallback_text: photoData.fallback_text || 'New+Photo',
-            priority: config.photos.length + 1
-        };
-
-        config.photos.push(newPhoto);
-        this.saveConfig(config);
-        
-        console.log('✅ New photo added:', newPhoto.title);
-        return newPhoto;
-    }
-
-    // Remove a photo
-    removePhoto(photoId) {
-        const config = this.loadConfig();
-        const initialLength = config.photos.length;
-        
-        config.photos = config.photos.filter(photo => photo.id !== photoId);
-        
-        if (config.photos.length < initialLength) {
-            this.saveConfig(config);
-            console.log('✅ Photo removed:', photoId);
-            return true;
-        } else {
-            console.log('❌ Photo not found:', photoId);
-            return false;
+        function goToSlide(slideIndex) {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            
+            // Remove active class from current slide and indicator
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            // Set new current slide
+            currentSlide = slideIndex;
+            
+            // Add active class to new slide and indicator
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
         }
-    }
 
-    // List all photos
-    listPhotos() {
-        const config = this.loadConfig();
-        
-        console.log('📸 Current Photos:\n');
-        config.photos.forEach((photo, index) => {
-            const exists = fs.existsSync(path.join(this.picsDirectory, photo.filename));
-            const status = exists ? '✅' : '❌';
-            
-            console.log(`${index + 1}. ${status} ${photo.title}`);
-            console.log(`   File: ${photo.filename}`);
-            console.log(`   Description: ${photo.description}`);
-            console.log(`   Location: ${photo.location}`);
-            console.log(`   Date: ${photo.date}`);
-            console.log('');
-        });
-    }
+        function changeSlide(direction) {
+            const newSlide = (currentSlide + direction + photoData.length) % photoData.length;
+            goToSlide(newSlide);
+        }
 
-    // Setup directory structure
-    setupDirectories() {
-        const directories = ['pics', 'data'];
-        
-        directories.forEach(dir => {
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-                console.log(`📁 Created directory: ${dir}/`);
+        function nextSlide() {
+            changeSlide(1);
+        }
+
+        function startCarousel() {
+            if (carouselInterval) clearInterval(carouselInterval);
+            carouselInterval = setInterval(nextSlide, carouselSettings.rotation_speed);
+        }
+
+        function pauseCarousel() {
+            if (carouselInterval) {
+                clearInterval(carouselInterval);
+                isCarouselPaused = true;
             }
+        }
+
+        function resumeCarousel() {
+            if (isCarouselPaused && carouselSettings.auto_start) {
+                startCarousel();
+                isCarouselPaused = false;
+            }
+        }
+
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+        }
+
+        // Google Scholar API simulation (replace with actual API call)
+        async function fetchGoogleScholarData() {
+            try {
+                // This would be replaced with actual Google Scholar scraping
+                // For now, we'll simulate with your actual data
+                const scholarData = {
+                    totalCitations: 1147,
+                    totalPublications: 52,
+                    recentPublications: [
+                        {
+                            title: "Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems",
+                            authors: "F. Heylighen, S. Beigi, T. Veloz",
+                            journal: "Systems",
+                            year: 2024,
+                            volume: "12(4)",
+                            citations: 8,
+                            isNew: true
+                        },
+                        {
+                            title: "A multi-faceted framework for researching the integration of emerging technologies into education",
+                            authors: "L. Kausel, R. Videla, F. Alamos-Grau, T. Veloz, et al.",
+                            journal: "Preprint",
+                            year: 2025,
+                            citations: 0,
+                            isNew: true
+                        },
+                        {
+                            title: "Towards an analytic framework for system resilience based on reaction networks",
+                            authors: "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
+                            journal: "Complexity",
+                            year: 2022,
+                            citations: 23
+                        }
+                    ]
+                };
+                
+                return scholarData;
+            } catch (error) {
+                console.error('Error fetching Google Scholar data:', error);
+                return null;
+            }
+        }
+
+        // Update citation and publication counts
+        async function updateScholarStats() {
+            const data = await fetchGoogleScholarData();
+            if (data) {
+                // Update counts in multiple locations
+                document.getElementById('citationCount').textContent = `${data.totalCitations} citations`;
+                document.getElementById('citationCountText').textContent = `${data.totalCitations}`;
+                document.getElementById('publicationCount').textContent = `${data.totalPublications}`;
+                document.getElementById('totalPublications').textContent = `${data.totalPublications}`;
+                document.getElementById('totalCitations').textContent = `${data.totalCitations}`;
+                
+                // Update publications list
+                const publicationsList = document.getElementById('publicationsList');
+                publicationsList.innerHTML = '';
+                
+                data.recentPublications.forEach(pub => {
+                    const pubDiv = document.createElement('div');
+                    pubDiv.className = 'border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors';
+                    pubDiv.innerHTML = `
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">${pub.title}</h3>
+                                    ${pub.isNew ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>' : ''}
+                                </div>
+                                <p class="text-gray-600 mb-2">${pub.authors}</p>
+                                <p class="text-green-600 font-medium mb-2">${pub.journal} ${pub.volume ? `${pub.volume} ` : ''}(${pub.year})</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>Citations: ${pub.citations}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    publicationsList.appendChild(pubDiv);
+                });
+            }
+        }
+
+        // Update last update time
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            document.getElementById('lastUpdate').textContent = timeString;
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCarousel();
+            updateLastUpdateTime();
+            updateScholarStats();
+            
+            // Show about section by default
+            document.querySelector('.nav-btn').classList.add('active');
+            
+            // Auto-update every 5 minutes
+            setInterval(updateLastUpdateTime, 300000);
+            setInterval(updateScholarStats, 300000);
         });
-    }
-
-    // Main help menu
-    showHelp() {
-        console.log(`
-🎯 Photo Manager for Academic Website
-
-Usage: node photo-manager.js [command]
-
-Commands:
-  check      - Check which photos exist
-  list       - List all configured photos  
-  update     - Update index.html with current photo data
-  generate   - Generate JavaScript code for manual copy
-  setup      - Create required directories
-  help       - Show this help
-
-Examples:
-  node photo-manager.js check
-  node photo-manager.js update
-  node photo-manager.js list
-
-Configuration file: ${this.photosConfigPath}
-Photos directory:   ${this.picsDirectory}
-        `);
-    }
-}
-
-// Command line interface
-function main() {
-    const manager = new PhotoManager();
-    const command = process.argv[2] || 'help';
-
-    switch (command) {
-        case 'check':
-            manager.checkPhotos();
-            break;
-            
-        case 'list':
-            manager.listPhotos();
-            break;
-            
-        case 'update':
-            manager.setupDirectories();
-            manager.updateIndexHtml();
-            break;
-            
-        case 'generate':
-            console.log('📝 Generated JavaScript code:');
-            console.log('=====================================');
-            console.log(manager.generateCarouselCode());
-            console.log('=====================================');
-            break;
-            
-        case 'setup':
-            manager.setupDirectories();
-            manager.loadConfig(); // This creates default config
-            console.log('✅ Setup complete');
-            break;
-            
-        case 'help':
-        default:
-            manager.showHelp();
-            break;
-    }
-}
-
-// Export for use as module
-module.exports = PhotoManager;
-
-// Run if called directly
-if (require.main === module) {
-    main();
-}
+    </script>
+</body>
+</html>

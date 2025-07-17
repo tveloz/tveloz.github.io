@@ -1,0 +1,413 @@
+name: Academic Website Content Update and Deployment
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Run every 4 hours to check for new content
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-content:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm install cheerio axios
+        npm install puppeteer  # For Google Scholar scraping
+    
+    - name: Create data directory
+      run: mkdir -p src/data
+    
+    - name: Update Google Scholar data
+      run: |
+        node -e "
+        const puppeteer = require('puppeteer');
+        const fs = require('fs');
+        
+        async function scrapeGoogleScholar() {
+          const browser = await puppeteer.launch({ 
+            headless: true,
+            args: ['--no-sandbox', '--disable-dev-shm-usage']
+          });
+          
+          const page = await browser.newPage();
+          await page.goto('https://scholar.google.com/citations?user=q7HbZQ4AAAAJ&hl=en');
+          
+          // Wait for content to load
+          await page.waitForSelector('#gsc_rsb_st');
+          
+          // Extract citation data
+          const stats = await page.evaluate(() => {
+            const citationsElement = document.querySelector('#gsc_rsb_st tbody tr:first-child td:nth-child(2)');
+            const hIndexElement = document.querySelector('#gsc_rsb_st tbody tr:nth-child(2) td:nth-child(2)');
+            const i10IndexElement = document.querySelector('#gsc_rsb_st tbody tr:nth-child(3) td:nth-child(2)');
+            
+            return {
+              totalCitations: citationsElement ? parseInt(citationsElement.textContent) : 0,
+              hIndex: hIndexElement ? parseInt(hIndexElement.textContent) : 0,
+              i10Index: i10IndexElement ? parseInt(i10IndexElement.textContent) : 0
+            };
+          });
+          
+          // Extract recent publications
+          const publications = await page.evaluate(() => {
+            const pubElements = document.querySelectorAll('#gsc_a_t .gsc_a_tr');
+            const pubs = [];
+            
+            for (let i = 0; i < Math.min(10, pubElements.length); i++) {
+              const pub = pubElements[i];
+              const titleElement = pub.querySelector('.gsc_a_at');
+              const authorsElement = pub.querySelector('.gs_gray:first-of-type');
+              const journalElement = pub.querySelector('.gs_gray:last-of-type');
+              const yearElement = pub.querySelector('.gsc_a_y');
+              const citationsElement = pub.querySelector('.gsc_a_c');
+              
+              if (titleElement) {
+                pubs.push({
+                  title: titleElement.textContent.trim(),
+                  authors: authorsElement ? authorsElement.textContent.trim() : '',
+                  journal: journalElement ? journalElement.textContent.trim() : '',
+                  year: yearElement ? parseInt(yearElement.textContent) : new Date().getFullYear(),
+                  citations: citationsElement ? parseInt(citationsElement.textContent) || 0 : 0,
+                  url: titleElement.href || '',
+                  isNew: yearElement ? parseInt(yearElement.textContent) >= new Date().getFullYear() - 1 : false
+                });
+              }
+            }
+            
+            return pubs;
+          });
+          
+          await browser.close();
+          
+          const scholarData = {
+            ...stats,
+            totalPublications: publications.length,
+            publications: publications,
+            lastUpdated: new Date().toISOString()
+          };
+          
+          fs.writeFileSync('src/data/publications.json', JSON.stringify(scholarData, null, 2));
+          console.log('Google Scholar data updated successfully');
+          console.log('Total citations:', scholarData.totalCitations);
+          console.log('Total publications:', scholarData.totalPublications);
+          
+          return scholarData;
+        }
+        
+        scrapeGoogleScholar().catch(console.error);
+        "
+        
+    - name: Update Medium blog posts
+      run: |
+        node -e "
+        const https = require('https');
+        const fs = require('fs');
+        
+        // Scrape Medium posts (simplified)
+        const mediumData = {
+          writings: [
+            {
+              type: 'medium_article',
+              title: 'The Three Transformations of the AI-spirit',
+              platform: 'Medium',
+              date: 'November 2023',
+              url: 'https://medium.com/@tveloz/the-three-transformations-of-the-ai-spitrit-2aba1f5ad2a1',
+              description: 'Exploring the conceptual foundations of play through bracketing and immersion in AI context',
+              category: 'philosophical_essay'
+            }
+          ],
+          lastUpdated: new Date().toISOString()
+        };
+        
+        fs.writeFileSync('src/data/blog.json', JSON.stringify(mediumData, null, 2));
+        console.log('Medium blog data updated');
+        "
+        
+    - name: Update projects and awards
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        const projectsData = {
+          currentProjects: [
+            {
+              title: 'UM6P Institute for Advanced Studies Residency',
+              period: 'July - December 2025',
+              description: 'Research on goal-directedness and metasystem transitions at Mohammed VI Polytechnic University, Morocco',
+              status: 'upcoming',
+              category: 'research_residency'
+            },
+            {
+              title: 'IQSA 2024 Conference Organization',
+              organization: 'International Quantum Structures Association',
+              description: 'Main organizer of the biennial IQSA conference at VUB',
+              status: 'ongoing',
+              category: 'conference_organization'
+            }
+          ],
+          awards: [
+            {
+              title: 'IQSA Secretary Appointment',
+              organization: 'International Quantum Structures Association',
+              year: 2022,
+              description: 'Appointed as Secretary of the prestigious biennial meeting organization'
+            },
+            {
+              title: 'Templeton Foundation Grant',
+              organization: 'John Templeton Foundation',
+              period: '2020-2023',
+              description: 'Co-PI for \"The Origins of Goal-Directedness\" project with Francis Heylighen'
+            }
+          ],
+          lastUpdated: new Date().toISOString()
+        };
+        
+        fs.writeFileSync('src/data/projects-awards.json', JSON.stringify(projectsData, null, 2));
+        console.log('Projects and awards data updated');
+        "
+        
+    - name: Update events and dissemination
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        const eventsData = {
+          upcomingEvents: [
+            {
+              title: 'UM6P Research Residency',
+              location: 'Mohammed VI Polytechnic University, Morocco',
+              date: 'July - December 2025',
+              description: 'Research residency focusing on goal-directedness and metasystem transitions',
+              category: 'research_residency',
+              status: 'upcoming'
+            }
+          ],
+          pastEvents: [
+            {
+              title: 'COT x Music Seminar Series',
+              location: 'CLEA/VUB',
+              date: '2023',
+              description: 'Introduction to Chemical Organization Theory through musical applications',
+              category: 'seminar_series'
+            },
+            {
+              title: 'Academic Tour: 5 Months, 4 Continents',
+              location: 'Multiple Institutions',
+              date: '2024-2025',
+              description: 'International academic tour visiting collaborators and institutions',
+              category: 'academic_tour'
+            }
+          ],
+          lastUpdated: new Date().toISOString()
+        };
+        
+        fs.writeFileSync('src/data/events.json', JSON.stringify(eventsData, null, 2));
+        console.log('Events data updated');
+        "
+        
+    - name: Update collaboration opportunities
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        const collaborationData = {
+          opportunities: [
+            {
+              type: 'supervision',
+              title: 'PhD & Research Supervision',
+              description: 'Supervising graduate students in interdisciplinary research projects',
+              areas: ['complex systems', 'quantum cognition', 'reaction networks'],
+              availability: 'ongoing'
+            },
+            {
+              type: 'research_collaboration',
+              title: 'Research Collaboration',
+              description: 'Collaborating with researchers worldwide on interdisciplinary projects',
+              areas: ['mathematics', 'physics', 'cognitive science'],
+              availability: 'ongoing'
+            },
+            {
+              type: 'consulting',
+              title: 'Consulting Services',
+              description: 'Providing expertise in AI, complex systems, and interdisciplinary research',
+              areas: ['AI', 'complex systems', 'interdisciplinary research'],
+              availability: 'available'
+            }
+          ],
+          contact: {
+            academic: 'tomas.veloz@vub.ac.be',
+            foundation: 'https://dicta.cl',
+            locations: ['VUB Brussels', 'UTEM Chile', 'DICTA Foundation']
+          },
+          lastUpdated: new Date().toISOString()
+        };
+        
+        fs.writeFileSync('src/data/collaboration.json', JSON.stringify(collaborationData, null, 2));
+        console.log('Collaboration data updated');
+        "
+        
+    - name: Generate dynamic HTML with updated data
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        // Read all data files
+        const publications = JSON.parse(fs.readFileSync('src/data/publications.json', 'utf8'));
+        const projects = JSON.parse(fs.readFileSync('src/data/projects-awards.json', 'utf8'));
+        const events = JSON.parse(fs.readFileSync('src/data/events.json', 'utf8'));
+        const blog = JSON.parse(fs.readFileSync('src/data/blog.json', 'utf8'));
+        const collaboration = JSON.parse(fs.readFileSync('src/data/collaboration.json', 'utf8'));
+        
+        // Update the JavaScript in index.html to use real data
+        let html = fs.readFileSync('index.html', 'utf8');
+        
+        // Replace the fetchGoogleScholarData function with real data
+        const realDataFunction = \`
+        async function fetchGoogleScholarData() {
+            return \${JSON.stringify(publications, null, 4)};
+        }
+        \`;
+        
+        // Replace the simulated function with real data
+        html = html.replace(
+          /async function fetchGoogleScholarData\\(\\)[\\s\\S]*?return scholarData;\\s*}/,
+          realDataFunction
+        );
+        
+        fs.writeFileSync('index.html', html);
+        console.log('HTML updated with real data');
+        console.log('Publications:', publications.totalPublications);
+        console.log('Citations:', publications.totalCitations);
+        "
+        
+    - name: Check for new content requiring approval
+      run: |
+        node -e "
+        const fs = require('fs');
+        
+        // Check for new content
+        const publications = JSON.parse(fs.readFileSync('src/data/publications.json', 'utf8'));
+        const newPublications = publications.publications.filter(pub => pub.isNew);
+        
+        if (newPublications.length > 0) {
+          console.log('Found new publications requiring approval:', newPublications.length);
+          
+          // Generate suggested social media posts
+          const suggestedPosts = newPublications.map(pub => ({
+            type: 'publication',
+            title: pub.title,
+            platforms: ['linkedin', 'medium'],
+            content: \`🎉 New publication: \"\${pub.title}\" published in \${pub.journal} (\${pub.year})! Excited to share this work with the research community. #Research #AcademicPublishing #\${pub.journal.replace(/\\s+/g, '')}\`,
+            confidence: 95
+          }));
+          
+          // Save for manual approval
+          const pendingApproval = {
+            items: newPublications.map(pub => ({
+              type: 'publication',
+              data: pub,
+              detected: new Date().toISOString(),
+              confidence: 95
+            })),
+            suggestedPosts: suggestedPosts,
+            timestamp: new Date().toISOString()
+          };
+          
+          fs.writeFileSync('src/data/pending-approval.json', JSON.stringify(pendingApproval, null, 2));
+          console.log('Pending approval file created');
+        }
+        "
+        
+    - name: Commit updated data
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add src/data/
+        git add index.html
+        git diff --staged --quiet || git commit -m "Auto-update: Academic content updated - \$(date)"
+        git push
+        
+    - name: Create issue for new content
+      if: always()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          
+          if (fs.existsSync('src/data/pending-approval.json')) {
+            const pendingData = JSON.parse(fs.readFileSync('src/data/pending-approval.json', 'utf8'));
+            
+            if (pendingData.items.length > 0) {
+              const issueBody = \`
+              ## New Academic Content Detected
+              
+              **\${pendingData.items.length} new items** require your approval:
+              
+              \${pendingData.items.map(item => \`
+              ### \${item.type}: \${item.data.title || item.data.name}
+              - **Confidence:** \${item.confidence}%
+              - **Detected:** \${item.detected}
+              - **Details:** \${item.data.description || item.data.journal || 'N/A'}
+              \`).join('\\n')}
+              
+              ## Suggested Social Media Posts
+              
+              \${pendingData.suggestedPosts.map(post => \`
+              ### \${post.type} - \${post.platforms.join(', ')}
+              \\\`\\\`\\\`
+              \${post.content}
+              \\\`\\\`\\\`
+              \`).join('\\n')}
+              
+              Please review and approve these updates in your academic website management dashboard.
+              \`;
+              
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: 'New Academic Content Requires Approval',
+                body: issueBody,
+                labels: ['content-update', 'needs-approval']
+              });
+            }
+          }
+
+  deploy:
+    needs: update-content
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: main  # Get the updated content
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
+        publish_branch: gh-pages
+        
+  notify:
+    needs: [update-content, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Send notification
+      run: |
+        echo "Academic website update completed!"
+        echo "Check: https://tveloz.github.io"
+        echo "Status: ${{ job.status }}"

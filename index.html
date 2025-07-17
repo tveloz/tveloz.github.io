@@ -1,559 +1,356 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dr. Tomás Veloz - Academic Website</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .section { display: none; }
-        .section.active { display: block; }
-        .nav-btn.active { color: #2563EB; border-bottom: 2px solid #2563EB; }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center">
-                    <h1 class="text-xl font-bold text-gray-900">Dr. Tomás Veloz</h1>
-                </div>
-                <div class="hidden md:flex space-x-8">
-                    <button onclick="showSection('about')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">About</button>
-                    <button onclick="showSection('publications')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Publications</button>
-                    <button onclick="showSection('projects-and-awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Projects & Awards</button>
-                    <button onclick="showSection('events-and-dissemination')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Events & Dissemination</button>
-                    <button onclick="showSection('blog')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Blog</button>
-                    <button onclick="showSection('work-with-me')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Work with Me</button>
-                </div>
-            </div>
-        </div>
-    </nav>
+#!/usr/bin/env node
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Auto-update indicator -->
-        <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-sm text-blue-800">Website automatically updated via AI monitoring</span>
-                </div>
-                <span class="text-xs text-blue-600">Last update: <span id="lastUpdate">Just now</span></span>
-            </div>
-        </div>
+/**
+ * Photo Manager Script for Academic Website
+ * Helps manage photo carousel content and generates code for index.html
+ */
 
-        <!-- About Section -->
-        <section id="about" class="section active fade-in">
-            <div class="space-y-8">
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
-                        <div class="w-48 h-48 bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-user-circle text-6xl text-gray-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h1 class="text-4xl font-bold text-gray-900 mb-2">Dr. Tomás Veloz</h1>
-                            <p class="text-xl text-gray-600 mb-4">Full Stack Interdisciplinary Scientist</p>
-                            <p class="text-lg text-blue-600 mb-6">Bridging Physics, Mathematics, Cognitive Science & Complex Systems</p>
-                            
-                            <!-- Three Main Affiliations -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-university mr-2"></i>
-                                    <div>
-                                        <div class="font-medium">UTEM Chile</div>
-                                        <div class="text-sm">Professor</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-university mr-2"></i>
-                                    <div>
-                                        <div class="font-medium">VUB Belgium</div>
-                                        <div class="text-sm">Director, SYMP Group</div>
-                                    </div>
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-heart mr-2"></i>
-                                    <div>
-                                        <div class="font-medium">DICTA Foundation</div>
-                                        <div class="text-sm">Founder & Director</div>
-                                    </div>
-                                </div>
-                            </div>
+const fs = require('fs');
+const path = require('path');
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-envelope mr-2"></i>
-                                    <span>tomas.veloz@vub.ac.be</span>
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-quote-left mr-2"></i>
-                                    <span>1,147+ citations</span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-wrap gap-3">
-                                <a href="#" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                                    <i class="fas fa-download"></i>
-                                    <span>Download CV</span>
-                                </a>
-                                <a href="https://be.linkedin.com/in/tomas-veloz-028b6717" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                    <i class="fab fa-linkedin"></i>
-                                    <span>LinkedIn</span>
-                                </a>
-                                <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    <span>Google Scholar</span>
-                                </a>
-                                <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                    <i class="fas fa-globe"></i>
-                                    <span>DICTA</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+class PhotoManager {
+    constructor() {
+        this.photosConfigPath = 'data/photos.json';
+        this.picsDirectory = 'pics/';
+        this.indexHtmlPath = 'index.html';
+    }
 
-                <!-- Bio Section -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
-                    <div class="prose prose-gray max-w-none">
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the "Systemic Modeling and Applications" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed">
-                            His work has generated more than 50 international publications with more than 1,147 academic citations, reflecting growing impact across multiple disciplines.
-                        </p>
-                    </div>
-                </div>
+    // Load photos configuration
+    loadConfig() {
+        try {
+            if (fs.existsSync(this.photosConfigPath)) {
+                const config = JSON.parse(fs.readFileSync(this.photosConfigPath, 'utf8'));
+                return config;
+            } else {
+                console.log('📁 No photos.json found, creating default configuration...');
+                return this.createDefaultConfig();
+            }
+        } catch (error) {
+            console.error('❌ Error loading photos config:', error);
+            return this.createDefaultConfig();
+        }
+    }
 
-                <!-- Research Areas -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Research Areas</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-6 rounded-lg border-l-4 border-blue-500 bg-blue-50">
-                            <div class="flex items-start space-x-3">
-                                <i class="fas fa-network-wired text-blue-600 mt-1"></i>
-                                <div>
-                                    <h3 class="font-semibold text-blue-900 mb-2">Chemical Organization Theory</h3>
-                                    <p class="text-blue-800 text-sm">Developing mathematical frameworks for analyzing self-organizing systems using reaction networks</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6 rounded-lg border-l-4 border-purple-500 bg-purple-50">
-                            <div class="flex items-start space-x-3">
-                                <i class="fas fa-brain text-purple-600 mt-1"></i>
-                                <div>
-                                    <h3 class="font-semibold text-purple-900 mb-2">Quantum Cognition</h3>
-                                    <p class="text-purple-800 text-sm">Applying quantum structures to model cognitive and linguistic phenomena</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6 rounded-lg border-l-4 border-green-500 bg-green-50">
-                            <div class="flex items-start space-x-3">
-                                <i class="fas fa-atom text-green-600 mt-1"></i>
-                                <div>
-                                    <h3 class="font-semibold text-green-900 mb-2">Reaction Networks</h3>
-                                    <p class="text-green-800 text-sm">Mathematical modeling of complex adaptive systems and emergent phenomena</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-6 rounded-lg border-l-4 border-orange-500 bg-orange-50">
-                            <div class="flex items-start space-x-3">
-                                <i class="fas fa-layer-group text-orange-600 mt-1"></i>
-                                <div>
-                                    <h3 class="font-semibold text-orange-900 mb-2">Interdisciplinary Science</h3>
-                                    <p class="text-orange-800 text-sm">Bridging physics, mathematics, cognitive science, and complex systems</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    // Create default configuration
+    createDefaultConfig() {
+        const defaultConfig = {
+            carousel_settings: {
+                rotation_speed: 8000,
+                transition_effect: "fade",
+                auto_start: true,
+                random_start: true,
+                pause_on_hover: true
+            },
+            photos: [
+                {
+                    id: "conference_2024",
+                    filename: "AGI-2024.jpg",
+                    title: "Conference Participation",
+                    description: "Artificial General Intelligence Summit",
+                    location: "Panama City, Panama",
+                    date: "2024-01-15",
+                    tags: ["conference", "presentation", "research"],
+                    fallback_color: "#667eea",
+                    fallback_text: "Conference+Presentation",
+                    priority: 1
+                },
+                {
+                    id: "vub_lab_2024",
+                    filename: "Sole_talk_UVA_Joe.jpg",
+                    title: "Collaborating from VUB",
+                    description: "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborationst Centre Leo Apostel",
+                    location: "UVA Amsterdam, The Nethrelands",
+                    date: "2024-01-10",
+                    tags: ["research", "lab", "VUB", "SYMP"],
+                    fallback_color: "#764ba2",
+                    fallback_text: "Research+Lab",
+                    priority: 2
+                },
+                {
+                    id: "face_2024",
+                    filename: "face2024.jpg",
+                    title: "About me",
+                    description: "",
+                    location: "",
+                    date: "2024-01-10",
+                    tags: [""],
+                    fallback_color: "#f093fb",
+                    fallback_text: "About me",
+                    priority: 3
+                },
+                {
+                    id: "collaboration_2024",
+                    filename: "Japan_2023.jpg",
+                    title: "International Collaboration",
+                    description: "Research collaboration meeting with international partners",
+                    location: "Tokyo Japan",
+                    date: "2024-08-01",
+                    tags: ["collaboration", "international", "research"],
+                    fallback_color: "#4ade80",
+                    fallback_text: "Collaboration",
+                    priority: 4
+                }
+            ],
+            metadata: {
+                last_updated: new Date().toISOString().split('T')[0],
+                version: "1.0",
+                total_photos: 4
+            }
+        };
 
-        <!-- Publications Section -->
-        <section id="publications" class="section">
-            <div class="bg-white rounded-lg shadow-sm p-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900">Publications</h2>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600">50+ publications</span>
-                        <span class="text-sm text-gray-600">1,147+ citations</span>
-                    </div>
-                </div>
-                
-                <div class="space-y-6">
-                    <div class="border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900">Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems</h3>
-                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>
-                                </div>
-                                <p class="text-gray-600 mb-2">F. Heylighen, S. Beigi, T. Veloz</p>
-                                <p class="text-green-600 font-medium mb-2">Systems 12(4) (2024)</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>Citations: 8</span>
-                                    <span>DOI: 10.3390/systems12040111</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <a href="https://doi.org/10.3390/systems12040111" class="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900">Towards an analytic framework for system resilience based on reaction networks</h3>
-                                </div>
-                                <p class="text-gray-600 mb-2">T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen</p>
-                                <p class="text-green-600 font-medium mb-2">Complexity (2022)</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>Citations: 23</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-6 text-center">
-                    <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="text-blue-600 hover:text-blue-800 font-medium">
-                        View all publications on Google Scholar →
-                    </a>
-                </div>
-            </div>
-        </section>
+        this.saveConfig(defaultConfig);
+        return defaultConfig;
+    }
 
-        <!-- Projects and Awards Section -->
-        <section id="projects-and-awards" class="section">
-            <div class="space-y-6">
-                <!-- Current Projects -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Projects</h2>
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-blue-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">UM6P Institute for Advanced Studies Residency</h3>
-                            <p class="text-blue-600 font-medium mb-2">July - December 2025</p>
-                            <p class="text-gray-700">Research on goal-directedness and metasystem transitions at the Institute for Advanced Studies, Mohammed VI Polytechnic University, Morocco.</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-purple-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA 2024 Conference Organization</h3>
-                            <p class="text-purple-600 font-medium mb-2">International Quantum Structures Association</p>
-                            <p class="text-gray-700">Main organizer of the biennial IQSA conference at VUB, bringing together leading researchers in quantum structures and applications.</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation Development</h3>
-                            <p class="text-green-600 font-medium mb-2">Ongoing</p>
-                            <p class="text-gray-700">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
-                        </div>
-                    </div>
-                </div>
+    // Save configuration
+    saveConfig(config) {
+        try {
+            // Ensure data directory exists
+            const dataDir = path.dirname(this.photosConfigPath);
+            if (!fs.existsSync(dataDir)) {
+                fs.mkdirSync(dataDir, { recursive: true });
+            }
 
-                <!-- Awards -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Awards & Recognition</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
-                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-award text-yellow-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
-                                <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
-                                <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-trophy text-blue-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-2">Templeton Foundation Grant</h3>
-                                <p class="text-blue-600 font-medium mb-2">John Templeton Foundation (2020-2023)</p>
-                                <p class="text-gray-700">Co-PI for "The Origins of Goal-Directedness" project with Francis Heylighen</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+            // Update metadata
+            config.metadata.last_updated = new Date().toISOString().split('T')[0];
+            config.metadata.total_photos = config.photos.length;
 
-        <!-- Events and Dissemination Section -->
-        <section id="events-and-dissemination" class="section">
-            <div class="space-y-6">
-                <!-- Upcoming Events -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
-                    <div class="space-y-6">
-                        <div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
-                            <div class="flex items-start justify-between">
-                                <div class="flex-1">
-                                    <div class="flex items-center space-x-2 mb-2">
-                                        <i class="fas fa-calendar text-purple-500"></i>
-                                        <h3 class="text-lg font-semibold text-gray-900">UM6P Research Residency</h3>
-                                        <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">Upcoming</span>
-                                    </div>
-                                    <div class="space-y-2 text-gray-600 mb-3">
-                                        <p><i class="fas fa-map-marker-alt mr-1"></i> Mohammed VI Polytechnic University, Morocco</p>
-                                        <p><i class="fas fa-calendar mr-1"></i> July - December 2025</p>
-                                    </div>
-                                    <p class="text-gray-700">Research residency focusing on goal-directedness and metasystem transitions</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            fs.writeFileSync(this.photosConfigPath, JSON.stringify(config, null, 2));
+            console.log('✅ Photos configuration saved to', this.photosConfigPath);
+        } catch (error) {
+            console.error('❌ Error saving config:', error);
+        }
+    }
 
-                <!-- Past Events -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events & Dissemination</h2>
-                    <div class="space-y-6">
-                        <div class="border-l-4 border-blue-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">COT x Music Seminar Series</h3>
-                            <p class="text-blue-600 font-medium mb-2">CLEA/VUB • 2023</p>
-                            <p class="text-gray-700">Introduction to Chemical Organization Theory through musical applications</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Academic Tour: 5 Months, 4 Continents</h3>
-                            <p class="text-green-600 font-medium mb-2">Multiple Institutions • 2024-2025</p>
-                            <p class="text-gray-700">International academic tour visiting collaborators and institutions across Europe, Asia, and the Americas</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    // Check which photos exist
+    checkPhotos() {
+        const config = this.loadConfig();
+        const results = {
+            existing: [],
+            missing: [],
+            total: config.photos.length
+        };
 
-        <!-- Blog Section -->
-        <section id="blog" class="section">
-            <div class="bg-white rounded-lg shadow-sm p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Blog & Writings</h2>
-                
-                <div class="space-y-6">
-                    <div class="border-l-4 border-orange-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <i class="fas fa-edit text-orange-500"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900">The Three Transformations of the AI-spirit</h3>
-                                </div>
-                                <p class="text-orange-600 font-medium mb-2">Medium • November 2023</p>
-                                <p class="text-gray-700">Exploring the conceptual foundations of 'play' through bracketing and immersion in AI context</p>
-                            </div>
-                            <a href="https://medium.com/@tveloz/the-three-transformations-of-the-ai-spitrit-2aba1f5ad2a1" class="text-orange-600 hover:text-orange-800">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="border-l-4 border-blue-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <i class="fas fa-newspaper text-blue-500"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900">INTERDISCIPLINARIA Magazine Launch</h3>
-                                </div>
-                                <p class="text-blue-600 font-medium mb-2">DICTA Foundation • 2024</p>
-                                <p class="text-gray-700">Relaunched foundation magazine focused on interdisciplinary profiles and social impact</p>
-                            </div>
-                            <a href="https://dicta.cl" class="text-blue-600 hover:text-blue-800">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a href="https://medium.com/@tveloz" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fab fa-medium"></i>
-                        <span>Follow on Medium</span>
-                    </a>
-                    <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-rss"></i>
-                        <span>Subscribe to Updates</span>
-                    </a>
-                </div>
-            </div>
-        </section>
+        console.log('🔍 Checking photo files...\n');
 
-        <!-- Work with Me Section -->
-        <section id="work-with-me" class="section">
-            <div class="space-y-6">
-                <!-- Collaboration Opportunities -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Work with Me</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-graduation-cap text-blue-600"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">PhD & Research Supervision</h3>
-                                    <p class="text-gray-700 text-sm">Supervising graduate students in interdisciplinary research projects involving complex systems, quantum cognition, and reaction networks.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-handshake text-green-600"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Research Collaboration</h3>
-                                    <p class="text-gray-700 text-sm">Collaborating with researchers worldwide on interdisciplinary projects bridging mathematics, physics, and cognitive science.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-briefcase text-purple-600"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Consulting Services</h3>
-                                    <p class="text-gray-700 text-sm">Providing expertise in AI, complex systems, and interdisciplinary research for organizations and institutions.</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <i class="fas fa-users text-orange-600"></i>
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation</h3>
-                                    <p class="text-gray-700 text-sm">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        config.photos.forEach(photo => {
+            const photoPath = path.join(this.picsDirectory, photo.filename);
+            if (fs.existsSync(photoPath)) {
+                results.existing.push(photo);
+                console.log(`✅ ${photo.filename} - ${photo.title}`);
+            } else {
+                results.missing.push(photo);
+                console.log(`❌ ${photo.filename} - ${photo.title} (MISSING)`);
+            }
+        });
 
-                <!-- Contact Information -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Academic Inquiries</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-envelope text-blue-600"></i>
-                                    <span>tomas.veloz@vub.ac.be</span>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-university text-blue-600"></i>
-                                    <span>CLEA, VUB Brussels</span>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-university text-blue-600"></i>
-                                    <span>Mathematics Dept, UTEM Chile</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Foundation & Social Impact</h3>
-                            <div class="space-y-3">
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-globe text-green-600"></i>
-                                    <a href="https://dicta.cl" class="text-green-600 hover:text-green-800">dicta.cl</a>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-heart text-green-600"></i>
-                                    <span>Interdisciplinary Projects</span>
-                                </div>
-                                <div class="flex items-center space-x-3">
-                                    <i class="fas fa-users text-green-600"></i>
-                                    <span>Social Impact Initiatives</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-gray-600 text-sm">
-                    © 2025 Dr. Tomás Veloz. All rights reserved.
-                </div>
-                <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <span class="text-xs text-gray-500">Powered by Academic Hub AI</span>
-                    <div class="flex items-center space-x-2">
-                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span class="text-xs text-gray-500">Auto-updating</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Navigation functionality
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            event.target.classList.add('active');
+        console.log(`\n📊 Summary: ${results.existing.length}/${results.total} photos found`);
+        
+        if (results.missing.length > 0) {
+            console.log('\n💡 Missing photos will use fallback placeholders');
+            console.log('   Upload photos to the pics/ directory with exact filenames');
         }
 
-        // Update last update time
-        function updateLastUpdateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString();
-            document.getElementById('lastUpdate').textContent = timeString;
+        return results;
+    }
+
+    // Generate JavaScript code for HTML
+    generateCarouselCode() {
+        const config = this.loadConfig();
+        
+        // Convert photos to the format expected by the HTML
+        const photoData = config.photos.map(photo => ({
+            filename: photo.filename,
+            description: photo.description,
+            location: photo.location,
+            fallback: `https://via.placeholder.com/400x400/${photo.fallback_color.replace('#', '')}/white?text=${photo.fallback_text}`
+        }));
+
+        const jsCode = `
+        // Photo carousel data - Auto-generated by photo-manager.js
+        // Last updated: ${config.metadata.last_updated}
+        const photoData = ${JSON.stringify(photoData, null, 12)};
+
+        // Carousel settings
+        const carouselSettings = ${JSON.stringify(config.carousel_settings, null, 12)};`;
+
+        return jsCode;
+    }
+
+    // Update index.html with new photo data
+    updateIndexHtml() {
+        try {
+            if (!fs.existsSync(this.indexHtmlPath)) {
+                console.error('❌ index.html not found');
+                return false;
+            }
+
+            let html = fs.readFileSync(this.indexHtmlPath, 'utf8');
+            const newCode = this.generateCarouselCode();
+
+            // Find and replace the photoData array
+            const photoDataRegex = /\/\/ Photo carousel data[\s\S]*?const photoData = \[[\s\S]*?\];/;
+            
+            if (photoDataRegex.test(html)) {
+                html = html.replace(photoDataRegex, newCode.trim());
+                fs.writeFileSync(this.indexHtmlPath, html);
+                console.log('✅ index.html updated with new photo data');
+                return true;
+            } else {
+                console.log('⚠️  Could not find photoData section in index.html');
+                console.log('📝 Generated code (copy manually):');
+                console.log('=====================================');
+                console.log(newCode);
+                console.log('=====================================');
+                return false;
+            }
+        } catch (error) {
+            console.error('❌ Error updating index.html:', error);
+            return false;
         }
+    }
+
+    // Add a new photo
+    addPhoto(photoData) {
+        const config = this.loadConfig();
         
-        // Initialize
-        updateLastUpdateTime();
+        // Add new photo
+        const newPhoto = {
+            id: photoData.id || `photo_${Date.now()}`,
+            filename: photoData.filename,
+            title: photoData.title || 'New Photo',
+            description: photoData.description || 'Photo description',
+            location: photoData.location || 'Location',
+            date: photoData.date || new Date().toISOString().split('T')[0],
+            tags: photoData.tags || ['academic'],
+            fallback_color: photoData.fallback_color || '#667eea',
+            fallback_text: photoData.fallback_text || 'New+Photo',
+            priority: config.photos.length + 1
+        };
+
+        config.photos.push(newPhoto);
+        this.saveConfig(config);
         
-        // Update time every minute
-        setInterval(updateLastUpdateTime, 60000);
+        console.log('✅ New photo added:', newPhoto.title);
+        return newPhoto;
+    }
+
+    // Remove a photo
+    removePhoto(photoId) {
+        const config = this.loadConfig();
+        const initialLength = config.photos.length;
         
-        // Show about section by default and set nav active
-        document.querySelector('.nav-btn').classList.add('active');
+        config.photos = config.photos.filter(photo => photo.id !== photoId);
         
-        // All links should work now
-        console.log('Website loaded successfully - all links are functional');
-    </script>
-</body>
-</html>
+        if (config.photos.length < initialLength) {
+            this.saveConfig(config);
+            console.log('✅ Photo removed:', photoId);
+            return true;
+        } else {
+            console.log('❌ Photo not found:', photoId);
+            return false;
+        }
+    }
+
+    // List all photos
+    listPhotos() {
+        const config = this.loadConfig();
+        
+        console.log('📸 Current Photos:\n');
+        config.photos.forEach((photo, index) => {
+            const exists = fs.existsSync(path.join(this.picsDirectory, photo.filename));
+            const status = exists ? '✅' : '❌';
+            
+            console.log(`${index + 1}. ${status} ${photo.title}`);
+            console.log(`   File: ${photo.filename}`);
+            console.log(`   Description: ${photo.description}`);
+            console.log(`   Location: ${photo.location}`);
+            console.log(`   Date: ${photo.date}`);
+            console.log('');
+        });
+    }
+
+    // Setup directory structure
+    setupDirectories() {
+        const directories = ['pics', 'data'];
+        
+        directories.forEach(dir => {
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+                console.log(`📁 Created directory: ${dir}/`);
+            }
+        });
+    }
+
+    // Main help menu
+    showHelp() {
+        console.log(`
+🎯 Photo Manager for Academic Website
+
+Usage: node photo-manager.js [command]
+
+Commands:
+  check      - Check which photos exist
+  list       - List all configured photos  
+  update     - Update index.html with current photo data
+  generate   - Generate JavaScript code for manual copy
+  setup      - Create required directories
+  help       - Show this help
+
+Examples:
+  node photo-manager.js check
+  node photo-manager.js update
+  node photo-manager.js list
+
+Configuration file: ${this.photosConfigPath}
+Photos directory:   ${this.picsDirectory}
+        `);
+    }
+}
+
+// Command line interface
+function main() {
+    const manager = new PhotoManager();
+    const command = process.argv[2] || 'help';
+
+    switch (command) {
+        case 'check':
+            manager.checkPhotos();
+            break;
+            
+        case 'list':
+            manager.listPhotos();
+            break;
+            
+        case 'update':
+            manager.setupDirectories();
+            manager.updateIndexHtml();
+            break;
+            
+        case 'generate':
+            console.log('📝 Generated JavaScript code:');
+            console.log('=====================================');
+            console.log(manager.generateCarouselCode());
+            console.log('=====================================');
+            break;
+            
+        case 'setup':
+            manager.setupDirectories();
+            manager.loadConfig(); // This creates default config
+            console.log('✅ Setup complete');
+            break;
+            
+        case 'help':
+        default:
+            manager.showHelp();
+            break;
+    }
+}
+
+// Export for use as module
+module.exports = PhotoManager;
+
+// Run if called directly
+if (require.main === module) {
+    main();
+}

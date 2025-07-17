@@ -1,0 +1,88 @@
+{
+  "upcomingEvents": [
+    {
+      "id": "um6p-residency-2025",
+      "title": "UM6P Research Residency",
+      "type": "research_residency",
+      "location": "Mohammed VI Polytechnic University, Morocco",
+      "date": "July - December 2025",
+      "status": "confirmed",
+      "description": "Research residency focusing on goal-directedness and metasystem transitions",
+      "category": "research",
+      "visibility": "public",
+      "priority": "high"
+    }
+  ],
+  "recentEvents": [
+    {
+      "id": "cot-music-2023",
+      "title": "COT x Music Seminar Series",
+      "type": "seminar_series",
+      "location": "CLEA/VUB",
+      "date": "2023",
+      "status": "completed",
+      "description": "Introduction to Chemical Organization Theory through musical applications",
+      "category": "dissemination",
+      "audience": "academic",
+      "impact": "medium"
+    },
+    {
+      "id": "academic-tour-2024",
+      "title": "Academic Tour: 5 Months, 4 Continents",
+      "type": "academic_tour",
+      "location": "Multiple Institutions",
+      "date": "2024-2025",
+      "status": "ongoing",
+      "description": "International academic tour visiting collaborators and institutions across Europe, Asia, and the Americas",
+      "category": "networking",
+      "audience": "international",
+      "impact": "high"
+    },
+    {
+      "id": "bcam-workshop-2024",
+      "title": "Goal-Directedness Workshop",
+      "type": "workshop",
+      "location": "BCAM, Bilbao",
+      "date": "2024",
+      "status": "completed",
+      "description": "Theoretical and experimental approaches to goal-directed behavior, funded by John Templeton Foundation",
+      "category": "research",
+      "funding": "John Templeton Foundation",
+      "audience": "international",
+      "impact": "high"
+    }
+  ],
+  "disseminationActivities": [
+    {
+      "id": "interdisciplinaria-magazine",
+      "title": "INTERDISCIPLINARIA Magazine",
+      "type": "magazine",
+      "platform": "DICTA Foundation",
+      "status": "ongoing",
+      "description": "Editorial leadership of interdisciplinary magazine showcasing research profiles",
+      "audience": "general_public",
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "impact": "medium"
+    },
+    {
+      "id": "medium-blog",
+      "title": "Medium Blog",
+      "type": "blog",
+      "platform": "Medium",
+      "status": "active",
+      "description": "Regular articles on interdisciplinary science and philosophy",
+      "audience": "academic_public",
+      "frequency": "irregular",
+      "impact": "medium"
+    }
+  ],
+  "lastUpdated": "2025-07-17T17:00:06.690Z",
+  "metadata": {
+    "totalUpcoming": 1,
+    "totalRecent": 3,
+    "totalDissemination": 2
+  }
+}

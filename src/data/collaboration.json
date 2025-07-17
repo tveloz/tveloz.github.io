@@ -1,0 +1,120 @@
+{
+  "opportunities": [
+    {
+      "id": "phd-supervision",
+      "type": "supervision",
+      "title": "PhD & Research Supervision",
+      "description": "Supervising graduate students in interdisciplinary research projects involving complex systems, quantum cognition, and reaction networks",
+      "areas": [
+        "complex systems",
+        "quantum cognition",
+        "reaction networks",
+        "interdisciplinary science"
+      ],
+      "requirements": [
+        "Strong mathematical background",
+        "Interest in interdisciplinary research",
+        "Programming skills (preferred)"
+      ],
+      "availability": "ongoing",
+      "locations": [
+        "VUB Brussels",
+        "UTEM Chile"
+      ],
+      "contact": "tomas.veloz@vub.ac.be"
+    },
+    {
+      "id": "research-collaboration",
+      "type": "research_collaboration",
+      "title": "Research Collaboration",
+      "description": "Collaborating with researchers worldwide on interdisciplinary projects bridging mathematics, physics, and cognitive science",
+      "areas": [
+        "mathematics",
+        "physics",
+        "cognitive science",
+        "complex systems"
+      ],
+      "preferredAreas": [
+        "Chemical Organization Theory",
+        "Quantum Cognition",
+        "Reaction Networks"
+      ],
+      "availability": "ongoing",
+      "collaborationTypes": [
+        "Joint publications",
+        "Grant applications",
+        "Conference presentations",
+        "Visiting positions"
+      ],
+      "contact": "tomas.veloz@vub.ac.be"
+    },
+    {
+      "id": "consulting-services",
+      "type": "consulting",
+      "title": "Consulting Services",
+      "description": "Providing expertise in AI, complex systems, and interdisciplinary research for organizations and institutions",
+      "areas": [
+        "AI applications",
+        "complex systems modeling",
+        "interdisciplinary research design",
+        "academic strategy"
+      ],
+      "clientTypes": [
+        "Academic institutions",
+        "Research organizations",
+        "Technology companies",
+        "Government agencies"
+      ],
+      "availability": "selective",
+      "contact": "tomas.veloz@vub.ac.be"
+    },
+    {
+      "id": "dicta-collaboration",
+      "type": "foundation_work",
+      "title": "DICTA Foundation Projects",
+      "description": "Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts",
+      "areas": [
+        "social impact",
+        "interdisciplinary collaboration",
+        "sustainable development",
+        "technology transfer"
+      ],
+      "projectTypes": [
+        "Research initiatives",
+        "Educational programs",
+        "Community outreach",
+        "International partnerships"
+      ],
+      "availability": "ongoing",
+      "contact": "https://dicta.cl"
+    }
+  ],
+  "contact": {
+    "primary": {
+      "email": "tomas.veloz@vub.ac.be",
+      "institution": "VUB Brussels",
+      "position": "Director, Systemic Modeling Group"
+    },
+    "secondary": {
+      "institution": "UTEM Chile",
+      "position": "Professor, Mathematics Department"
+    },
+    "foundation": {
+      "organization": "DICTA Foundation",
+      "position": "Founder & Director",
+      "website": "https://dicta.cl"
+    }
+  },
+  "currentCapacity": {
+    "phdStudents": "accepting",
+    "collaborations": "selective",
+    "consulting": "limited",
+    "foundationWork": "ongoing"
+  },
+  "lastUpdated": "2025-07-17T17:00:06.693Z",
+  "metadata": {
+    "totalOpportunities": 4,
+    "activeCollaborations": "multiple",
+    "responseTime": "48-72 hours"
+  }
+}

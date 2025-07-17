@@ -1,0 +1,117 @@
+{
+  "currentProjects": [
+    {
+      "id": "um6p-residency",
+      "title": "UM6P Institute for Advanced Studies Residency",
+      "organization": "Mohammed VI Polytechnic University",
+      "location": "Morocco",
+      "period": "July - December 2025",
+      "status": "upcoming",
+      "category": "research_residency",
+      "description": "Research residency focusing on goal-directedness and metasystem transitions",
+      "keywords": [
+        "goal-directedness",
+        "metasystem transitions",
+        "Morocco",
+        "residency"
+      ],
+      "priority": "high",
+      "visibility": "public"
+    },
+    {
+      "id": "iqsa-2024",
+      "title": "IQSA 2024 Conference Organization",
+      "organization": "International Quantum Structures Association",
+      "location": "VUB, Brussels",
+      "period": "2024",
+      "status": "ongoing",
+      "category": "conference_organization",
+      "description": "Main organizer of the biennial IQSA conference at VUB",
+      "role": "Main Organizer",
+      "keywords": [
+        "IQSA",
+        "quantum structures",
+        "conference",
+        "organization"
+      ],
+      "priority": "high",
+      "visibility": "public"
+    },
+    {
+      "id": "dicta-development",
+      "title": "DICTA Foundation Development",
+      "organization": "DICTA Foundation",
+      "location": "Chile",
+      "period": "Ongoing",
+      "status": "ongoing",
+      "category": "foundation_work",
+      "description": "Leading interdisciplinary projects with social impact",
+      "keywords": [
+        "interdisciplinary",
+        "social impact",
+        "foundation",
+        "Chile"
+      ],
+      "priority": "high",
+      "visibility": "public"
+    }
+  ],
+  "awards": [
+    {
+      "id": "iqsa-secretary",
+      "title": "IQSA Secretary Appointment",
+      "organization": "International Quantum Structures Association",
+      "year": 2022,
+      "category": "professional_appointment",
+      "description": "Appointed as Secretary of the prestigious biennial meeting organization",
+      "significance": "international",
+      "keywords": [
+        "IQSA",
+        "secretary",
+        "quantum structures",
+        "appointment"
+      ]
+    },
+    {
+      "id": "templeton-grant",
+      "title": "Templeton Foundation Grant",
+      "organization": "John Templeton Foundation",
+      "period": "2020-2023",
+      "category": "research_grant",
+      "description": "Co-PI for \"The Origins of Goal-Directedness\" project with Francis Heylighen",
+      "amount": "Substantial",
+      "collaborators": [
+        "Francis Heylighen"
+      ],
+      "significance": "international",
+      "keywords": [
+        "Templeton",
+        "goal-directedness",
+        "grant",
+        "collaboration"
+      ]
+    },
+    {
+      "id": "airforce-grant",
+      "title": "US Air Force Research Grant",
+      "organization": "US Air Force",
+      "year": 2020,
+      "category": "research_grant",
+      "description": "Research leader for epidemiological modeling team during COVID-19",
+      "role": "Research Leader",
+      "significance": "national",
+      "keywords": [
+        "Air Force",
+        "epidemiology",
+        "COVID-19",
+        "modeling"
+      ]
+    }
+  ],
+  "lastUpdated": "2025-07-17T17:00:06.687Z",
+  "metadata": {
+    "totalProjects": 3,
+    "totalAwards": 3,
+    "updateFrequency": "weekly"
+  }
+}

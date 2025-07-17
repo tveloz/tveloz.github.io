@@ -1,0 +1,88 @@
+{
+  "writings": [
+    {
+      "id": "ai-spirit-transformations",
+      "title": "The Three Transformations of the AI-spirit",
+      "type": "medium_article",
+      "platform": "Medium",
+      "date": "2023-11-07",
+      "url": "https://medium.com/@tveloz/the-three-transformations-of-the-ai-spitrit-2aba1f5ad2a1",
+      "description": "Exploring the conceptual foundations of \"play\" through bracketing and immersion in AI context",
+      "category": "philosophical_essay",
+      "keywords": [
+        "AI",
+        "philosophy",
+        "play",
+        "bracketing",
+        "immersion"
+      ],
+      "readingTime": "5 min",
+      "status": "published"
+    },
+    {
+      "id": "interdisciplinaria-launch",
+      "title": "INTERDISCIPLINARIA Magazine Launch",
+      "type": "magazine_launch",
+      "platform": "DICTA Foundation",
+      "date": "2024-01-01",
+      "url": "https://dicta.cl",
+      "description": "Relaunched foundation magazine focused on interdisciplinary profiles and social impact",
+      "category": "magazine",
+      "keywords": [
+        "interdisciplinary",
+        "magazine",
+        "DICTA",
+        "social impact"
+      ],
+      "languages": [
+        "Spanish",
+        "English"
+      ],
+      "status": "active"
+    },
+    {
+      "id": "cot-music-introduction",
+      "title": "COT x Music Series Introduction",
+      "type": "seminar_content",
+      "platform": "CLEA/VUB",
+      "date": "2023-06-01",
+      "url": "https://clea.research.vub.be/cot-x-music-1-introduction-dr-tomas-veloz",
+      "description": "Introduction to Chemical Organization Theory through musical applications",
+      "category": "educational_content",
+      "keywords": [
+        "COT",
+        "music",
+        "education",
+        "theory"
+      ],
+      "format": "video_seminar",
+      "status": "published"
+    }
+  ],
+  "platforms": [
+    {
+      "name": "Medium",
+      "url": "https://medium.com/@tveloz",
+      "status": "active",
+      "followers": "growing",
+      "postFrequency": "irregular"
+    },
+    {
+      "name": "DICTA Foundation",
+      "url": "https://dicta.cl",
+      "status": "active",
+      "role": "Editorial Director",
+      "content": "magazine"
+    }
+  ],
+  "lastUpdated": "2025-07-17T17:00:06.692Z",
+  "metadata": {
+    "totalWritings": 3,
+    "activePlatforms": 2,
+    "categories": [
+      "philosophical_essay",
+      "magazine",
+      "educational_content"
+    ]
+  }
+}

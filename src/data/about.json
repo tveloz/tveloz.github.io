@@ -1,0 +1,110 @@
+{
+  "profile": {
+    "name": "Dr. Tomás Veloz",
+    "title": "Full Stack Interdisciplinary Scientist",
+    "tagline": "Bridging Physics, Mathematics, Cognitive Science & Complex Systems",
+    "bio": {
+      "short": "Leading Chilean interdisciplinary scientist bridging physics, mathematics, cognitive sciences, and complex systems research.",
+      "medium": "Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the \"Systemic Modeling and Applications\" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.",
+      "full": "Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the \"Systemic Modeling and Applications\" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium. His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space. Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact."
+    }
+  },
+  "affiliations": {
+    "primary": [
+      {
+        "name": "UTEM Chile",
+        "title": "Professor",
+        "department": "Mathematics Department",
+        "location": "Santiago, Chile",
+        "url": "https://www.utem.cl",
+        "primary": true
+      },
+      {
+        "name": "VUB Belgium",
+        "title": "Director, SYMP Group",
+        "department": "Centre Leo Apostel (CLEA)",
+        "location": "Brussels, Belgium",
+        "url": "https://clea.research.vub.be",
+        "primary": true
+      },
+      {
+        "name": "DICTA Foundation",
+        "title": "Founder & Director",
+        "department": "Interdisciplinary Development",
+        "location": "Chile",
+        "url": "https://dicta.cl",
+        "primary": true
+      }
+    ],
+    "secondary": [
+      {
+        "name": "UM6P Morocco",
+        "title": "Visiting Researcher",
+        "department": "Institute for Advanced Studies",
+        "location": "Morocco",
+        "period": "July - December 2025",
+        "url": "https://ias.um6p.ma"
+      }
+    ]
+  },
+  "researchAreas": [
+    {
+      "name": "Chemical Organization Theory",
+      "description": "Developing mathematical frameworks for analyzing self-organizing systems using reaction networks",
+      "keywords": [
+        "COT",
+        "reaction networks",
+        "self-organization",
+        "mathematical modeling"
+      ],
+      "color": "blue"
+    },
+    {
+      "name": "Quantum Cognition",
+      "description": "Applying quantum structures to model cognitive and linguistic phenomena",
+      "keywords": [
+        "quantum theory",
+        "cognition",
+        "language",
+        "Hilbert space"
+      ],
+      "color": "purple"
+    },
+    {
+      "name": "Reaction Networks",
+      "description": "Mathematical modeling of complex adaptive systems and emergent phenomena",
+      "keywords": [
+        "complex systems",
+        "emergence",
+        "dynamics",
+        "stability"
+      ],
+      "color": "green"
+    },
+    {
+      "name": "Interdisciplinary Science",
+      "description": "Bridging physics, mathematics, cognitive science, and complex systems",
+      "keywords": [
+        "interdisciplinary",
+        "collaboration",
+        "integration",
+        "synthesis"
+      ],
+      "color": "orange"
+    }
+  ],
+  "contact": {
+    "primary": "tomas.veloz@vub.ac.be",
+    "social": {
+      "linkedin": "https://be.linkedin.com/in/tomas-veloz-028b6717",
+      "googleScholar": "https://scholar.google.com/citations?user=q7HbZQ4AAAAJ",
+      "medium": "https://medium.com/@tveloz",
+      "dicta": "https://dicta.cl"
+    }
+  },
+  "lastUpdated": "2025-07-17T17:00:04.284Z",
+  "metadata": {
+    "profileVersion": "2.0",
+    "lastMajorUpdate": "2025-07-17T17:00:04.285Z"
+  }
+}

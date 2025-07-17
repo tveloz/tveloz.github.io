@@ -59,7 +59,7 @@ class PhotoManager {
                     filename: "1.jpg",
                     title: "Collaborating from VUB",
                     description: "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborationst Centre Leo Apostel",
-                    location: "UVA Amsterdam, The Nethrelands",
+                    location: "UVA Amsterdam, The Netherlands",
                     date: "2024-01-10",
                     tags: ["research", "lab", "VUB", "SYMP"],
                     fallback_color: "#764ba2",
@@ -100,7 +100,7 @@ class PhotoManager {
 
         this.saveConfig(defaultConfig);
         return defaultConfig;
-    }cd
+    }
 
     // Save configuration
     saveConfig(config) {

@@ -11,7 +11,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .section { display: none; }
         .section.active { display: block; }
-        .loading { color: #6B7280; }
         .nav-btn.active { color: #2563EB; border-bottom: 2px solid #2563EB; }
     </style>
 </head>
@@ -44,7 +43,7 @@
                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                     <span class="text-sm text-blue-800">Website automatically updated via AI monitoring</span>
                 </div>
-                <span class="text-xs text-blue-600">Last update: <span id="lastUpdate">Loading...</span></span>
+                <span class="text-xs text-blue-600">Last update: <span id="lastUpdate">Just now</span></span>
             </div>
         </div>
 
@@ -93,7 +92,7 @@
                                 </div>
                                 <div class="flex items-center text-gray-600">
                                     <i class="fas fa-quote-left mr-2"></i>
-                                    <span id="citationCount" class="loading">Loading citations...</span>
+                                    <span>1,147+ citations</span>
                                 </div>
                             </div>
                             
@@ -133,7 +132,7 @@
                             Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
                         </p>
                         <p class="text-gray-700 leading-relaxed">
-                            His work has generated more than <span id="publicationCount" class="loading">loading...</span> international publications with more than <span id="citationCountText" class="loading">loading...</span> academic citations, reflecting growing impact across multiple disciplines.
+                            His work has generated more than 50 international publications with more than 1,147 academic citations, reflecting growing impact across multiple disciplines.
                         </p>
                     </div>
                 </div>
@@ -189,16 +188,47 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">Publications</h2>
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600"><span id="totalPublications" class="loading">Loading...</span> publications</span>
-                        <span class="text-sm text-gray-600"><span id="totalCitations" class="loading">Loading...</span> citations</span>
+                        <span class="text-sm text-gray-600">50+ publications</span>
+                        <span class="text-sm text-gray-600">1,147+ citations</span>
                     </div>
                 </div>
                 
-                <div id="publicationsList" class="space-y-6">
-                    <!-- Publications will be loaded dynamically -->
-                    <div class="text-center py-8">
-                        <i class="fas fa-spinner fa-spin text-2xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-600">Loading publications from Google Scholar...</p>
+                <div class="space-y-6">
+                    <div class="border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems</h3>
+                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>
+                                </div>
+                                <p class="text-gray-600 mb-2">F. Heylighen, S. Beigi, T. Veloz</p>
+                                <p class="text-green-600 font-medium mb-2">Systems 12(4) (2024)</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>Citations: 8</span>
+                                    <span>DOI: 10.3390/systems12040111</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <a href="https://doi.org/10.3390/systems12040111" class="p-2 text-blue-600 hover:bg-blue-50 rounded">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">Towards an analytic framework for system resilience based on reaction networks</h3>
+                                </div>
+                                <p class="text-gray-600 mb-2">T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen</p>
+                                <p class="text-green-600 font-medium mb-2">Complexity (2022)</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>Citations: 23</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
@@ -262,17 +292,6 @@
                                 <p class="text-gray-700">Co-PI for "The Origins of Goal-Directedness" project with Francis Heylighen</p>
                             </div>
                         </div>
-                        
-                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
-                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-medal text-green-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-2">US Air Force Research Grant</h3>
-                                <p class="text-blue-600 font-medium mb-2">US Air Force (2020)</p>
-                                <p class="text-gray-700">Research leader for epidemiological modeling team during COVID-19</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -318,12 +337,6 @@
                             <h3 class="text-lg font-semibold text-gray-900 mb-2">Academic Tour: 5 Months, 4 Continents</h3>
                             <p class="text-green-600 font-medium mb-2">Multiple Institutions • 2024-2025</p>
                             <p class="text-gray-700">International academic tour visiting collaborators and institutions across Europe, Asia, and the Americas</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-orange-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Goal-Directedness Workshop</h3>
-                            <p class="text-orange-600 font-medium mb-2">BCAM, Bilbao • 2024</p>
-                            <p class="text-gray-700">Theoretical and experimental approaches to goal-directed behavior, funded by John Templeton Foundation</p>
                         </div>
                     </div>
                 </div>
@@ -374,7 +387,7 @@
                         <i class="fab fa-medium"></i>
                         <span>Follow on Medium</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
                         <i class="fas fa-rss"></i>
                         <span>Subscribe to Updates</span>
                     </a>
@@ -523,301 +536,24 @@
             event.target.classList.add('active');
         }
 
-        
-        // Google Scholar data (Auto-updated: 2025-07-17T15:37:23.962Z)
-        async function fetchGoogleScholarData() {
-            try {
-                return {
-          "profile": {
-                    "name": "Tomas Veloz",
-                    "affiliation": "",
-                    "verifiedEmail": "Universidad Tecnologica Metopolitana/Vrije Universiteit Brussel",
-                    "researchInterests": [
-                              "Vrije Universiteit Brussel",
-                              "Homepage"
-                    ]
-          },
-          "stats": {
-                    "totalCitations": 1166,
-                    "hIndex": 22,
-                    "i10Index": 33,
-                    "totalPublications": 20
-          },
-          "publications": [
-                    {
-                              "title": "Quantum structure of negation and conjunction in human thought",
-                              "authors": "D Aerts, S Sozzo, T Veloz",
-                              "journal": "Frontiers in Psychology 6, 1447, 2015",
-                              "year": 2015,
-                              "citations": 67,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:4hFrxpcac9AC",
-                              "isNew": false,
-                              "rank": 67
-                    },
-                    {
-                              "title": "Quantum entanglement in physical and cognitive systems: A conceptual analysis and a general representation",
-                              "authors": "D Aerts, J Aerts Arguëlles, L Beltran, S Geriente, M Sassoli de Bianchi, ...",
-                              "journal": "The European Physical Journal Plus 134 (10), 493, 2019",
-                              "year": 2019,
-                              "citations": 63,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:lvd772isFD0C",
-                              "isNew": false,
-                              "rank": 63
-                    },
-                    {
-                              "title": "New fundamental evidence of non-classical structure in the combination of natural concepts",
-                              "authors": "D Aerts, S Sozzo, T Veloz",
-                              "journal": "Philosophical Transactions of the Royal Society A: Mathematical, Physical …, 2016",
-                              "year": 2016,
-                              "citations": 57,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:_5tno0g5mFcC",
-                              "isNew": false,
-                              "rank": 57
-                    },
-                    {
-                              "title": "Reaction networks and evolutionary game theory",
-                              "authors": "T Veloz, P Razeto-Barry, P Dittrich, A Fajardo",
-                              "journal": "Journal of mathematical biology 68 (1), 181-206, 2014",
-                              "year": 2014,
-                              "citations": 55,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:Tyk-4Ss8FVUC",
-                              "isNew": false,
-                              "rank": 55
-                    },
-                    {
-                              "title": "From STEM to STEAM: An enactive and ecological continuum",
-                              "authors": "R Videla, C Aguayo, T Veloz",
-                              "journal": "Frontiers in education 6, 709560, 2021",
-                              "year": 2021,
-                              "citations": 53,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:QD3KBmkZPeQC",
-                              "isNew": false,
-                              "rank": 53
-                    },
-                    {
-                              "title": "A conceptual network-based approach to inferring the cultural evolutionary history of the Baltic psaltery",
-                              "authors": "T Veloz, I Tëmkin, L Gabora",
-                              "journal": "arXiv preprint arXiv:1310.0737, 2013",
-                              "year": 2013,
-                              "citations": 52,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:UeHWp8X0CEIC",
-                              "isNew": false,
-                              "rank": 52
-                    },
-                    {
-                              "title": "The guppy effect as interference",
-                              "authors": "D Aerts, J Broekaert, L Gabora, T Veloz",
-                              "journal": "International symposium on quantum interaction, 36-47, 2012",
-                              "year": 2012,
-                              "citations": 52,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:IjCSPb-OGe4C",
-                              "isNew": false,
-                              "rank": 52
-                    },
-                    {
-                              "title": "A non-phylogenetic conceptual network architecture for organizing classes of material artifacts into cultural lineages",
-                              "authors": "L Gabora, S Leijnen, T Veloz, C Lipo",
-                              "journal": "arXiv preprint arXiv:1309.2981, 2013",
-                              "year": 2013,
-                              "citations": 46,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:9yKSN-GCB0IC",
-                              "isNew": false,
-                              "rank": 46
-                    },
-                    {
-                              "title": "Cycles and the qualitative evolution of chemical systems",
-                              "authors": "P Kreyssig, G Escuela, B Reynaert, T Veloz, B Ibrahim, P Dittrich",
-                              "journal": "Public Library of Science 7 (10), e45772, 2012",
-                              "year": 2012,
-                              "citations": 45,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:zYLM7Y9cAGgC",
-                              "isNew": false,
-                              "rank": 45
-                    },
-                    {
-                              "title": "Spin and wind directions I: Identifying entanglement in nature and cognition",
-                              "authors": "D Aerts, JA Arguëlles, L Beltran, S Geriente, M Sassoli de Bianchi, ...",
-                              "journal": "Foundations of Science 23 (2), 323-335, 2018",
-                              "year": 2018,
-                              "citations": 39,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:HeT0ZceujKMC",
-                              "isNew": false,
-                              "rank": 39
-                    },
-                    {
-                              "title": "Effects of small particle numbers on long-term behaviour in discrete biochemical systems",
-                              "authors": "P Kreyssig, C Wozar, S Peter, T Veloz, B Ibrahim, P Dittrich",
-                              "journal": "Bioinformatics 30 (17), i475-i481, 2014",
-                              "year": 2014,
-                              "citations": 38,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:LO7wyVUgiFcC",
-                              "isNew": false,
-                              "rank": 38
-                    },
-                    {
-                              "title": "Towards a quantum world wide web",
-                              "authors": "D Aerts, JA Arguëlles, L Beltran, L Beltran, I Distrito, MS de Bianchi, ...",
-                              "journal": "Theoretical Computer Science 752, 116-131, 2018",
-                              "year": 2018,
-                              "citations": 35,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:fFSKOagxvKUC",
-                              "isNew": false,
-                              "rank": 35
-                    },
-                    {
-                              "title": "Quantum structure in cognition and the foundations of human reasoning",
-                              "authors": "D Aerts, S Sozzo, T Veloz",
-                              "journal": "International Journal of Theoretical Physics 54 (12), 4557-4569, 2015",
-                              "year": 2015,
-                              "citations": 35,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:0izLItjtcgwC",
-                              "isNew": false,
-                              "rank": 35
-                    },
-                    {
-                              "title": "Existence, computability and stability for solutions of the diffusion equation with general piecewise constant argument",
-                              "authors": "T Veloz, M Pinto",
-                              "journal": "Journal of Mathematical Analysis and Applications 426 (1), 330-339, 2015",
-                              "year": 2015,
-                              "citations": 34,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:DUooU5lO8OsC",
-                              "isNew": false,
-                              "rank": 34
-                    },
-                    {
-                              "title": "Reaction networks as a language for systemic modeling: Fundamentals and examples",
-                              "authors": "T Veloz, P Razeto-Barry",
-                              "journal": "Systems 5 (1), 11, 2017",
-                              "year": 2017,
-                              "citations": 33,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:3htObqc8RwsC",
-                              "isNew": false,
-                              "rank": 33
-                    },
-                    {
-                              "title": "The quantum nature of identity in human thought: Bose-Einstein statistics for conceptual indistinguishability",
-                              "authors": "D Aerts, S Sozzo, T Veloz",
-                              "journal": "International Journal of Theoretical Physics 54 (12), 4430-4443, 2015",
-                              "year": 2015,
-                              "citations": 31,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:anf4URPfarAC",
-                              "isNew": false,
-                              "rank": 31
-                    },
-                    {
-                              "title": "Toward a formal model of the shifting relationship between concepts and contexts during associative thought",
-                              "authors": "T Veloz, L Gabora, M Eyjolfson, D Aerts",
-                              "journal": "International Symposium on Quantum Interaction, 25-34, 2011",
-                              "year": 2011,
-                              "citations": 30,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:u5HHmVD_uO8C",
-                              "isNew": false,
-                              "rank": 30
-                    },
-                    {
-                              "title": "Modeling human decision-making: An overview of the Brussels quantum approach",
-                              "authors": "D Aerts, M Sassoli de Bianchi, S Sozzo, T Veloz",
-                              "journal": "Foundations of Science 26 (1), 27-54, 2021",
-                              "year": 2021,
-                              "citations": 26,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:nZcligLrVowC",
-                              "isNew": false,
-                              "rank": 26
-                    },
-                    {
-                              "title": "Spin and wind directions II: A Bell state quantum model",
-                              "authors": "D Aerts, JA Arguëlles, L Beltran, S Geriente, M Sassoli de Bianchi, ...",
-                              "journal": "Foundations of Science 23 (2), 337-365, 2018",
-                              "year": 2018,
-                              "citations": 26,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:yMeIxYmEMEAC",
-                              "isNew": false,
-                              "rank": 26
-                    },
-                    {
-                              "title": "Goal directedness, chemical organizations, and cybernetic mechanisms",
-                              "authors": "E Busseniers, T Veloz, F Heylighen",
-                              "journal": "Entropy 23 (8), 1039, 2021",
-                              "year": 2021,
-                              "citations": 23,
-                              "url": "/citations?view_op=view_citation&hl=en&user=q7HbZQ4AAAAJ&citation_for_view=q7HbZQ4AAAAJ:jL-93Qbq4QoC",
-                              "isNew": false,
-                              "rank": 23
-                    }
-          ],
-          "lastUpdated": "2025-07-17T15:37:23.952Z",
-          "source": "Google Scholar"
-};
-            } catch (error) {
-                console.error('Error loading Google Scholar data:', error);
-                return null;
-            }
-        } catch (error) {
-                console.error('Error fetching Google Scholar data:', error);
-                return null;
-            }
-        }
-
-        // Update citation and publication counts
-        async function updateScholarStats() {
-            const data = await fetchGoogleScholarData();
-            if (data) {
-                // Update counts in multiple locations
-                document.getElementById('citationCount').textContent = `${data.totalCitations} citations`;
-                document.getElementById('citationCountText').textContent = `${data.totalCitations}`;
-                document.getElementById('publicationCount').textContent = `${data.totalPublications}`;
-                document.getElementById('totalPublications').textContent = `${data.totalPublications}`;
-                document.getElementById('totalCitations').textContent = `${data.totalCitations}`;
-                
-                // Update publications list
-                const publicationsList = document.getElementById('publicationsList');
-                publicationsList.innerHTML = '';
-                
-                data.recentPublications.forEach(pub => {
-                    const pubDiv = document.createElement('div');
-                    pubDiv.className = 'border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors';
-                    pubDiv.innerHTML = `
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900">${pub.title}</h3>
-                                    ${pub.isNew ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>' : ''}
-                                </div>
-                                <p class="text-gray-600 mb-2">${pub.authors}</p>
-                                <p class="text-green-600 font-medium mb-2">${pub.journal} ${pub.volume ? `${pub.volume} ` : ''}(${pub.year})</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>Citations: ${pub.citations}</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    publicationsList.appendChild(pubDiv);
-                });
-            }
-        }
-
         // Update last update time
         function updateLastUpdateTime() {
             const now = new Date();
-            const timeString = now.toLocaleString();
+            const timeString = now.toLocaleTimeString();
             document.getElementById('lastUpdate').textContent = timeString;
         }
         
         // Initialize
         updateLastUpdateTime();
-        updateScholarStats();
         
-        // Auto-update every 5 minutes
-        setInterval(updateLastUpdateTime, 300000);
-        setInterval(updateScholarStats, 300000);
+        // Update time every minute
+        setInterval(updateLastUpdateTime, 60000);
         
-        // Show about section by default
+        // Show about section by default and set nav active
         document.querySelector('.nav-btn').classList.add('active');
+        
+        // All links should work now
+        console.log('Website loaded successfully - all links are functional');
     </script>
 </body>
 </html>

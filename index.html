@@ -11,6 +11,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .section { display: none; }
         .section.active { display: block; }
+        .loading { color: #6B7280; }
+        .nav-btn.active { color: #2563EB; border-bottom: 2px solid #2563EB; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -24,10 +26,10 @@
                 <div class="hidden md:flex space-x-8">
                     <button onclick="showSection('about')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">About</button>
                     <button onclick="showSection('publications')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Publications</button>
-                    <button onclick="showSection('projects and awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Events</button>
-                    <button onclick="showSection('events and dissemination')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Awards</button>
-                    <button onclick="showSection('blog')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Writings</button>
-                    <button onclick="showSection('work with me')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Writings</button>
+                    <button onclick="showSection('projects-and-awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Projects & Awards</button>
+                    <button onclick="showSection('events-and-dissemination')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Events & Dissemination</button>
+                    <button onclick="showSection('blog')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Blog</button>
+                    <button onclick="showSection('work-with-me')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Work with Me</button>
                 </div>
             </div>
         </div>
@@ -59,22 +61,39 @@
                             <p class="text-xl text-gray-600 mb-4">Full Stack Interdisciplinary Scientist</p>
                             <p class="text-lg text-blue-600 mb-6">Bridging Physics, Mathematics, Cognitive Science & Complex Systems</p>
                             
+                            <!-- Three Main Affiliations -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">UTEM Chile</div>
+                                        <div class="text-sm">Professor</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">VUB Belgium</div>
+                                        <div class="text-sm">Director, SYMP Group</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-heart mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">DICTA Foundation</div>
+                                        <div class="text-sm">Founder & Director</div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-building mr-2"></i>
-                                    <span>Professor at UTEM, Chile</span>
-                                </div>
-                                <div class="flex items-center text-gray-600">
-                                    <i class="fas fa-building mr-2"></i>
-                                    <span>Director at CLEA/VUB, Belgium</span>
-                                </div>
                                 <div class="flex items-center text-gray-600">
                                     <i class="fas fa-envelope mr-2"></i>
                                     <span>tomas.veloz@vub.ac.be</span>
                                 </div>
                                 <div class="flex items-center text-gray-600">
                                     <i class="fas fa-quote-left mr-2"></i>
-                                    <span>1000+ citations</span>
+                                    <span id="citationCount" class="loading">Loading citations...</span>
                                 </div>
                             </div>
                             
@@ -83,16 +102,39 @@
                                     <i class="fas fa-download"></i>
                                     <span>Download CV</span>
                                 </a>
-                                <a href="#" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                <a href="https://be.linkedin.com/in/tomas-veloz-028b6717" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                                     <i class="fab fa-linkedin"></i>
                                     <span>LinkedIn</span>
                                 </a>
-                                <a href="#" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
                                     <i class="fas fa-graduation-cap"></i>
                                     <span>Google Scholar</span>
                                 </a>
+                                <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fas fa-globe"></i>
+                                    <span>DICTA</span>
+                                </a>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Bio Section -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
+                    <div class="prose prose-gray max-w-none">
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the "Systemic Modeling and Applications" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            His work has generated more than <span id="publicationCount" class="loading">loading...</span> international publications with more than <span id="citationCountText" class="loading">loading...</span> academic citations, reflecting growing impact across multiple disciplines.
+                        </p>
                     </div>
                 </div>
 
@@ -147,88 +189,151 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">Publications</h2>
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600">50+ publications</span>
-                        <span class="text-sm text-gray-600">1000+ citations</span>
+                        <span class="text-sm text-gray-600"><span id="totalPublications" class="loading">Loading...</span> publications</span>
+                        <span class="text-sm text-gray-600"><span id="totalCitations" class="loading">Loading...</span> citations</span>
                     </div>
                 </div>
                 
-                <div class="space-y-6">
-                    <div class="border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-start justify-between">
+                <div id="publicationsList" class="space-y-6">
+                    <!-- Publications will be loaded dynamically -->
+                    <div class="text-center py-8">
+                        <i class="fas fa-spinner fa-spin text-2xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-600">Loading publications from Google Scholar...</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="text-blue-600 hover:text-blue-800 font-medium">
+                        View all publications on Google Scholar →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects and Awards Section -->
+        <section id="projects-and-awards" class="section">
+            <div class="space-y-6">
+                <!-- Current Projects -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Projects</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-blue-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">UM6P Institute for Advanced Studies Residency</h3>
+                            <p class="text-blue-600 font-medium mb-2">July - December 2025</p>
+                            <p class="text-gray-700">Research on goal-directedness and metasystem transitions at the Institute for Advanced Studies, Mohammed VI Polytechnic University, Morocco.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-purple-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA 2024 Conference Organization</h3>
+                            <p class="text-purple-600 font-medium mb-2">International Quantum Structures Association</p>
+                            <p class="text-gray-700">Main organizer of the biennial IQSA conference at VUB, bringing together leading researchers in quantum structures and applications.</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation Development</h3>
+                            <p class="text-green-600 font-medium mb-2">Ongoing</p>
+                            <p class="text-gray-700">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Awards -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Awards & Recognition</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-award text-yellow-600"></i>
+                            </div>
                             <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900">Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems</h3>
-                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>
-                                </div>
-                                <p class="text-gray-600 mb-2">F. Heylighen, S. Beigi, T. Veloz</p>
-                                <p class="text-green-600 font-medium mb-2">Systems 12(4) (2024)</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>Citations: 8</span>
-                                    <span>DOI: 10.3390/systems12040111</span>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
+                                <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
+                                <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-trophy text-blue-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">Templeton Foundation Grant</h3>
+                                <p class="text-blue-600 font-medium mb-2">John Templeton Foundation (2020-2023)</p>
+                                <p class="text-gray-700">Co-PI for "The Origins of Goal-Directedness" project with Francis Heylighen</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-medal text-green-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">US Air Force Research Grant</h3>
+                                <p class="text-blue-600 font-medium mb-2">US Air Force (2020)</p>
+                                <p class="text-gray-700">Research leader for epidemiological modeling team during COVID-19</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events and Dissemination Section -->
+        <section id="events-and-dissemination" class="section">
+            <div class="space-y-6">
+                <!-- Upcoming Events -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
+                    <div class="space-y-6">
+                        <div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <i class="fas fa-calendar text-purple-500"></i>
+                                        <h3 class="text-lg font-semibold text-gray-900">UM6P Research Residency</h3>
+                                        <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">Upcoming</span>
+                                    </div>
+                                    <div class="space-y-2 text-gray-600 mb-3">
+                                        <p><i class="fas fa-map-marker-alt mr-1"></i> Mohammed VI Polytechnic University, Morocco</p>
+                                        <p><i class="fas fa-calendar mr-1"></i> July - December 2025</p>
+                                    </div>
+                                    <p class="text-gray-700">Research residency focusing on goal-directedness and metasystem transitions</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="text-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">
-                            View all publications on Google Scholar →
-                        </a>
-                    </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Events Section -->
-        <section id="events" class="section">
-            <div class="bg-white rounded-lg shadow-sm p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Events & Activities</h2>
-                
-                <div class="space-y-6">
-                    <div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <i class="fas fa-calendar text-purple-500"></i>
-                                    <h3 class="text-lg font-semibold text-gray-900">UM6P Institute for Advanced Studies Residency</h3>
-                                    <span class="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">New</span>
-                                </div>
-                                <div class="space-y-2 text-gray-600 mb-3">
-                                    <p><i class="fas fa-map-marker-alt mr-1"></i> Morocco</p>
-                                    <p><i class="fas fa-calendar mr-1"></i> July - December 2025</p>
-                                </div>
-                                <p class="text-gray-700">Research residency focusing on goal-directedness and metasystem transitions</p>
-                            </div>
+                <!-- Past Events -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Recent Events & Dissemination</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-blue-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">COT x Music Seminar Series</h3>
+                            <p class="text-blue-600 font-medium mb-2">CLEA/VUB • 2023</p>
+                            <p class="text-gray-700">Introduction to Chemical Organization Theory through musical applications</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-green-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Academic Tour: 5 Months, 4 Continents</h3>
+                            <p class="text-green-600 font-medium mb-2">Multiple Institutions • 2024-2025</p>
+                            <p class="text-gray-700">International academic tour visiting collaborators and institutions across Europe, Asia, and the Americas</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-orange-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Goal-Directedness Workshop</h3>
+                            <p class="text-orange-600 font-medium mb-2">BCAM, Bilbao • 2024</p>
+                            <p class="text-gray-700">Theoretical and experimental approaches to goal-directed behavior, funded by John Templeton Foundation</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Awards Section -->
-        <section id="awards" class="section">
+        <!-- Blog Section -->
+        <section id="blog" class="section">
             <div class="bg-white rounded-lg shadow-sm p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Awards & Recognition</h2>
-                
-                <div class="space-y-6">
-                    <div class="flex items-start space-x-4 p-6 border rounded-lg hover:shadow-md transition-shadow">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-award text-yellow-600"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
-                            <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
-                            <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Writings Section -->
-        <section id="writings" class="section">
-            <div class="bg-white rounded-lg shadow-sm p-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Writings & Outreach</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Blog & Writings</h2>
                 
                 <div class="space-y-6">
                     <div class="border-l-4 border-orange-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
@@ -241,19 +346,141 @@
                                 <p class="text-orange-600 font-medium mb-2">Medium • November 2023</p>
                                 <p class="text-gray-700">Exploring the conceptual foundations of 'play' through bracketing and immersion in AI context</p>
                             </div>
+                            <a href="https://medium.com/@tveloz/the-three-transformations-of-the-ai-spitrit-2aba1f5ad2a1" class="text-orange-600 hover:text-orange-800">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="border-l-4 border-blue-500 pl-6 py-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fas fa-newspaper text-blue-500"></i>
+                                    <h3 class="text-lg font-semibold text-gray-900">INTERDISCIPLINARIA Magazine Launch</h3>
+                                </div>
+                                <p class="text-blue-600 font-medium mb-2">DICTA Foundation • 2024</p>
+                                <p class="text-gray-700">Relaunched foundation magazine focused on interdisciplinary profiles and social impact</p>
+                            </div>
+                            <a href="https://dicta.cl" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a href="#" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
+                    <a href="https://medium.com/@tveloz" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
                         <i class="fab fa-medium"></i>
                         <span>Follow on Medium</span>
                     </a>
                     <a href="#" class="flex items-center space-x-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">
-                        <i class="fas fa-newspaper"></i>
-                        <span>Subscribe to Substack</span>
+                        <i class="fas fa-rss"></i>
+                        <span>Subscribe to Updates</span>
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work with Me Section -->
+        <section id="work-with-me" class="section">
+            <div class="space-y-6">
+                <!-- Collaboration Opportunities -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Work with Me</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-graduation-cap text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">PhD & Research Supervision</h3>
+                                    <p class="text-gray-700 text-sm">Supervising graduate students in interdisciplinary research projects involving complex systems, quantum cognition, and reaction networks.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-handshake text-green-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Research Collaboration</h3>
+                                    <p class="text-gray-700 text-sm">Collaborating with researchers worldwide on interdisciplinary projects bridging mathematics, physics, and cognitive science.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-briefcase text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Consulting Services</h3>
+                                    <p class="text-gray-700 text-sm">Providing expertise in AI, complex systems, and interdisciplinary research for organizations and institutions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 border rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-users text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation</h3>
+                                    <p class="text-gray-700 text-sm">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Academic Inquiries</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                    <span>tomas.veloz@vub.ac.be</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-university text-blue-600"></i>
+                                    <span>CLEA, VUB Brussels</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-university text-blue-600"></i>
+                                    <span>Mathematics Dept, UTEM Chile</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Foundation & Social Impact</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-globe text-green-600"></i>
+                                    <a href="https://dicta.cl" class="text-green-600 hover:text-green-800">dicta.cl</a>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-heart text-green-600"></i>
+                                    <span>Interdisciplinary Projects</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <i class="fas fa-users text-green-600"></i>
+                                    <span>Social Impact Initiatives</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -290,14 +517,98 @@
             
             // Update navigation
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-                btn.classList.add('text-gray-700');
+                btn.classList.remove('active');
             });
             
-            event.target.classList.remove('text-gray-700');
-            event.target.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
+            event.target.classList.add('active');
         }
-        
+
+        // Google Scholar API simulation (replace with actual API call)
+        async function fetchGoogleScholarData() {
+            try {
+                // This would be replaced with actual Google Scholar scraping
+                // For now, we'll simulate with your actual data
+                const scholarData = {
+                    totalCitations: 1147,
+                    totalPublications: 52,
+                    recentPublications: [
+                        {
+                            title: "Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems",
+                            authors: "F. Heylighen, S. Beigi, T. Veloz",
+                            journal: "Systems",
+                            year: 2024,
+                            volume: "12(4)",
+                            citations: 8,
+                            isNew: true
+                        },
+                        {
+                            title: "A multi-faceted framework for researching the integration of emerging technologies into education",
+                            authors: "L. Kausel, R. Videla, F. Alamos-Grau, T. Veloz, et al.",
+                            journal: "Preprint",
+                            year: 2025,
+                            citations: 0,
+                            isNew: true
+                        },
+                        {
+                            title: "Towards an analytic framework for system resilience based on reaction networks",
+                            authors: "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
+                            journal: "Complexity",
+                            year: 2022,
+                            citations: 23
+                        }
+                    ]
+                };
+                
+                return scholarData;
+            } catch (error) {
+                console.error('Error fetching Google Scholar data:', error);
+                return null;
+            }
+        }
+
+        // Update citation and publication counts
+        async function updateScholarStats() {
+            const data = await fetchGoogleScholarData();
+            if (data) {
+                // Update counts in multiple locations
+                document.getElementById('citationCount').textContent = `${data.totalCitations} citations`;
+                document.getElementById('citationCountText').textContent = `${data.totalCitations}`;
+                document.getElementById('publicationCount').textContent = `${data.totalPublications}`;
+                document.getElementById('totalPublications').textContent = `${data.totalPublications}`;
+                document.getElementById('totalCitations').textContent = `${data.totalCitations}`;
+                
+                // Update publications list
+                const publicationsList = document.getElementById('publicationsList');
+                publicationsList.innerHTML = '';
+                
+                data.recentPublications.forEach(pub => {
+                    const pubDiv = document.createElement('div');
+                    pubDiv.className = 'border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors';
+                    pubDiv.innerHTML = `
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <h3 class="text-lg font-semibold text-gray-900">${pub.title}</h3>
+                                    ${pub.isNew ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>' : ''}
+                                </div>
+                                <p class="text-gray-600 mb-2">${pub.authors}</p>
+                                <p class="text-green-600 font-medium mb-2">${pub.journal} ${pub.volume ? `${pub.volume} ` : ''}(${pub.year})</p>
+                                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                    <span>Citations: ${pub.citations}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-blue-600 hover:bg-blue-50 rounded">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    publicationsList.appendChild(pubDiv);
+                });
+            }
+        }
+
         // Update last update time
         function updateLastUpdateTime() {
             const now = new Date();
@@ -307,13 +618,14 @@
         
         // Initialize
         updateLastUpdateTime();
-        setInterval(updateLastUpdateTime, 60000); // Update every minute
+        updateScholarStats();
         
-        // Simulate real-time updates (you can replace this with actual API calls)
-        setInterval(() => {
-            // Update citation counts, add new publications, etc.
-            console.log('Checking for new academic content...');
-        }, 300000); // Check every 5 minutes
+        // Auto-update every 5 minutes
+        setInterval(updateLastUpdateTime, 300000);
+        setInterval(updateScholarStats, 300000);
+        
+        // Show about section by default
+        document.querySelector('.nav-btn').classList.add('active');
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-07-18T18:53:04.740Z",
+  "timestamp": "2025-07-18T19:10:30.004Z",
   "sections": [
     "about",
     "publications",
@@ -114,10 +114,10 @@
           "dicta": "https://dicta.cl"
         }
       },
-      "lastUpdated": "2025-07-18T18:53:03.581Z",
+      "lastUpdated": "2025-07-18T19:10:28.686Z",
       "metadata": {
         "profileVersion": "2.0",
-        "lastMajorUpdate": "2025-07-18T18:53:03.581Z"
+        "lastMajorUpdate": "2025-07-18T19:10:28.699Z"
       }
     },
     "publications": {
@@ -398,10 +398,10 @@
           "Homepage"
         ]
       },
-      "lastUpdated": "2025-07-18T18:53:04.733Z",
+      "lastUpdated": "2025-07-18T19:10:29.998Z",
       "metadata": {
         "source": "Google Scholar",
-        "processingDate": "2025-07-18T18:53:04.733Z",
+        "processingDate": "2025-07-18T19:10:29.998Z",
         "dataQuality": "excellent"
       }
     },
@@ -515,7 +515,7 @@
           ]
         }
       ],
-      "lastUpdated": "2025-07-18T18:53:04.735Z",
+      "lastUpdated": "2025-07-18T19:10:30.000Z",
       "metadata": {
         "totalProjects": 3,
         "totalAwards": 3,
@@ -603,7 +603,7 @@
           "impact": "medium"
         }
       ],
-      "lastUpdated": "2025-07-18T18:53:04.736Z",
+      "lastUpdated": "2025-07-18T19:10:30.001Z",
       "metadata": {
         "totalUpcoming": 1,
         "totalRecent": 3,
@@ -687,7 +687,7 @@
           "content": "magazine"
         }
       ],
-      "lastUpdated": "2025-07-18T18:53:04.738Z",
+      "lastUpdated": "2025-07-18T19:10:30.002Z",
       "metadata": {
         "totalWritings": 3,
         "activePlatforms": 2,
@@ -811,7 +811,7 @@
         "consulting": "limited",
         "foundationWork": "ongoing"
       },
-      "lastUpdated": "2025-07-18T18:53:04.739Z",
+      "lastUpdated": "2025-07-18T19:10:30.003Z",
       "metadata": {
         "totalOpportunities": 4,
         "activeCollaborations": "multiple",
@@ -819,5 +819,5 @@
       }
     }
   },
-  "nextUpdate": "2025-07-18T22:53:04.740Z"
+  "nextUpdate": "2025-07-18T23:10:30.004Z"
 }

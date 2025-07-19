@@ -191,50 +191,50 @@ class AcademicScraper {
     }
 
     // Simulate Google Scholar scraping
-    async checkGoogleScholar() {
-        console.log('🎓 Checking Google Scholar for updates...');
+    // async checkGoogleScholar() {
+    //     console.log('🎓 Checking Google Scholar for updates...');
         
-        // Simulate finding new publications or citation changes
-        const simulatedUpdates = [
-            {
-                id: this.generateUpdateId(),
-                type: 'new_publication',
-                source: 'Google Scholar',
-                detected_at: new Date().toISOString(),
-                description: 'New publication detected',
-                details: {
-                    title: 'Advanced Chemical Organization Theory Applications',
-                    authors: 'T. Veloz, F. Heylighen, S. Beigi',
-                    journal: 'Nature Computational Science',
-                    year: 2025,
-                    citations: 0,
-                    url: 'https://doi.org/10.1038/s43588-025-00123-4'
-                },
-                confidence: 'high',
-                auto_approve: false,
-                status: 'pending'
-            },
-            {
-                id: this.generateUpdateId(),
-                type: 'citation_increase',
-                source: 'Google Scholar',
-                detected_at: new Date().toISOString(),
-                description: 'Citation count increased',
-                details: {
-                    publication_title: 'Reaction networks and evolutionary game theory',
-                    old_citations: 145,
-                    new_citations: 152,
-                    increase: 7
-                },
-                confidence: 'high',
-                auto_approve: true, // Small citation increases can be auto-approved
-                status: 'pending'
-            }
-        ];
+    //     // Simulate finding new publications or citation changes
+    //     const simulatedUpdates = [
+    //         {
+    //             id: this.generateUpdateId(),
+    //             type: 'new_publication',
+    //             source: 'Google Scholar',
+    //             detected_at: new Date().toISOString(),
+    //             description: 'New publication detected',
+    //             details: {
+    //                 title: 'Advanced Chemical Organization Theory Applications',
+    //                 authors: 'T. Veloz, F. Heylighen, S. Beigi',
+    //                 journal: 'Nature Computational Science',
+    //                 year: 2025,
+    //                 citations: 0,
+    //                 url: 'https://doi.org/10.1038/s43588-025-00123-4'
+    //             },
+    //             confidence: 'high',
+    //             auto_approve: false,
+    //             status: 'pending'
+    //         },
+    //         {
+    //             id: this.generateUpdateId(),
+    //             type: 'citation_increase',
+    //             source: 'Google Scholar',
+    //             detected_at: new Date().toISOString(),
+    //             description: 'Citation count increased',
+    //             details: {
+    //                 publication_title: 'Reaction networks and evolutionary game theory',
+    //                 old_citations: 145,
+    //                 new_citations: 152,
+    //                 increase: 7
+    //             },
+    //             confidence: 'high',
+    //             auto_approve: true, // Small citation increases can be auto-approved
+    //             status: 'pending'
+    //         }
+    //     ];
 
-        console.log(`📊 Found ${simulatedUpdates.length} potential updates`);
-        return simulatedUpdates;
-    }
+    //     console.log(`📊 Found ${simulatedUpdates.length} potential updates`);
+    //     return simulatedUpdates;
+    // }
 
     // Check all sources for updates
     async performFullScan() {

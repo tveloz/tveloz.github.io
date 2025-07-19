@@ -24,7 +24,7 @@
         "filename": "1.jpg",
         "type": "photo",
         "title": "Collaborating from VUB",
-        "description": "Visiting UVA (Amsterdam) with Joe from UPD Philippines",
+        "description": "At Richard Solé's talk with van der Maas and Reyes",
         "location": "UVA Amsterdam, The Netherlands",
         "date": "2024-01-10",
         "tags": [
@@ -57,11 +57,11 @@
       },
       {
         "id": "collaboration_2024",
-        "filename": "3.jpg",
+        "filename": "3.png",
         "type": "photo",
         "title": "International Collaboration",
-        "description": "Research collaboration meeting with international partners",
-        "location": "Tokyo Japan",
+        "description": "Organizer of Artificial Intuition Workshop",
+        "location": "Brussels, Belgium",
         "date": "2024-08-01",
         "tags": [
           "collaboration",

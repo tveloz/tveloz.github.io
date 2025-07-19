@@ -242,12 +242,12 @@
             </div>
         </div>
 
-        <!-- About Section -->
+<!-- About Section -->
         <section id="about" class="section active fade-in">
             <div class="space-y-8">
+                <!-- Top Section: Photo Carousel + Name & Affiliations -->
                 <div class="bg-white rounded-lg shadow-sm p-8">
-                    <!-- Top section with photo carousel and featured content side by side -->
-                    <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8 mb-8">
+                    <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
                         <!-- Photo Carousel (Left) -->
                         <div class="photo-carousel">
                             <div class="photo-carousel-inner">
@@ -265,7 +265,93 @@
                                 </button>
                             </div>
                         </div>
+                        
+                        <!-- Name and Information (Right) -->
+                        <div class="flex-1">
+                            <h1 class="text-4xl font-bold text-gray-900 mb-2">Dr. Tomás Veloz</h1>
+                            <p class="text-xl text-gray-600 mb-4">Full Stack Interdisciplinary Scientist</p>
+                            <p class="text-lg text-blue-600 mb-6">Bridging Physics, Mathematics, Cognitive Science & Complex Systems</p>
+                            
+                            <!-- Three Main Affiliations -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">UTEM Chile</div>
+                                        <div class="text-sm">Professor</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-university mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">VUB Belgium</div>
+                                        <div class="text-sm">Director, SYMP Group</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-heart mr-2"></i>
+                                    <div>
+                                        <div class="font-medium">DICTA Foundation</div>
+                                        <div class="text-sm">Founder & Director</div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-envelope mr-2"></i>
+                                    <span>tomas.veloz@vub.ac.be</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-quote-left mr-2"></i>
+                                    <span id="citationCount" class="loading">Loading citations...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-3">
+                                <a href="assets/cv-tomas-veloz.pdf" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" target="_blank">
+                                    <i class="fas fa-download"></i>
+                                    <span>Download CV</span>
+                                </a>
+                                <a href="https://be.linkedin.com/in/tomas-veloz-028b6717" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fab fa-linkedin"></i>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Google Scholar</span>
+                                </a>
+                                <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
+                                    <i class="fas fa-globe"></i>
+                                    <span>DICTA</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bio Section with Featured Content -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <div class="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-8">
+                        <!-- Bio Paragraph (Left) -->
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
+                            <div class="prose prose-gray max-w-none">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the "Systemic Modeling and Applications" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
+                                </p>
+                                <p class="text-gray-700 leading-relaxed">
+                                    His work has generated more than <span id="publicationCount" class="loading">loading...</span> international publications with more than <span id="citationCountText" class="loading">loading...</span> academic citations, reflecting growing impact across multiple disciplines.
+                                </p>
+                            </div>
+                        </div>
+                        
                         <!-- Featured Content Carousel (Right) -->
                         <div class="flex-1 max-w-md">
                             <h3 class="text-xl font-bold text-gray-900 mb-4">Featured Content</h3>
@@ -286,85 +372,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-                        
-                        <!-- Three Main Affiliations -->
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-university mr-2"></i>
-                                <div>
-                                    <div class="font-medium">UTEM Chile</div>
-                                    <div class="text-sm">Professor</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-university mr-2"></i>
-                                <div>
-                                    <div class="font-medium">VUB Belgium</div>
-                                    <div class="text-sm">Director, SYMP Group</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-heart mr-2"></i>
-                                <div>
-                                    <div class="font-medium">DICTA Foundation</div>
-                                    <div class="text-sm">Founder & Director</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-envelope mr-2"></i>
-                                <span>tomas.veloz@vub.ac.be</span>
-                            </div>
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-quote-left mr-2"></i>
-                                <span id="citationCount" class="loading">Loading citations...</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex flex-wrap gap-3">
-                            <a href="assets/cv-tomas-veloz.pdf" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700" target="_blank">
-                                <i class="fas fa-download"></i>
-                                <span>Download CV</span>
-                            </a>
-                            <a href="https://be.linkedin.com/in/tomas-veloz-028b6717" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                <i class="fab fa-linkedin"></i>
-                                <span>LinkedIn</span>
-                            </a>
-                            <a href="https://scholar.google.com/citations?user=q7HbZQ4AAAAJ" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                <i class="fas fa-graduation-cap"></i>
-                                <span>Google Scholar</span>
-                            </a>
-                            <a href="https://dicta.cl" class="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50">
-                                <i class="fas fa-globe"></i>
-                                <span>DICTA</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bio Section -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
-                    <div class="prose prose-gray max-w-none">
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Dr. Tomás Veloz is a leading Chilean interdisciplinary scientist who bridges physics, mathematics, cognitive sciences, and complex systems research. He currently serves as Professor in the Mathematics Department at Universidad Tecnológica Metropolitana (UTEM) in Chile while simultaneously directing the "Systemic Modeling and Applications" (SYMP) research group at the Centre Leo Apostel, Vrije Universiteit Brussel in Belgium.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            His research focuses on interdisciplinary mathematical modeling with main research areas in Chemical Organization Theory, where he has proven mathematical results such as the decomposition theorem and the existence of quantum-like organizational structures, and quantum cognition, where he has developed methods to represent collections of concepts in a Hilbert Space.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Additionally, he is the founder and director of the Foundation for Interdisciplinary Development of Science, Technology and Arts (DICTA), a Chilean foundation which collaborates with CLEA and several other institutions worldwide to generate and disseminate integrated knowledge with social impact.
-                        </p>
-                        <p class="text-gray-700 leading-relaxed">
-                            His work has generated more than <span id="publicationCount" class="loading">loading...</span> international publications with more than <span id="citationCountText" class="loading">loading...</span> academic citations, reflecting growing impact across multiple disciplines.
-                        </p>
                     </div>
                 </div>
 

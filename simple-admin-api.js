@@ -1,83 +1,128 @@
 #!/usr/bin/env node
 
 /**
- * Simple Admin API for Academic Website
+ * Simple Admin Server for Academic Website
+ * Uses only Node.js built-in modules (no dependencies required)
  * Handles approve/reject requests from email notifications
- * Provides web interface for content management
  */
 
-const express = require('express');
+const http = require('http');
+const url = require('url');
 const path = require('path');
+const fs = require('fs');
 const AcademicScraper = require('./academic-scraper');
 const ContentManager = require('./content-manager');
 
-class AdminAPI {
+class SimpleAdmin {
     constructor(port = 3000) {
-        this.app = express();
         this.port = port;
         this.scraper = new AcademicScraper();
         this.contentManager = new ContentManager();
-        
-        this.setupMiddleware();
-        this.setupRoutes();
     }
 
-    setupMiddleware() {
-        // Parse JSON bodies
-        this.app.use(express.json());
-        
-        // Parse URL-encoded bodies (for form data)
-        this.app.use(express.urlencoded({ extended: true }));
-        
-        // Serve static files
-        this.app.use('/assets', express.static('assets'));
-        this.app.use('/pics', express.static('pics'));
-        
-        // CORS for local development
-        this.app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Origin', '*');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            next();
+    // Simple HTTP server
+    createServer() {
+        return http.createServer(async (req, res) => {
+            const parsedUrl = url.parse(req.url, true);
+            const pathname = parsedUrl.pathname;
+            const query = parsedUrl.query;
+
+            // Set CORS headers
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+            // Handle preflight requests
+            if (req.method === 'OPTIONS') {
+                res.writeHead(200);
+                res.end();
+                return;
+            }
+
+            try {
+                await this.handleRequest(req, res, pathname, query);
+            } catch (error) {
+                console.error('Error handling request:', error);
+                this.sendError(res, 500, 'Internal Server Error');
+            }
         });
     }
 
-    setupRoutes() {
-        // Email notification approval endpoints
-        this.app.get('/admin/approve/:updateId', this.handleApproval.bind(this));
-        this.app.get('/admin/reject/:updateId', this.handleRejection.bind(this));
-        this.app.get('/admin/approve-all', this.handleApproveAll.bind(this));
+    async handleRequest(req, res, pathname, query) {
+        // Email approval/rejection endpoints
+        if (pathname.startsWith('/admin/approve/')) {
+            const updateId = pathname.split('/')[3];
+            await this.handleApproval(res, updateId);
+            return;
+        }
 
-        // Dashboard API endpoints
-        this.app.get('/api/dashboard', this.getDashboard.bind(this));
-        this.app.get('/api/pending-updates', this.getPendingUpdates.bind(this));
-        this.app.post('/api/approve/:updateId', this.apiApprove.bind(this));
-        this.app.post('/api/reject/:updateId', this.apiReject.bind(this));
-        
-        // Content management endpoints
-        this.app.get('/api/content/:type', this.getContent.bind(this));
-        this.app.post('/api/content', this.addContent.bind(this));
-        this.app.delete('/api/content/:id', this.deleteContent.bind(this));
-        this.app.post('/api/rebuild-carousels', this.rebuildCarousels.bind(this));
-        
-        // Scraper control endpoints
-        this.app.post('/api/scraper/scan', this.forceScan.bind(this));
-        this.app.get('/api/scraper/status', this.getScraperStatus.bind(this));
-        
-        // Simple web interface
-        this.app.get('/admin/dashboard', this.serveDashboard.bind(this));
-        this.app.get('/admin', (req, res) => res.redirect('/admin/dashboard'));
-        
+        if (pathname.startsWith('/admin/reject/')) {
+            const updateId = pathname.split('/')[3];
+            await this.handleRejection(res, updateId);
+            return;
+        }
+
+        if (pathname === '/admin/approve-all') {
+            await this.handleApproveAll(res);
+            return;
+        }
+
+        // Dashboard endpoints
+        if (pathname === '/admin/dashboard') {
+            this.serveDashboard(res);
+            return;
+        }
+
+        if (pathname === '/admin' || pathname === '/admin/') {
+            this.sendRedirect(res, '/admin/dashboard');
+            return;
+        }
+
+        // API endpoints
+        if (pathname === '/api/dashboard') {
+            await this.apiGetDashboard(res);
+            return;
+        }
+
+        if (pathname === '/api/pending-updates') {
+            await this.apiGetPendingUpdates(res);
+            return;
+        }
+
+        if (pathname.startsWith('/api/approve/')) {
+            const updateId = pathname.split('/')[3];
+            await this.apiApprove(res, updateId);
+            return;
+        }
+
+        if (pathname.startsWith('/api/reject/')) {
+            const updateId = pathname.split('/')[3];
+            await this.apiReject(res, updateId);
+            return;
+        }
+
+        if (pathname === '/api/scraper/scan' && req.method === 'POST') {
+            await this.apiForceScan(res);
+            return;
+        }
+
+        if (pathname === '/api/rebuild-carousels' && req.method === 'POST') {
+            await this.apiRebuildCarousels(res);
+            return;
+        }
+
         // Health check
-        this.app.get('/health', (req, res) => {
-            res.json({ status: 'ok', timestamp: new Date().toISOString() });
-        });
+        if (pathname === '/health') {
+            this.sendJSON(res, { status: 'ok', timestamp: new Date().toISOString() });
+            return;
+        }
+
+        // 404 for everything else
+        this.sendError(res, 404, 'Not Found');
     }
 
     // Handle approval from email link
-    async handleApproval(req, res) {
-        const { updateId } = req.params;
-        
+    async handleApproval(res, updateId) {
         try {
             const success = await this.scraper.approveUpdate(updateId);
             
@@ -85,7 +130,7 @@ class AdminAPI {
                 // Rebuild affected carousels
                 this.contentManager.updateAllPages();
                 
-                res.send(`
+                this.sendHTML(res, `
                     <html>
                     <head><title>Update Approved</title></head>
                     <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
@@ -96,7 +141,7 @@ class AdminAPI {
                     </html>
                 `);
             } else {
-                res.status(404).send(`
+                this.sendHTML(res, `
                     <html>
                     <head><title>Update Not Found</title></head>
                     <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
@@ -105,23 +150,21 @@ class AdminAPI {
                         <a href="/admin/dashboard" style="background: #2563eb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Go to Dashboard</a>
                     </body>
                     </html>
-                `);
+                `, 404);
             }
         } catch (error) {
             console.error('Error approving update:', error);
-            res.status(500).send('Error processing approval');
+            this.sendError(res, 500, 'Error processing approval');
         }
     }
 
     // Handle rejection from email link
-    async handleRejection(req, res) {
-        const { updateId } = req.params;
-        
+    async handleRejection(res, updateId) {
         try {
             const success = await this.scraper.rejectUpdate(updateId);
             
             if (success) {
-                res.send(`
+                this.sendHTML(res, `
                     <html>
                     <head><title>Update Rejected</title></head>
                     <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
@@ -132,16 +175,16 @@ class AdminAPI {
                     </html>
                 `);
             } else {
-                res.status(404).send('Update not found');
+                this.sendError(res, 404, 'Update not found');
             }
         } catch (error) {
             console.error('Error rejecting update:', error);
-            res.status(500).send('Error processing rejection');
+            this.sendError(res, 500, 'Error processing rejection');
         }
     }
 
-    // Handle approve all from email
-    async handleApproveAll(req, res) {
+    // Handle approve all
+    async handleApproveAll(res) {
         try {
             const pendingData = this.scraper.loadPendingUpdates();
             const pendingUpdates = pendingData.updates.filter(u => u.status === 'pending');
@@ -155,7 +198,7 @@ class AdminAPI {
             // Rebuild all carousels
             this.contentManager.updateAllPages();
             
-            res.send(`
+            this.sendHTML(res, `
                 <html>
                 <head><title>All Updates Approved</title></head>
                 <body style="font-family: Arial, sans-serif; text-align: center; padding: 50px;">
@@ -167,162 +210,89 @@ class AdminAPI {
             `);
         } catch (error) {
             console.error('Error approving all updates:', error);
-            res.status(500).send('Error processing approval');
+            this.sendError(res, 500, 'Error processing approval');
         }
     }
 
-    // API endpoints for dashboard
-    async getDashboard(req, res) {
+    // API endpoints
+    async apiGetDashboard(res) {
         try {
             const dashboardData = this.scraper.getDashboardData();
             const contentStats = this.contentManager.getStats();
             
-            res.json({
+            this.sendJSON(res, {
                 ...dashboardData,
                 content_stats: contentStats
             });
         } catch (error) {
             console.error('Error getting dashboard data:', error);
-            res.status(500).json({ error: 'Error loading dashboard data' });
+            this.sendJSON(res, { error: 'Error loading dashboard data' }, 500);
         }
     }
 
-    async getPendingUpdates(req, res) {
+    async apiGetPendingUpdates(res) {
         try {
             const pendingData = this.scraper.loadPendingUpdates();
-            res.json(pendingData);
+            this.sendJSON(res, pendingData);
         } catch (error) {
             console.error('Error getting pending updates:', error);
-            res.status(500).json({ error: 'Error loading pending updates' });
+            this.sendJSON(res, { error: 'Error loading pending updates' }, 500);
         }
     }
 
-    async apiApprove(req, res) {
+    async apiApprove(res, updateId) {
         try {
-            const { updateId } = req.params;
             const success = await this.scraper.approveUpdate(updateId);
             
             if (success) {
                 this.contentManager.updateAllPages();
-                res.json({ success: true, message: 'Update approved and applied' });
+                this.sendJSON(res, { success: true, message: 'Update approved and applied' });
             } else {
-                res.status(404).json({ success: false, message: 'Update not found' });
+                this.sendJSON(res, { success: false, message: 'Update not found' }, 404);
             }
         } catch (error) {
             console.error('Error approving update:', error);
-            res.status(500).json({ success: false, error: error.message });
+            this.sendJSON(res, { success: false, error: error.message }, 500);
         }
     }
 
-    async apiReject(req, res) {
+    async apiReject(res, updateId) {
         try {
-            const { updateId } = req.params;
             const success = await this.scraper.rejectUpdate(updateId);
             
             if (success) {
-                res.json({ success: true, message: 'Update rejected' });
+                this.sendJSON(res, { success: true, message: 'Update rejected' });
             } else {
-                res.status(404).json({ success: false, message: 'Update not found' });
+                this.sendJSON(res, { success: false, message: 'Update not found' }, 404);
             }
         } catch (error) {
             console.error('Error rejecting update:', error);
-            res.status(500).json({ success: false, error: error.message });
+            this.sendJSON(res, { success: false, error: error.message }, 500);
         }
     }
 
-    async getContent(req, res) {
-        try {
-            const { type } = req.params;
-            const config = this.contentManager.loadConfig();
-            
-            let content = [];
-            if (type === 'all') {
-                content = [
-                    ...config.content.photos,
-                    ...config.content.videos,
-                    ...(config.content.publications || [])
-                ];
-            } else if (config.content[type]) {
-                content = config.content[type];
-            }
-            
-            res.json(content);
-        } catch (error) {
-            console.error('Error getting content:', error);
-            res.status(500).json({ error: 'Error loading content' });
-        }
-    }
-
-    async addContent(req, res) {
-        try {
-            const contentData = req.body;
-            const newContent = this.contentManager.addContent(contentData);
-            
-            // Update affected pages
-            this.contentManager.updateAllPages();
-            
-            res.json({ success: true, content: newContent });
-        } catch (error) {
-            console.error('Error adding content:', error);
-            res.status(500).json({ success: false, error: error.message });
-        }
-    }
-
-    async deleteContent(req, res) {
-        try {
-            const { id } = req.params;
-            const success = this.contentManager.removeContent(id);
-            
-            if (success) {
-                this.contentManager.updateAllPages();
-                res.json({ success: true, message: 'Content deleted' });
-            } else {
-                res.status(404).json({ success: false, message: 'Content not found' });
-            }
-        } catch (error) {
-            console.error('Error deleting content:', error);
-            res.status(500).json({ success: false, error: error.message });
-        }
-    }
-
-    async rebuildCarousels(req, res) {
-        try {
-            this.contentManager.updateAllPages();
-            res.json({ success: true, message: 'All carousels rebuilt' });
-        } catch (error) {
-            console.error('Error rebuilding carousels:', error);
-            res.status(500).json({ success: false, error: error.message });
-        }
-    }
-
-    async forceScan(req, res) {
+    async apiForceScan(res) {
         try {
             const updates = await this.scraper.performFullScan();
-            res.json({ success: true, updates_found: updates.length, updates });
+            this.sendJSON(res, { success: true, updates_found: updates.length, updates });
         } catch (error) {
             console.error('Error performing scan:', error);
-            res.status(500).json({ success: false, error: error.message });
+            this.sendJSON(res, { success: false, error: error.message }, 500);
         }
     }
 
-    async getScraperStatus(req, res) {
+    async apiRebuildCarousels(res) {
         try {
-            const config = this.scraper.loadConfig();
-            const status = {
-                enabled: true,
-                last_scan: config.metadata.last_full_scan,
-                total_notifications: config.metadata.total_notifications_sent,
-                pending_approvals: config.metadata.pending_approvals
-            };
-            res.json(status);
+            this.contentManager.updateAllPages();
+            this.sendJSON(res, { success: true, message: 'All carousels rebuilt' });
         } catch (error) {
-            console.error('Error getting scraper status:', error);
-            res.status(500).json({ error: 'Error loading scraper status' });
+            console.error('Error rebuilding carousels:', error);
+            this.sendJSON(res, { success: false, error: error.message }, 500);
         }
     }
 
     // Serve simple dashboard HTML
-    serveDashboard(req, res) {
+    serveDashboard(res) {
         const dashboardHTML = `
         <!DOCTYPE html>
         <html lang="en">
@@ -335,21 +305,24 @@ class AdminAPI {
                 .container { max-width: 1200px; margin: 0 auto; }
                 .card { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
                 .header { text-align: center; color: #333; }
-                .status { display: flex; gap: 20px; }
-                .status-item { flex: 1; text-align: center; padding: 15px; background: #e3f2fd; border-radius: 5px; }
+                .status { display: flex; gap: 20px; flex-wrap: wrap; }
+                .status-item { flex: 1; min-width: 200px; text-align: center; padding: 15px; background: #e3f2fd; border-radius: 5px; }
                 .pending-updates { margin: 20px 0; }
-                .update-item { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px; }
-                .btn { background: #2563eb; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+                .update-item { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px; background: #fafafa; }
+                .btn { background: #2563eb; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; text-decoration: none; display: inline-block; }
                 .btn-danger { background: #ef4444; }
                 .btn-success { background: #10b981; }
                 .btn:hover { opacity: 0.8; }
                 .loading { text-align: center; color: #666; }
+                .no-updates { text-align: center; color: #888; font-style: italic; }
+                pre { background: #f0f0f0; padding: 10px; border-radius: 4px; overflow-x: auto; }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="card">
                     <h1 class="header">🔧 Academic Website Admin Dashboard</h1>
+                    <p class="header">Simple version - no dependencies required</p>
                 </div>
                 
                 <div class="card">
@@ -371,7 +344,7 @@ class AdminAPI {
                     <button class="btn" onclick="forceScan()">🔄 Force Scholar Scan</button>
                     <button class="btn" onclick="rebuildCarousels()">🔧 Rebuild Carousels</button>
                     <button class="btn" onclick="approveAll()">✅ Approve All Pending</button>
-                    <button class="btn" onclick="location.href='../index.html'">🏠 Back to Website</button>
+                    <a href="../index.html" class="btn">🏠 Back to Website</a>
                 </div>
                 
                 <div class="card">
@@ -392,48 +365,51 @@ class AdminAPI {
                         const statusHTML = \`
                             <div class="status-item">
                                 <h3>Scraper Status</h3>
-                                <p>\${data.status.scraper_active ? '🟢 Active' : '🔴 Inactive'}</p>
+                                <p>\${data.status?.scraper_active ? '🟢 Active' : '🔴 Inactive'}</p>
                             </div>
                             <div class="status-item">
                                 <h3>Pending Updates</h3>
-                                <p>\${data.status.pending_count || 0}</p>
+                                <p>\${data.status?.pending_count || 0}</p>
                             </div>
                             <div class="status-item">
                                 <h3>Total Notifications</h3>
-                                <p>\${data.status.total_notifications || 0}</p>
+                                <p>\${data.status?.total_notifications || 0}</p>
                             </div>
                             <div class="status-item">
                                 <h3>Last Scan</h3>
-                                <p>\${data.status.last_scan ? new Date(data.status.last_scan).toLocaleDateString() : 'Never'}</p>
+                                <p>\${data.status?.last_scan ? new Date(data.status.last_scan).toLocaleDateString() : 'Never'}</p>
                             </div>
                         \`;
                         document.getElementById('statusOverview').innerHTML = statusHTML;
                         
                         // Update content stats
-                        const statsHTML = \`
-                            <div class="status">
-                                <div class="status-item">
-                                    <h4>Photos</h4>
-                                    <p>\${data.content_stats.photos}</p>
+                        if (data.content_stats) {
+                            const statsHTML = \`
+                                <div class="status">
+                                    <div class="status-item">
+                                        <h4>Photos</h4>
+                                        <p>\${data.content_stats.photos}</p>
+                                    </div>
+                                    <div class="status-item">
+                                        <h4>Videos</h4>
+                                        <p>\${data.content_stats.videos}</p>
+                                    </div>
+                                    <div class="status-item">
+                                        <h4>Publications</h4>
+                                        <p>\${data.content_stats.publications}</p>
+                                    </div>
+                                    <div class="status-item">
+                                        <h4>Last Updated</h4>
+                                        <p>\${data.content_stats.last_updated}</p>
+                                    </div>
                                 </div>
-                                <div class="status-item">
-                                    <h4>Videos</h4>
-                                    <p>\${data.content_stats.videos}</p>
-                                </div>
-                                <div class="status-item">
-                                    <h4>Publications</h4>
-                                    <p>\${data.content_stats.publications}</p>
-                                </div>
-                                <div class="status-item">
-                                    <h4>Last Updated</h4>
-                                    <p>\${data.content_stats.last_updated}</p>
-                                </div>
-                            </div>
-                        \`;
-                        document.getElementById('contentStats').innerHTML = statsHTML;
+                            \`;
+                            document.getElementById('contentStats').innerHTML = statsHTML;
+                        }
                         
                     } catch (error) {
                         console.error('Error loading dashboard:', error);
+                        document.getElementById('statusOverview').innerHTML = '<div class="loading">Error loading dashboard data</div>';
                     }
                 }
                 
@@ -442,20 +418,22 @@ class AdminAPI {
                         const response = await fetch('/api/pending-updates');
                         const data = await response.json();
                         
-                        if (data.updates.length === 0) {
-                            document.getElementById('pendingUpdates').innerHTML = '<p>No pending updates.</p>';
+                        if (!data.updates || data.updates.length === 0) {
+                            document.getElementById('pendingUpdates').innerHTML = '<p class="no-updates">No pending updates.</p>';
                             return;
                         }
                         
                         const updatesHTML = data.updates.map(update => \`
                             <div class="update-item">
-                                <h4>\${update.type.replace('_', ' ').toUpperCase()}: \${update.description}</h4>
-                                <p><strong>Source:</strong> \${update.source}</p>
-                                <p><strong>Detected:</strong> \${new Date(update.detected_at).toLocaleString()}</p>
-                                <p><strong>Confidence:</strong> \${update.confidence}</p>
-                                \${update.details ? \`<p><strong>Details:</strong> \${JSON.stringify(update.details, null, 2)}</p>\` : ''}
-                                <button class="btn btn-success" onclick="approveUpdate('\${update.id}')">✅ Approve</button>
-                                <button class="btn btn-danger" onclick="rejectUpdate('\${update.id}')">❌ Reject</button>
+                                <h4>\${update.type?.replace('_', ' ').toUpperCase() || 'UPDATE'}: \${update.description || 'No description'}</h4>
+                                <p><strong>Source:</strong> \${update.source || 'Unknown'}</p>
+                                <p><strong>Detected:</strong> \${update.detected_at ? new Date(update.detected_at).toLocaleString() : 'Unknown'}</p>
+                                <p><strong>Confidence:</strong> \${update.confidence || 'Unknown'}</p>
+                                \${update.details ? \`<details><summary>Details</summary><pre>\${JSON.stringify(update.details, null, 2)}</pre></details>\` : ''}
+                                <div style="margin-top: 10px;">
+                                    <button class="btn btn-success" onclick="approveUpdate('\${update.id}')">✅ Approve</button>
+                                    <button class="btn btn-danger" onclick="rejectUpdate('\${update.id}')">❌ Reject</button>
+                                </div>
                             </div>
                         \`).join('');
                         
@@ -463,6 +441,7 @@ class AdminAPI {
                         
                     } catch (error) {
                         console.error('Error loading pending updates:', error);
+                        document.getElementById('pendingUpdates').innerHTML = '<div class="loading">Error loading pending updates</div>';
                     }
                 }
                 
@@ -504,6 +483,7 @@ class AdminAPI {
                 
                 async function forceScan() {
                     const btn = event.target;
+                    const originalText = btn.textContent;
                     btn.disabled = true;
                     btn.textContent = '🔄 Scanning...';
                     
@@ -516,19 +496,20 @@ class AdminAPI {
                             loadPendingUpdates();
                             loadDashboard();
                         } else {
-                            alert('Error performing scan');
+                            alert('Error performing scan: ' + (result.error || 'Unknown error'));
                         }
                     } catch (error) {
                         alert('Error performing scan');
                         console.error(error);
                     } finally {
                         btn.disabled = false;
-                        btn.textContent = '🔄 Force Scholar Scan';
+                        btn.textContent = originalText;
                     }
                 }
                 
                 async function rebuildCarousels() {
                     const btn = event.target;
+                    const originalText = btn.textContent;
                     btn.disabled = true;
                     btn.textContent = '🔧 Rebuilding...';
                     
@@ -539,14 +520,14 @@ class AdminAPI {
                         if (result.success) {
                             alert('Carousels rebuilt successfully!');
                         } else {
-                            alert('Error rebuilding carousels');
+                            alert('Error rebuilding carousels: ' + (result.error || 'Unknown error'));
                         }
                     } catch (error) {
                         alert('Error rebuilding carousels');
                         console.error(error);
                     } finally {
                         btn.disabled = false;
-                        btn.textContent = '🔧 Rebuild Carousels';
+                        btn.textContent = originalText;
                     }
                 }
                 
@@ -571,8 +552,10 @@ class AdminAPI {
                 }
                 
                 // Load data on page load
-                loadDashboard();
-                loadPendingUpdates();
+                document.addEventListener('DOMContentLoaded', function() {
+                    loadDashboard();
+                    loadPendingUpdates();
+                });
                 
                 // Refresh every 30 seconds
                 setInterval(() => {
@@ -584,27 +567,69 @@ class AdminAPI {
         </html>
         `;
         
-        res.send(dashboardHTML);
+        this.sendHTML(res, dashboardHTML);
+    }
+
+    // Helper methods
+    sendJSON(res, data, status = 200) {
+        res.writeHead(status, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(data));
+    }
+
+    sendHTML(res, html, status = 200) {
+        res.writeHead(status, { 'Content-Type': 'text/html' });
+        res.end(html);
+    }
+
+    sendError(res, status, message) {
+        res.writeHead(status, { 'Content-Type': 'text/plain' });
+        res.end(message);
+    }
+
+    sendRedirect(res, location) {
+        res.writeHead(302, { 'Location': location });
+        res.end();
     }
 
     start() {
-        this.app.listen(this.port, () => {
-            console.log(`🚀 Admin API server running on port ${this.port}`);
+        const server = this.createServer();
+        
+        server.listen(this.port, () => {
+            console.log(`🚀 Simple Admin server running on port ${this.port}`);
             console.log(`📊 Dashboard: http://localhost:${this.port}/admin/dashboard`);
             console.log(`🔗 Health check: http://localhost:${this.port}/health`);
+            console.log(`💡 No dependencies required - uses only Node.js built-ins`);
+        });
+
+        // Handle server errors
+        server.on('error', (err) => {
+            if (err.code === 'EADDRINUSE') {
+                console.error(`❌ Port ${this.port} is already in use. Try a different port:`);
+                console.error(`   node simple-admin.js ${this.port + 1}`);
+            } else {
+                console.error('❌ Server error:', err);
+            }
         });
     }
 }
 
 // Command line interface
 function main() {
-    const port = process.argv[2] || 3000;
-    const api = new AdminAPI(port);
-    api.start();
+    const port = process.argv[2] ? parseInt(process.argv[2]) : 3000;
+    
+    if (isNaN(port) || port < 1 || port > 65535) {
+        console.error('❌ Invalid port number. Please provide a number between 1-65535');
+        console.error('Usage: node simple-admin.js [port]');
+        console.error('Example: node simple-admin.js 3000');
+        process.exit(1);
+    }
+    
+    const admin = new SimpleAdmin(port);
+    admin.start();
 }
 
 // Export for use as module
-module.exports = AdminAPI;
+module.exports = SimpleAdmin;
 
 // Run if called directly
 if (require.main === module) {

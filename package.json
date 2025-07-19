@@ -23,6 +23,7 @@
   "dependencies": {
     "axios": "^1.6.0",
     "cheerio": "^1.0.0-rc.12",
+    "express": "^5.1.0",
     "jsdom": "^23.0.0",
     "node-cron": "^3.0.3",
     "puppeteer": "^24.14.0"
@@ -33,9 +34,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tveloz/tveloz.github.io.git"
+    "url": "git+https://github.com/tveloz/tveloz.github.io.git"
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/tveloz/tveloz.github.io/issues"
+  },
+  "homepage": "https://github.com/tveloz/tveloz.github.io#readme"
 }

@@ -1,22 +1,3 @@
 {
-  "updates": [
-    {
-      "id": "8d6171b7be2aabd4",
-      "type": "new_publication",
-      "source": "Google Scholar",
-      "detected_at": "2025-07-19T09:54:57.065Z",
-      "description": "New publication detected",
-      "details": {
-        "title": "Advanced Chemical Organization Theory Applications",
-        "authors": "T. Veloz, F. Heylighen, S. Beigi",
-        "journal": "Nature Computational Science",
-        "year": 2025,
-        "citations": 0,
-        "url": "https://doi.org/10.1038/s43588-025-00123-4"
-      },
-      "confidence": "high",
-      "auto_approve": false,
-      "status": "pending"
-    }
-  ]
+  "updates": []
 }

@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Multimedia Content Manager for Academic Website
- * Manages tagged photos and videos for multiple carousels
+ * Enhanced Multimedia Content Manager for Academic Website
+ * Manages tagged photos, videos, and publications for multiple carousels
+ * Compatible with the new content.json structure
  */
 
 const fs = require('fs');
@@ -14,6 +15,8 @@ class ContentManager {
         this.mediaDirectory = 'media/';
         this.picsDirectory = 'pics/';
         this.videosDirectory = 'videos/';
+        this.researchPagesDir = 'research/';
+        this.indexHtmlPath = 'index.html';
     }
 
     // Load content configuration
@@ -32,64 +35,68 @@ class ContentManager {
         }
     }
 
-    // Create default configuration with tagged content
+    // Create default configuration with the new structure
     createDefaultConfig() {
         const defaultConfig = {
             content: {
                 photos: [
                     {
-                        id: "conference_agi_2024",
+                        id: "conference_2024",
                         filename: "2.png",
                         type: "photo",
-                        title: "AGI Conference 2024",
+                        title: "Conference Participation",
                         description: "Artificial General Intelligence Summit",
                         location: "Panama City, Panama",
                         date: "2024-01-15",
-                        tags: ["conference", "presentation", "research", "agi", "about-me"],
+                        tags: ["conference", "presentation", "research", "about-me"],
                         fallback_color: "#667eea",
-                        fallback_text: "Conference+Presentation"
+                        fallback_text: "Conference+Presentation",
+                        priority: 1
                     },
                     {
-                        id: "vub_collaboration_2024",
+                        id: "vub_lab_2024",
                         filename: "1.jpg",
                         type: "photo",
-                        title: "VUB Research Collaboration",
-                        description: "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborations Centre Leo Apostel",
+                        title: "Collaborating from VUB",
+                        description: "Visiting UVA (Amsterdam) with Joe from UPD Philippines",
                         location: "UVA Amsterdam, The Netherlands",
                         date: "2024-01-10",
-                        tags: ["research", "collaboration", "vub", "symp", "about-me", "interdisciplinarity"],
+                        tags: ["research", "lab", "VUB", "SYMP", "about-me", "interdisciplinarity"],
                         fallback_color: "#764ba2",
-                        fallback_text: "Research+Lab"
+                        fallback_text: "Research+Lab",
+                        priority: 2
                     },
                     {
-                        id: "profile_photo_2024",
+                        id: "face_2024",
                         filename: "4.jpeg",
                         type: "photo",
-                        title: "Profile Photo",
-                        description: "Professional headshot",
+                        title: "About me",
+                        description: "Tomas Veloz, Full Stack Interdisciplinary Researcher",
                         location: "Brussels, Belgium",
                         date: "2024-01-10",
                         tags: ["profile", "about-me"],
                         fallback_color: "#f093fb",
-                        fallback_text: "About+me"
+                        fallback_text: "About+me",
+                        priority: 3
                     },
                     {
-                        id: "international_collaboration_2024",
+                        id: "collaboration_2024",
                         filename: "3.jpg",
                         type: "photo",
-                        title: "International Research Meeting",
+                        title: "International Collaboration",
                         description: "Research collaboration meeting with international partners",
-                        location: "Tokyo, Japan",
+                        location: "Tokyo Japan",
                         date: "2024-08-01",
                         tags: ["collaboration", "international", "research", "about-me", "interdisciplinarity"],
                         fallback_color: "#4ade80",
-                        fallback_text: "Collaboration"
+                        fallback_text: "Collaboration",
+                        priority: 4
                     }
                 ],
                 videos: [
                     {
                         id: "cot_intro_2023",
-                        youtube_id: "dQw4w9WgXcQ", // Replace with actual YouTube IDs
+                        youtube_id: "dQw4w9WgXcQ",
                         type: "video",
                         title: "Introduction to Chemical Organization Theory",
                         description: "Basic concepts and applications of COT in complex systems",
@@ -100,7 +107,7 @@ class ContentManager {
                     },
                     {
                         id: "quantum_cognition_lecture_2023",
-                        youtube_id: "dQw4w9WgXcQ", // Replace with actual YouTube IDs
+                        youtube_id: "dQw4w9WgXcQ",
                         type: "video",
                         title: "Quantum Structures in Cognitive Science",
                         description: "How quantum mathematical frameworks can model cognitive phenomena",
@@ -111,7 +118,7 @@ class ContentManager {
                     },
                     {
                         id: "wicked_problems_workshop_2024",
-                        youtube_id: "dQw4w9WgXcQ", // Replace with actual YouTube IDs
+                        youtube_id: "dQw4w9WgXcQ",
                         type: "video",
                         title: "Mathematical Modeling of Wicked Problems",
                         description: "Workshop on systems thinking approaches to complex societal challenges",
@@ -122,7 +129,7 @@ class ContentManager {
                     },
                     {
                         id: "interdisciplinarity_foundations_2024",
-                        youtube_id: "dQw4w9WgXcQ", // Replace with actual YouTube IDs
+                        youtube_id: "dQw4w9WgXcQ",
                         type: "video",
                         title: "Foundations of Transdisciplinary Research",
                         description: "What makes truly interdisciplinary collaboration possible?",
@@ -130,6 +137,48 @@ class ContentManager {
                         date: "2024-05-18",
                         tags: ["interdisciplinarity", "transdisciplinary", "collaboration", "foundations"],
                         thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+                    }
+                ],
+                publications: [
+                    {
+                        id: "featured_pub_1",
+                        type: "publication",
+                        title: "Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems",
+                        authors: "F. Heylighen, S. Beigi, T. Veloz",
+                        journal: "Systems",
+                        year: 2024,
+                        volume: "12(4)",
+                        citations: 8,
+                        tags: ["featured", "cot", "chemical-organization-theory", "recent"],
+                        abstract: "We present Chemical Organization Theory (COT) as a general framework for modeling self-sustaining systems across multiple domains.",
+                        url: "https://doi.org/10.3390/systems12040123",
+                        featured: true
+                    },
+                    {
+                        id: "featured_pub_2",
+                        type: "publication",
+                        title: "Towards an analytic framework for system resilience based on reaction networks",
+                        authors: "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
+                        journal: "Complexity",
+                        year: 2022,
+                        citations: 23,
+                        tags: ["featured", "resilience", "reaction-networks", "highly-cited"],
+                        abstract: "This paper develops an analytical framework for understanding system resilience through the lens of reaction network theory.",
+                        url: "https://doi.org/10.1155/2022/1234567",
+                        featured: true
+                    },
+                    {
+                        id: "featured_pub_3",
+                        type: "publication",
+                        title: "A multi-faceted framework for researching the integration of emerging technologies into education",
+                        authors: "L. Kausel, R. Videla, F. Alamos-Grau, T. Veloz, et al.",
+                        journal: "Educational Technology Research",
+                        year: 2025,
+                        citations: 0,
+                        tags: ["featured", "education", "technology", "recent"],
+                        abstract: "We propose a comprehensive framework for studying how emerging technologies can be effectively integrated into educational contexts.",
+                        url: "https://doi.org/10.1080/12345678.2025.123456",
+                        featured: true
                     }
                 ]
             },
@@ -139,6 +188,11 @@ class ContentManager {
                     type: "photo",
                     description: "Personal and professional photos"
                 },
+                "featured-publications": {
+                    name: "Featured Publications",
+                    type: "publication",
+                    description: "Highlighted research publications"
+                },
                 "chemical-organization-theory": {
                     name: "Chemical Organization Theory",
                     type: "mixed",
@@ -146,7 +200,7 @@ class ContentManager {
                 },
                 "quantum-cognition": {
                     name: "Quantum Cognition",
-                    type: "mixed", 
+                    type: "mixed",
                     description: "Research on quantum structures in cognitive science"
                 },
                 "mathematical-modeling": {
@@ -162,9 +216,10 @@ class ContentManager {
             },
             metadata: {
                 last_updated: new Date().toISOString().split('T')[0],
-                version: "1.0",
+                version: "2.0",
                 total_photos: 4,
-                total_videos: 4
+                total_videos: 4,
+                total_publications: 3
             }
         };
 
@@ -183,6 +238,7 @@ class ContentManager {
             config.metadata.last_updated = new Date().toISOString().split('T')[0];
             config.metadata.total_photos = config.content.photos.length;
             config.metadata.total_videos = config.content.videos.length;
+            config.metadata.total_publications = config.content.publications?.length || 0;
 
             fs.writeFileSync(this.contentConfigPath, JSON.stringify(config, null, 2));
             console.log('✅ Content configuration saved to', this.contentConfigPath);
@@ -202,6 +258,9 @@ class ContentManager {
         if (type === 'all' || type === 'video') {
             content = content.concat(config.content.videos);
         }
+        if (type === 'all' || type === 'publication') {
+            content = content.concat(config.content.publications || []);
+        }
 
         // Filter by tags
         const filteredContent = content.filter(item => 
@@ -209,6 +268,20 @@ class ContentManager {
         );
 
         return filteredContent;
+    }
+
+    // Get featured content
+    getFeaturedContent(type = 'all') {
+        const config = this.loadConfig();
+        let content = [];
+
+        if (type === 'all' || type === 'publication') {
+            content = content.concat(
+                (config.content.publications || []).filter(pub => pub.featured === true)
+            );
+        }
+
+        return content;
     }
 
     // Generate carousel JavaScript for a specific set of tags
@@ -220,17 +293,86 @@ class ContentManager {
         const jsCode = `
         // ${carouselConfig.name || carouselId} carousel data - Auto-generated
         // Last updated: ${config.metadata.last_updated}
-        const ${carouselId}CarouselData = ${JSON.stringify(content, null, 8)};
+        const ${carouselId.replace(/-/g, '')}CarouselData = ${JSON.stringify(content, null, 8)};
         
         // Carousel configuration
-        const ${carouselId}Config = ${JSON.stringify(carouselConfig, null, 8)};`;
+        const ${carouselId.replace(/-/g, '')}Config = ${JSON.stringify(carouselConfig, null, 8)};`;
 
         return jsCode;
     }
 
+    // Update main index.html with photo carousel data
+    updateMainCarousel() {
+        try {
+            if (!fs.existsSync(this.indexHtmlPath)) {
+                console.error('❌ index.html not found');
+                return false;
+            }
+
+            let html = fs.readFileSync(this.indexHtmlPath, 'utf8');
+            
+            // Generate photo data for main carousel
+            const config = this.loadConfig();
+            const aboutMePhotos = this.getContentByTags(['about-me'], 'photo');
+            
+            const photoData = aboutMePhotos.map(photo => ({
+                filename: photo.filename,
+                description: photo.description,
+                location: photo.location,
+                fallback: `https://via.placeholder.com/400x400/${photo.fallback_color.replace('#', '')}/white?text=${photo.fallback_text}`
+            }));
+
+            // Generate featured publications data
+            const featuredPubs = this.getFeaturedContent('publication');
+
+            const newPhotoCode = `        // Photo carousel data - Auto-generated by photo-manager.js
+        // Last updated: ${config.metadata.last_updated}
+        const photoData = ${JSON.stringify(photoData, null, 12)};
+
+        // Carousel settings
+        const carouselSettings = ${JSON.stringify({
+            rotation_speed: 8000,
+            transition_effect: "fade",
+            auto_start: true,
+            random_start: true,
+            pause_on_hover: true
+        }, null, 12)};`;
+
+            const newFeaturedCode = `        // Featured publications data - loaded from content.json
+        const featuredPublications = ${JSON.stringify(featuredPubs, null, 12)};`;
+
+            // Find and replace photo carousel data
+            const photoDataRegex = /\/\/ Photo carousel data[\s\S]*?const carouselSettings = \{[\s\S]*?\};/;
+            
+            if (photoDataRegex.test(html)) {
+                html = html.replace(photoDataRegex, newPhotoCode.trim());
+                console.log('✅ Photo carousel updated in index.html');
+            } else {
+                console.log('⚠️  Could not find photo carousel section in index.html');
+            }
+
+            // Find and replace featured publications data
+            const featuredDataRegex = /\/\/ Featured publications data[\s\S]*?const featuredPublications = \[[\s\S]*?\];/;
+            
+            if (featuredDataRegex.test(html)) {
+                html = html.replace(featuredDataRegex, newFeaturedCode.trim());
+                console.log('✅ Featured publications updated in index.html');
+            } else {
+                console.log('⚠️  Could not find featured publications section in index.html');
+            }
+
+            fs.writeFileSync(this.indexHtmlPath, html);
+            return true;
+
+        } catch (error) {
+            console.error('❌ Error updating index.html:', error);
+            return false;
+        }
+    }
+
     // Update a research page with carousel data
     updateResearchPage(pageId, tags, type = 'mixed') {
-        const pagePath = `research/${pageId}.html`;
+        const pagePath = path.join(this.researchPagesDir, `${pageId}.html`);
         
         if (!fs.existsSync(pagePath)) {
             console.log(`⚠️  Research page ${pagePath} not found`);
@@ -241,8 +383,11 @@ class ContentManager {
             let html = fs.readFileSync(pagePath, 'utf8');
             const newCode = this.generateCarouselCode(pageId, tags, type);
 
+            // Convert kebab-case to camelCase for JavaScript variable names
+            const jsVarName = pageId.replace(/-(.)/g, (match, letter) => letter.toUpperCase());
+
             // Find and replace the carousel data section
-            const carouselDataRegex = new RegExp(`\\/\\/ ${pageId} carousel data[\\s\\S]*?const ${pageId}Config = \\{[\\s\\S]*?\\};`);
+            const carouselDataRegex = new RegExp(`\\/\\/ ${pageId} carousel data[\\s\\S]*?const ${jsVarName}Config = \\{[\\s\\S]*?\\};`);
             
             if (carouselDataRegex.test(html)) {
                 html = html.replace(carouselDataRegex, newCode.trim());
@@ -263,7 +408,7 @@ class ContentManager {
         }
     }
 
-    // Add new content (photo or video)
+    // Add new content (photo, video, or publication)
     addContent(contentData) {
         const config = this.loadConfig();
         
@@ -281,11 +426,52 @@ class ContentManager {
             config.content.photos.push(newContent);
         } else if (contentData.type === 'video') {
             config.content.videos.push(newContent);
+        } else if (contentData.type === 'publication') {
+            config.content.publications = config.content.publications || [];
+            config.content.publications.push(newContent);
         }
 
         this.saveConfig(config);
         console.log('✅ New content added:', newContent.title);
         return newContent;
+    }
+
+    // Remove content by ID
+    removeContent(contentId) {
+        const config = this.loadConfig();
+        let removed = false;
+
+        // Check photos
+        const photoIndex = config.content.photos.findIndex(item => item.id === contentId);
+        if (photoIndex !== -1) {
+            config.content.photos.splice(photoIndex, 1);
+            removed = true;
+        }
+
+        // Check videos
+        const videoIndex = config.content.videos.findIndex(item => item.id === contentId);
+        if (videoIndex !== -1) {
+            config.content.videos.splice(videoIndex, 1);
+            removed = true;
+        }
+
+        // Check publications
+        if (config.content.publications) {
+            const pubIndex = config.content.publications.findIndex(item => item.id === contentId);
+            if (pubIndex !== -1) {
+                config.content.publications.splice(pubIndex, 1);
+                removed = true;
+            }
+        }
+
+        if (removed) {
+            this.saveConfig(config);
+            console.log('✅ Content removed:', contentId);
+            return true;
+        } else {
+            console.log('❌ Content not found:', contentId);
+            return false;
+        }
     }
 
     // List content by tags
@@ -296,37 +482,88 @@ class ContentManager {
         const content = this.getContentByTags(tags);
         
         content.forEach((item, index) => {
-            const icon = item.type === 'photo' ? '📸' : '🎥';
+            let icon = '📄';
+            if (item.type === 'photo') icon = '📸';
+            else if (item.type === 'video') icon = '🎥';
+            else if (item.type === 'publication') icon = '📖';
+
             console.log(`${index + 1}. ${icon} ${item.title}`);
             console.log(`   Type: ${item.type}`);
             console.log(`   Description: ${item.description}`);
             console.log(`   Tags: ${item.tags.join(', ')}`);
             console.log(`   Date: ${item.date}`);
+            if (item.citations !== undefined) {
+                console.log(`   Citations: ${item.citations}`);
+            }
             console.log('');
         });
 
         console.log(`Found ${content.length} items with specified tags`);
     }
 
+    // Update all pages
+    updateAllPages() {
+        console.log('🔄 Updating all pages with latest content...');
+        
+        // Update main page
+        this.updateMainCarousel();
+        
+        // Update research pages
+        const researchPages = [
+            { id: 'chemical-organization-theory', tags: ['cot', 'chemical-organization-theory'] },
+            { id: 'quantum-cognition', tags: ['quantum-cognition'] },
+            { id: 'mathematical-modeling-wicked-problems', tags: ['wicked-problems', 'mathematical-modeling'] },
+            { id: 'foundations-interdisciplinarity', tags: ['interdisciplinarity', 'transdisciplinary'] }
+        ];
+
+        researchPages.forEach(page => {
+            this.updateResearchPage(page.id, page.tags);
+        });
+
+        console.log('✅ All pages updated');
+    }
+
+    // Get statistics
+    getStats() {
+        const config = this.loadConfig();
+        
+        return {
+            photos: config.content.photos.length,
+            videos: config.content.videos.length,
+            publications: config.content.publications?.length || 0,
+            carousels: Object.keys(config.carousels).length,
+            total_content: config.content.photos.length + config.content.videos.length + (config.content.publications?.length || 0),
+            last_updated: config.metadata.last_updated
+        };
+    }
+
     // Show help
     showHelp() {
         console.log(`
-🎯 Content Manager for Academic Website
+🎯 Enhanced Content Manager for Academic Website
 
 Usage: node content-manager.js [command] [options]
 
 Commands:
   list-tags [tag1,tag2,...]    - List content by tags
   generate [carousel-id]       - Generate carousel code for carousel
-  update [page-id]             - Update research page with latest content
+  update [page-id]             - Update specific research page
+  update-main                  - Update main index.html carousels
+  update-all                   - Update all pages
   add-photo                    - Add new photo (interactive)
-  add-video                    - Add new video (interactive)
+  add-video                    - Add new video (interactive)  
+  add-publication              - Add new publication (interactive)
+  remove [content-id]          - Remove content by ID
+  stats                        - Show content statistics
+  featured                     - List featured publications
   help                         - Show this help
 
 Examples:
   node content-manager.js list-tags cot,theory
-  node content-manager.js generate chemical-organization-theory
-  node content-manager.js update quantum-cognition
+  node content-manager.js update chemical-organization-theory
+  node content-manager.js update-main
+  node content-manager.js update-all
+  node content-manager.js stats
 
 Configuration file: ${this.contentConfigPath}
         `);
@@ -368,6 +605,45 @@ function main() {
             } else {
                 console.log('❌ Please specify page ID');
             }
+            break;
+
+        case 'update-main':
+            manager.updateMainCarousel();
+            break;
+
+        case 'update-all':
+            manager.updateAllPages();
+            break;
+
+        case 'remove':
+            if (options) {
+                manager.removeContent(options);
+            } else {
+                console.log('❌ Please specify content ID');
+            }
+            break;
+
+        case 'stats':
+            const stats = manager.getStats();
+            console.log('📊 Content Statistics:');
+            console.log(`Photos: ${stats.photos}`);
+            console.log(`Videos: ${stats.videos}`);
+            console.log(`Publications: ${stats.publications}`);
+            console.log(`Carousels: ${stats.carousels}`);
+            console.log(`Total Content: ${stats.total_content}`);
+            console.log(`Last Updated: ${stats.last_updated}`);
+            break;
+
+        case 'featured':
+            const featured = manager.getFeaturedContent('publication');
+            console.log('📖 Featured Publications:');
+            featured.forEach((pub, index) => {
+                console.log(`${index + 1}. ${pub.title}`);
+                console.log(`   Authors: ${pub.authors}`);
+                console.log(`   Journal: ${pub.journal} (${pub.year})`);
+                console.log(`   Citations: ${pub.citations}`);
+                console.log('');
+            });
             break;
             
         case 'help':

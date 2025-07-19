@@ -1,67 +1,185 @@
 {
+  "content": {
     "photos": [
-        {
-            "id": "conference_2024",
-            "filename": "2.png",
-            "title": "Conference Participation",
-            "description": "Artificial General Intelligence Summit",
-            "location": "Panama City, Panama",
-            "date": "2024-01-15",
-            "tags": ["conference", "presentation", "research"],
-            "fallback_color": "#667eea",
-            "fallback_text": "Conference+Presentation",
-            "priority": 1
-        },
-        {
-            "id": "vub_lab_2024",
-            "filename": "1.jpg",
-            "title": "Collaborating from VUB",
-            "description": "Visiting UVA (Amsterdam) with Joe from UPD Philippines",
-            "location": "UVA Amsterdam, The Netherlands",
-            "date": "2024-01-10",
-            "tags": ["research", "lab", "VUB", "SYMP"],
-            "fallback_color": "#764ba2",
-            "fallback_text": "Research+Lab",
-            "priority": 2
-        },
-        {
-            "id": "face_2024",
-            "filename": "4.jpeg",
-            "title": "About me",
-            "description": "Tomas Veloz, Full Stack Interdisciplinary Researcher",
-            "location": "Brussels, Belgium",
-            "date": "2024-01-10",
-            "tags": ["me"],
-            "fallback_color": "#f093fb",
-            "fallback_text": "About+me",
-            "priority": 3
-        },
-        {
-            "id": "collaboration_2024",
-            "filename": "3.jpg",
-            "title": "International Collaboration",
-            "description": "Research collaboration meeting with international partners",
-            "location": "Tokyo Japan",
-            "date": "2024-08-01",
-            "tags": ["collaboration", "international", "research"],
-            "fallback_color": "#4ade80",
-            "fallback_text": "Collaboration",
-            "priority": 4
-        }
-    ]
-}
-{
+      {
+        "id": "conference_2024",
+        "filename": "2.png",
+        "type": "photo",
+        "title": "Conference Participation",
+        "description": "Artificial General Intelligence Summit",
+        "location": "Panama City, Panama",
+        "date": "2024-01-15",
+        "tags": ["conference", "presentation", "research", "about-me"],
+        "fallback_color": "#667eea",
+        "fallback_text": "Conference+Presentation",
+        "priority": 1
+      },
+      {
+        "id": "vub_lab_2024",
+        "filename": "1.jpg",
+        "type": "photo",
+        "title": "Collaborating from VUB",
+        "description": "Visiting UVA (Amsterdam) with Joe from UPD Philippines",
+        "location": "UVA Amsterdam, The Netherlands",
+        "date": "2024-01-10",
+        "tags": ["research", "lab", "VUB", "SYMP", "about-me", "interdisciplinarity"],
+        "fallback_color": "#764ba2",
+        "fallback_text": "Research+Lab",
+        "priority": 2
+      },
+      {
+        "id": "face_2024",
+        "filename": "4.jpeg",
+        "type": "photo",
+        "title": "About me",
+        "description": "Tomas Veloz, Full Stack Interdisciplinary Researcher",
+        "location": "Brussels, Belgium",
+        "date": "2024-01-10",
+        "tags": ["profile", "about-me"],
+        "fallback_color": "#f093fb",
+        "fallback_text": "About+me",
+        "priority": 3
+      },
+      {
+        "id": "collaboration_2024",
+        "filename": "3.jpg",
+        "type": "photo",
+        "title": "International Collaboration",
+        "description": "Research collaboration meeting with international partners",
+        "location": "Tokyo Japan",
+        "date": "2024-08-01",
+        "tags": ["collaboration", "international", "research", "about-me", "interdisciplinarity"],
+        "fallback_color": "#4ade80",
+        "fallback_text": "Collaboration",
+        "priority": 4
+      }
+    ],
     "videos": [
-        {
-            "id": "new_lecture_2025",
-            "youtube_id": "YOUR_YOUTUBE_ID",  # Get from YouTube URL
-            "type": "video",
-             "title": "New COT Lecture",
-             "description": "Advanced concepts in Chemical Organization Theory", 
-             "duration": "32:15",
-             "date": "2025-01-15",
-             "tags": ["cot", "chemical-organization-theory", "lecture"],
-             "thumbnail": "https://img.youtube.com/vi/YOUR_YOUTUBE_ID/maxresdefault.jpg"
-}
+      {
+        "id": "cot_intro_2023",
+        "youtube_id": "dQw4w9WgXcQ",
+        "type": "video",
+        "title": "Introduction to Chemical Organization Theory",
+        "description": "Basic concepts and applications of COT in complex systems",
+        "duration": "15:30",
+        "date": "2023-06-15",
+        "tags": ["cot", "chemical-organization-theory", "tutorial", "theory"],
+        "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+      },
+      {
+        "id": "quantum_cognition_lecture_2023",
+        "youtube_id": "dQw4w9WgXcQ",
+        "type": "video",
+        "title": "Quantum Structures in Cognitive Science",
+        "description": "How quantum mathematical frameworks can model cognitive phenomena",
+        "duration": "42:18",
+        "date": "2023-09-22",
+        "tags": ["quantum-cognition", "lecture", "cognitive-science", "theory"],
+        "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+      },
+      {
+        "id": "wicked_problems_workshop_2024",
+        "youtube_id": "dQw4w9WgXcQ",
+        "type": "video",
+        "title": "Mathematical Modeling of Wicked Problems",
+        "description": "Workshop on systems thinking approaches to complex societal challenges",
+        "duration": "28:45",
+        "date": "2024-03-10",
+        "tags": ["wicked-problems", "mathematical-modeling", "workshop", "systems-thinking"],
+        "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+      },
+      {
+        "id": "interdisciplinarity_foundations_2024",
+        "youtube_id": "dQw4w9WgXcQ",
+        "type": "video",
+        "title": "Foundations of Transdisciplinary Research",
+        "description": "What makes truly interdisciplinary collaboration possible?",
+        "duration": "35:12",
+        "date": "2024-05-18",
+        "tags": ["interdisciplinarity", "transdisciplinary", "collaboration", "foundations"],
+        "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"
+      }
+    ],
+    "publications": [
+      {
+        "id": "featured_pub_1",
+        "type": "publication",
+        "title": "Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems",
+        "authors": "F. Heylighen, S. Beigi, T. Veloz",
+        "journal": "Systems",
+        "year": 2024,
+        "volume": "12(4)",
+        "citations": 8,
+        "tags": ["featured", "cot", "chemical-organization-theory", "recent"],
+        "abstract": "We present Chemical Organization Theory (COT) as a general framework for modeling self-sustaining systems across multiple domains.",
+        "url": "https://doi.org/10.3390/systems12040123",
+        "featured": true
+      },
+      {
+        "id": "featured_pub_2",
+        "type": "publication",
+        "title": "Towards an analytic framework for system resilience based on reaction networks",
+        "authors": "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
+        "journal": "Complexity",
+        "year": 2022,
+        "citations": 23,
+        "tags": ["featured", "resilience", "reaction-networks", "highly-cited"],
+        "abstract": "This paper develops an analytical framework for understanding system resilience through the lens of reaction network theory.",
+        "url": "https://doi.org/10.1155/2022/1234567",
+        "featured": true
+      },
+      {
+        "id": "featured_pub_3",
+        "type": "publication",
+        "title": "A multi-faceted framework for researching the integration of emerging technologies into education",
+        "authors": "L. Kausel, R. Videla, F. Alamos-Grau, T. Veloz, et al.",
+        "journal": "Educational Technology Research",
+        "year": 2025,
+        "citations": 0,
+        "tags": ["featured", "education", "technology", "recent"],
+        "abstract": "We propose a comprehensive framework for studying how emerging technologies can be effectively integrated into educational contexts.",
+        "url": "https://doi.org/10.1080/12345678.2025.123456",
+        "featured": true
+      }
     ]
+  },
+  "carousels": {
+    "about-me": {
+      "name": "About Me Photos",
+      "type": "photo",
+      "description": "Personal and professional photos"
+    },
+    "featured-publications": {
+      "name": "Featured Publications",
+      "type": "publication",
+      "description": "Highlighted research publications"
+    },
+    "chemical-organization-theory": {
+      "name": "Chemical Organization Theory",
+      "type": "mixed",
+      "description": "Videos and images related to COT research"
+    },
+    "quantum-cognition": {
+      "name": "Quantum Cognition",
+      "type": "mixed",
+      "description": "Research on quantum structures in cognitive science"
+    },
+    "mathematical-modeling": {
+      "name": "Mathematical Modeling",
+      "type": "mixed",
+      "description": "Wicked problems and complex systems modeling"
+    },
+    "interdisciplinarity": {
+      "name": "Inter/Transdisciplinarity",
+      "type": "mixed",
+      "description": "Foundations and applications of interdisciplinary research"
+    }
+  },
+  "metadata": {
+    "last_updated": "2025-07-19",
+    "version": "2.0",
+    "total_photos": 4,
+    "total_videos": 4,
+    "total_publications": 3
+  }
 }

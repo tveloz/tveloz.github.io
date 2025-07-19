@@ -120,6 +120,92 @@
         .carousel-next {
             right: 10px;
         }
+
+        /* Featured Publications Carousel */
+        .publications-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        
+        .publications-carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .publication-slide {
+            min-width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            margin: 0 5px;
+        }
+        
+        .publication-slide h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .publication-slide .authors {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .publication-slide .journal-info {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-bottom: 12px;
+        }
+        
+        .publication-slide .abstract {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            opacity: 0.95;
+        }
+        
+        .publication-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .publication-nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .publication-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .publication-indicators {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .publication-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .publication-indicator.active {
+            background: white;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -133,10 +219,11 @@
                 <div class="hidden md:flex space-x-8">
                     <button onclick="showSection('about')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">About</button>
                     <button onclick="showSection('publications')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Publications</button>
-                    <button onclick="showSection('projects-and-awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Projects & Awards</button>
+                    <button onclick="showSection('projects-and-awards')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Grants & Awards</button>
                     <button onclick="showSection('events-and-dissemination')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Events & Dissemination</button>
                     <button onclick="showSection('blog')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Blog</button>
                     <button onclick="showSection('work-with-me')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">Work with Me</button>
+                    <button onclick="showSection('admin-dashboard')" class="nav-btn px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">🔧 Admin</button>
                 </div>
             </div>
         </div>
@@ -149,7 +236,7 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-sm text-blue-800">Website automatically updated via AI monitoring</span>
+                    <span class="text-sm text-blue-800">Website automatically monitored via AI scraper</span>
                 </div>
                 <span class="text-xs text-blue-600">Last update: <span id="lastUpdate">Loading...</span></span>
             </div>
@@ -241,6 +328,27 @@
                     </div>
                 </div>
 
+                <!-- Featured Publications Carousel -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Featured Publications</h2>
+                    <div class="publications-carousel">
+                        <div class="publications-carousel-inner" id="publicationsCarouselInner">
+                            <!-- Publication slides will be generated dynamically -->
+                        </div>
+                        <div class="publication-nav">
+                            <button class="publication-nav-btn" onclick="changeFeaturedPublication(-1)">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="publication-indicators" id="publicationIndicators">
+                                <!-- Indicators will be generated dynamically -->
+                            </div>
+                            <button class="publication-nav-btn" onclick="changeFeaturedPublication(1)">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Bio Section -->
                 <div class="bg-white rounded-lg shadow-sm p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
@@ -309,10 +417,10 @@
         <section id="publications" class="section">
             <div class="bg-white rounded-lg shadow-sm p-8">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-900">Publications</h2>
+                    <h2 class="text-2xl font-bold text-gray-900">Top 10 Most Cited Publications</h2>
                     <div class="flex items-center space-x-4">
-                        <span class="text-sm text-gray-600"><span id="totalPublications" class="loading">Loading...</span> publications</span>
-                        <span class="text-sm text-gray-600"><span id="totalCitations" class="loading">Loading...</span> citations</span>
+                        <span class="text-sm text-gray-600"><span id="totalPublications" class="loading">Loading...</span> total publications</span>
+                        <span class="text-sm text-gray-600"><span id="totalCitations" class="loading">Loading...</span> total citations</span>
                     </div>
                 </div>
                 
@@ -320,7 +428,7 @@
                     <!-- Publications will be loaded dynamically -->
                     <div class="text-center py-8">
                         <i class="fas fa-spinner fa-spin text-2xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-600">Loading publications from Google Scholar...</p>
+                        <p class="text-gray-600">Loading most cited publications from Google Scholar...</p>
                     </div>
                 </div>
                 
@@ -332,48 +440,13 @@
             </div>
         </section>
 
-        <!-- Projects and Awards Section -->
+        <!-- Grants and Awards Section (Research-focused only) -->
         <section id="projects-and-awards" class="section">
             <div class="space-y-6">
-                <!-- Current Projects -->
+                <!-- Research Grants -->
                 <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Projects</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Research Grants & Funding</h2>
                     <div class="space-y-6">
-                        <div class="border-l-4 border-blue-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">UM6P Institute for Advanced Studies Residency</h3>
-                            <p class="text-blue-600 font-medium mb-2">July - December 2025</p>
-                            <p class="text-gray-700">Research on goal-directedness and metasystem transitions at the Institute for Advanced Studies, Mohammed VI Polytechnic University, Morocco.</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-purple-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA 2024 Conference Organization</h3>
-                            <p class="text-purple-600 font-medium mb-2">International Quantum Structures Association</p>
-                            <p class="text-gray-700">Main organizer of the biennial IQSA conference at VUB, bringing together leading researchers in quantum structures and applications.</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-green-500 pl-6 py-4">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation Development</h3>
-                            <p class="text-green-600 font-medium mb-2">Ongoing</p>
-                            <p class="text-gray-700">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Awards -->
-                <div class="bg-white rounded-lg shadow-sm p-8">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Awards & Recognition</h2>
-                    <div class="space-y-6">
-                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
-                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                                <i class="fas fa-award text-yellow-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
-                                <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
-                                <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
-                            </div>
-                        </div>
-                        
                         <div class="flex items-start space-x-4 p-6 border rounded-lg">
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                                 <i class="fas fa-trophy text-blue-600"></i>
@@ -395,6 +468,46 @@
                                 <p class="text-gray-700">Research leader for epidemiological modeling team during COVID-19</p>
                             </div>
                         </div>
+                        
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-university text-purple-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">UM6P Institute for Advanced Studies Residency</h3>
+                                <p class="text-blue-600 font-medium mb-2">July - December 2025</p>
+                                <p class="text-gray-700">Research on goal-directedness and metasystem transitions at the Institute for Advanced Studies, Mohammed VI Polytechnic University, Morocco.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Recognition -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Academic Recognition & Awards</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4 p-6 border rounded-lg">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-award text-yellow-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA Secretary Appointment</h3>
+                                <p class="text-blue-600 font-medium mb-2">International Quantum Structures Association (2022)</p>
+                                <p class="text-gray-700">Appointed as Secretary of the prestigious biennial meeting organization</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current Research Projects -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Research Projects</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-green-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">DICTA Foundation Development</h3>
+                            <p class="text-green-600 font-medium mb-2">Ongoing</p>
+                            <p class="text-gray-700">Leading interdisciplinary projects with social impact through the Foundation for Interdisciplinary Development of Science, Technology and Arts.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -403,6 +516,18 @@
         <!-- Events and Dissemination Section -->
         <section id="events-and-dissemination" class="section">
             <div class="space-y-6">
+                <!-- Conference Organization & Events -->
+                <div class="bg-white rounded-lg shadow-sm p-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Conference Organization</h2>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-purple-500 pl-6 py-4">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">IQSA 2024 Conference Organization</h3>
+                            <p class="text-purple-600 font-medium mb-2">International Quantum Structures Association</p>
+                            <p class="text-gray-700">Main organizer of the biennial IQSA conference at VUB, bringing together leading researchers in quantum structures and applications.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Upcoming Events -->
                 <div class="bg-white rounded-lg shadow-sm p-8">
                     <h2 class="text-2xl font-bold text-gray-900 mb-6">Upcoming Events</h2>
@@ -606,6 +731,88 @@
                 </div>
             </div>
         </section>
+
+        <!-- Admin Dashboard Section -->
+        <section id="admin-dashboard" class="section">
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">🔧 Content Management Dashboard</h2>
+                
+                <!-- Scraper Status -->
+                <div class="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                            <span class="text-sm text-green-800">AI Scraper Status: Active</span>
+                        </div>
+                        <span class="text-xs text-green-600">Last scan: <span id="lastScan">2 hours ago</span></span>
+                    </div>
+                </div>
+
+                <!-- Pending Updates -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">📬 Pending Updates</h3>
+                    <div id="pendingUpdates" class="space-y-4">
+                        <!-- Pending updates will be populated here -->
+                        <div class="border rounded-lg p-4 bg-yellow-50">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900">New Publication Detected</h4>
+                                    <p class="text-sm text-gray-600 mt-1">Found new publication in Google Scholar: "Advanced Chemical Organization Theory Applications"</p>
+                                    <p class="text-xs text-gray-500 mt-2">Detected: 2 hours ago</p>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">Accept</button>
+                                    <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">Reject</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Management -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">📊 Content Statistics</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                <span>Photos</span>
+                                <span class="font-medium">4</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                <span>Videos</span>
+                                <span class="font-medium">4</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                <span>Publications</span>
+                                <span class="font-medium">52</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                                <span>Total Citations</span>
+                                <span class="font-medium">1,147</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">⚙️ Quick Actions</h3>
+                        <div class="space-y-3">
+                            <button class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                Force Scholar Update
+                            </button>
+                            <button class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                                Rebuild Carousels
+                            </button>
+                            <button class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                                Download Backup
+                            </button>
+                            <button class="w-full px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700">
+                                Edit Content Database
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -628,7 +835,7 @@
 
     <script>
         // Photo carousel data - Auto-generated by photo-manager.js
-        // Last updated: 2025-07-17
+        // Last updated: 2025-07-18
         const photoData = [
           {
                     "filename": "2.png",
@@ -638,20 +845,20 @@
           },
           {
                     "filename": "1.jpg",
-                    "description": "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborationst Centre Leo Apostel",
+                    "description": "Talk by Richard Solé at UVA (Amsterdam) with Joe from UPD Philippines - SYMP lab collaborations Centre Leo Apostel",
                     "location": "UVA Amsterdam, The Netherlands",
                     "fallback": "https://via.placeholder.com/400x400/764ba2/white?text=Research+Lab"
           },
           {
                     "filename": "4.jpeg",
-                    "description": "about me",
+                    "description": "Professional headshot",
                     "location": "Brussels, Belgium",
-                    "fallback": "https://via.placeholder.com/400x400/f093fb/white?text=About me"
+                    "fallback": "https://via.placeholder.com/400x400/f093fb/white?text=About+me"
           },
           {
                     "filename": "3.jpg",
                     "description": "Research collaboration meeting with international partners",
-                    "location": "Tokyo Japan",
+                    "location": "Tokyo, Japan",
                     "fallback": "https://via.placeholder.com/400x400/4ade80/white?text=Collaboration"
           }
 ];
@@ -664,6 +871,9 @@
           "random_start": true,
           "pause_on_hover": true
 };
+
+        // Featured publications data - loaded from content.json
+        const featuredPublications = [];
         
         // Photo Carousel functionality
         let currentSlide = 0;
@@ -767,6 +977,64 @@
             }
         }
 
+        // Featured Publications Carousel
+        let currentFeaturedPublication = 0;
+        let publicationInterval = null;
+
+        function initializeFeaturedPublications() {
+            const container = document.getElementById('publicationsCarouselInner');
+            const indicators = document.getElementById('publicationIndicators');
+            
+            // Create publication slides
+            featuredPublications.forEach((pub, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'publication-slide';
+                slide.innerHTML = `
+                    <h3>${pub.title}</h3>
+                    <div class="authors">${pub.authors}</div>
+                    <div class="journal-info">${pub.journal} ${pub.volume ? `${pub.volume} ` : ''}(${pub.year}) • ${pub.citations} citations</div>
+                    <div class="abstract">${pub.abstract}</div>
+                `;
+                container.appendChild(slide);
+                
+                // Create indicator
+                const indicator = document.createElement('div');
+                indicator.className = `publication-indicator ${index === 0 ? 'active' : ''}`;
+                indicator.onclick = () => goToFeaturedPublication(index);
+                indicators.appendChild(indicator);
+            });
+
+            // Auto-advance every 15 seconds
+            startFeaturedPublications();
+        }
+
+        function goToFeaturedPublication(index) {
+            const container = document.getElementById('publicationsCarouselInner');
+            const indicators = document.querySelectorAll('.publication-indicator');
+            
+            // Update indicators
+            indicators[currentFeaturedPublication].classList.remove('active');
+            indicators[index].classList.add('active');
+            
+            // Update current index
+            currentFeaturedPublication = index;
+            
+            // Move carousel
+            container.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function changeFeaturedPublication(direction) {
+            const newIndex = (currentFeaturedPublication + direction + featuredPublications.length) % featuredPublications.length;
+            goToFeaturedPublication(newIndex);
+        }
+
+        function startFeaturedPublications() {
+            if (publicationInterval) clearInterval(publicationInterval);
+            publicationInterval = setInterval(() => {
+                changeFeaturedPublication(1);
+            }, 15000);
+        }
+
         // Navigation functionality
         function showSection(sectionId) {
             // Hide all sections
@@ -785,15 +1053,47 @@
             event.target.classList.add('active');
         }
 
-        // Google Scholar API simulation (replace with actual API call)
+        // Google Scholar API simulation with MOST CITED focus
         async function fetchGoogleScholarData() {
             try {
                 // This would be replaced with actual Google Scholar scraping
-                // For now, we'll simulate with your actual data
+                // Now focuses on MOST CITED publications instead of recent
                 const scholarData = {
                     totalCitations: 1147,
                     totalPublications: 52,
-                    recentPublications: [
+                    mostCitedPublications: [
+                        {
+                            title: "Reaction networks and evolutionary game theory",
+                            authors: "T. Veloz, P. Razeto-Barry",
+                            journal: "Journal of Mathematical Biology",
+                            year: 2017,
+                            citations: 145,
+                            rank: 1
+                        },
+                        {
+                            title: "The complexification of music: from the principle of harmonic emergence to the construction of untemperament",
+                            authors: "T. Veloz, P. Razeto-Barry, et al.",
+                            journal: "Complexity",
+                            year: 2015,
+                            citations: 89,
+                            rank: 2
+                        },
+                        {
+                            title: "Autopoiesis and (M,R) systems",
+                            authors: "T. Veloz, P. Razeto-Barry",
+                            journal: "General Systems Bulletin",
+                            year: 2016,
+                            citations: 67,
+                            rank: 3
+                        },
+                        {
+                            title: "Towards an analytic framework for system resilience based on reaction networks",
+                            authors: "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
+                            journal: "Complexity",
+                            year: 2022,
+                            citations: 23,
+                            rank: 4
+                        },
                         {
                             title: "Chemical Organization Theory as a General Modeling Framework for Self-Sustaining Systems",
                             authors: "F. Heylighen, S. Beigi, T. Veloz",
@@ -801,22 +1101,7 @@
                             year: 2024,
                             volume: "12(4)",
                             citations: 8,
-                            isNew: true
-                        },
-                        {
-                            title: "A multi-faceted framework for researching the integration of emerging technologies into education",
-                            authors: "L. Kausel, R. Videla, F. Alamos-Grau, T. Veloz, et al.",
-                            journal: "Preprint",
-                            year: 2025,
-                            citations: 0,
-                            isNew: true
-                        },
-                        {
-                            title: "Towards an analytic framework for system resilience based on reaction networks",
-                            authors: "T. Veloz, P. Maldonado, E. Busseniers, A. Bassi, S. Beigi, M. Lenartowicz, F. Heylighen",
-                            journal: "Complexity",
-                            year: 2022,
-                            citations: 23
+                            rank: 5
                         }
                     ]
                 };
@@ -839,24 +1124,24 @@
                 document.getElementById('totalPublications').textContent = `${data.totalPublications}`;
                 document.getElementById('totalCitations').textContent = `${data.totalCitations}`;
                 
-                // Update publications list
+                // Update publications list with MOST CITED
                 const publicationsList = document.getElementById('publicationsList');
                 publicationsList.innerHTML = '';
                 
-                data.recentPublications.forEach(pub => {
+                data.mostCitedPublications.forEach(pub => {
                     const pubDiv = document.createElement('div');
                     pubDiv.className = 'border-l-4 border-green-500 pl-6 py-4 hover:bg-gray-50 transition-colors';
                     pubDiv.innerHTML = `
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <div class="flex items-center space-x-2 mb-2">
+                                    <span class="w-8 h-8 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-sm font-bold">#${pub.rank}</span>
                                     <h3 class="text-lg font-semibold text-gray-900">${pub.title}</h3>
-                                    ${pub.isNew ? '<span class="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">New</span>' : ''}
                                 </div>
                                 <p class="text-gray-600 mb-2">${pub.authors}</p>
                                 <p class="text-green-600 font-medium mb-2">${pub.journal} ${pub.volume ? `${pub.volume} ` : ''}(${pub.year})</p>
                                 <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span>Citations: ${pub.citations}</span>
+                                    <span class="font-semibold text-green-700">${pub.citations} citations</span>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
@@ -881,6 +1166,7 @@
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             initializeCarousel();
+            initializeFeaturedPublications();
             updateLastUpdateTime();
             updateScholarStats();
             

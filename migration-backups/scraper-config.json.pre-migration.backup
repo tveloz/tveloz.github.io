@@ -4,9 +4,9 @@
       "enabled": true,
       "url": "https://scholar.google.com/citations?user=q7HbZQ4AAAAJ",
       "check_frequency": "daily",
-      "last_check": "2025-07-22T21:58:08.867Z",
-      "last_citation_count": null,
-      "last_publication_count": null
+      "last_check": null,
+      "last_citation_count": 1147,
+      "last_publication_count": 52
     },
     "cv_monitoring": {
       "enabled": true,
@@ -43,12 +43,9 @@
     "affiliation_changes": true
   },
   "metadata": {
-    "last_full_scan": "2025-07-23T09:51:19.119Z",
+    "last_full_scan": "2025-07-19T10:59:39.263Z",
     "total_notifications_sent": 4,
     "pending_approvals": 1,
-    "last_updated": "2025-07-23T09:51:19.119Z",
-    "migration_completed": "2025-07-22T21:58:08.867Z",
-    "migration_version": "1.0",
-    "real_data_enabled": true
+    "last_updated": "2025-07-19T10:59:39.267Z"
   }
 }

@@ -1,0 +1,77 @@
+[2025-07-22T21:54:33.507Z] INFO: 🚀 Starting migration from fake to real data...
+[2025-07-22T21:54:33.523Z] INFO: Migration log: migration.log
+[2025-07-22T21:54:33.527Z] ERROR: ❌ Migration failed at step 1 after 0 seconds
+[2025-07-22T21:54:33.527Z] ERROR: Error: Cannot read properties of undefined (reading 'bind')
+[2025-07-22T21:58:07.874Z] INFO: 🚀 Starting migration from fake to real data...
+[2025-07-22T21:58:07.878Z] INFO: Migration log: migration.log
+[2025-07-22T21:58:07.878Z] INFO: 
+📋 Running step 1/8: backupCurrentFiles
+[2025-07-22T21:58:07.880Z] INFO: === STEP 1: Backing up current files ===
+[2025-07-22T21:58:07.883Z] INFO: Backed up: index.html -> migration-backups\index.html.pre-migration.backup
+[2025-07-22T21:58:07.885Z] INFO: Backed up: academic-scraper.js -> migration-backups\academic-scraper.js.pre-migration.backup
+[2025-07-22T21:58:07.887Z] INFO: Backed up: simple-admin.js -> migration-backups\simple-admin.js.pre-migration.backup
+[2025-07-22T21:58:07.889Z] INFO: Backed up: data/content.json -> migration-backups\content.json.pre-migration.backup
+[2025-07-22T21:58:07.891Z] INFO: Backed up: data/scraper-config.json -> migration-backups\scraper-config.json.pre-migration.backup
+[2025-07-22T21:58:07.893Z] INFO: ✅ File backup completed
+[2025-07-22T21:58:07.894Z] INFO: ✅ Step 1 completed
+
+[2025-07-22T21:58:07.895Z] INFO: 
+📋 Running step 2/8: validateDependencies
+[2025-07-22T21:58:07.895Z] INFO: === STEP 2: Validating dependencies ===
+[2025-07-22T21:58:07.896Z] INFO: ✅ Found: real-scholar-scraper.js
+[2025-07-22T21:58:07.896Z] INFO: ✅ Found: data-validator.js
+[2025-07-22T21:58:07.896Z] INFO: Node.js version: v22.17.1
+[2025-07-22T21:58:07.897Z] INFO: ✅ All dependencies validated
+[2025-07-22T21:58:07.897Z] INFO: ✅ Step 2 completed
+
+[2025-07-22T21:58:07.897Z] INFO: 
+📋 Running step 3/8: createDataDirectories
+[2025-07-22T21:58:07.898Z] INFO: === STEP 3: Creating data directories ===
+[2025-07-22T21:58:07.898Z] INFO: Directory already exists: data
+[2025-07-22T21:58:07.899Z] INFO: Directory already exists: data/emails
+[2025-07-22T21:58:07.899Z] INFO: Created directory: data/backups
+[2025-07-22T21:58:07.900Z] INFO: ✅ Data directories created
+[2025-07-22T21:58:07.900Z] INFO: ✅ Step 3 completed
+
+[2025-07-22T21:58:07.900Z] INFO: 
+📋 Running step 4/8: runInitialScraping
+[2025-07-22T21:58:07.901Z] INFO: === STEP 4: Running initial Scholar scraping ===
+[2025-07-22T21:58:07.901Z] INFO: Attempting to scrape Google Scholar data...
+[2025-07-22T21:58:08.859Z] INFO: ✅ Successfully scraped Scholar data:
+[2025-07-22T21:58:08.859Z] INFO:    Citations: 0
+[2025-07-22T21:58:08.860Z] INFO:    Publications: 0
+[2025-07-22T21:58:08.860Z] INFO:    Top publications: 0
+[2025-07-22T21:58:08.861Z] INFO: ✅ Step 4 completed
+
+[2025-07-22T21:58:08.861Z] INFO: 
+📋 Running step 5/8: validateScrapedData
+[2025-07-22T21:58:08.862Z] INFO: === STEP 5: Validating scraped data ===
+[2025-07-22T21:58:08.864Z] INFO: ✅ Scholar data validation passed
+[2025-07-22T21:58:08.865Z] INFO: ✅ Data validation completed
+[2025-07-22T21:58:08.865Z] INFO: ✅ Step 5 completed
+
+[2025-07-22T21:58:08.865Z] INFO: 
+📋 Running step 6/8: updateConfiguration
+[2025-07-22T21:58:08.866Z] INFO: === STEP 6: Updating configuration ===
+[2025-07-22T21:58:08.866Z] INFO: Loaded existing scraper config
+[2025-07-22T21:58:08.867Z] INFO: ✅ Configuration updated
+[2025-07-22T21:58:08.867Z] INFO: ✅ Step 6 completed
+
+[2025-07-22T21:58:08.868Z] INFO: 
+📋 Running step 7/8: testWebsiteLoading
+[2025-07-22T21:58:08.868Z] INFO: === STEP 7: Testing website loading ===
+[2025-07-22T21:58:08.868Z] INFO: ✅ Website loading test passed
+[2025-07-22T21:58:08.869Z] INFO:    Will show 0 citations
+[2025-07-22T21:58:08.869Z] INFO:    Will show 0 publications
+[2025-07-22T21:58:08.869Z] INFO: ✅ Step 7 completed
+
+[2025-07-22T21:58:08.870Z] INFO: 
+📋 Running step 8/8: cleanupFakeData
+[2025-07-22T21:58:08.870Z] INFO: === STEP 8: Cleaning up fake data references ===
+[2025-07-22T21:58:08.871Z] INFO: ✅ No fake data patterns found in index.html
+[2025-07-22T21:58:08.871Z] WARN: ⚠️  Found potential fake data in academic-scraper.js: "FAKE"
+[2025-07-22T21:58:08.872Z] WARN: ⚠️  Found potential fake data in academic-scraper.js: "TEST DATA"
+[2025-07-22T21:58:08.873Z] INFO: ✅ Fake data cleanup completed
+[2025-07-22T21:58:08.873Z] INFO: ✅ Step 8 completed
+
+[2025-07-22T21:58:08.873Z] INFO: 🎉 Migration completed successfully in 1 seconds!

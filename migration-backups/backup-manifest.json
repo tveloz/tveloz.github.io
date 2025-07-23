@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-07-22T21:58:07.892Z",
+  "backups": {
+    "index.html": "migration-backups\\index.html.pre-migration.backup",
+    "academic-scraper.js": "migration-backups\\academic-scraper.js.pre-migration.backup",
+    "simple-admin.js": "migration-backups\\simple-admin.js.pre-migration.backup",
+    "data/content.json": "migration-backups\\content.json.pre-migration.backup",
+    "data/scraper-config.json": "migration-backups\\scraper-config.json.pre-migration.backup"
+  },
+  "purpose": "pre-migration-backup"
+}

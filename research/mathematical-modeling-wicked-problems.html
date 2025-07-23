@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemical Organization Theory - Dr. Tomás Veloz</title>
+    <title>Mathematical Modeling of Wicked Problems - Dr. Tomás Veloz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -89,9 +89,9 @@
         }
         
         .video-nav-btn {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid #3b82f6;
-            color: #3b82f6;
+            background: rgba(147, 51, 234, 0.1);
+            border: 1px solid #9333ea;
+            color: #9333ea;
             padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
@@ -99,7 +99,7 @@
         }
         
         .video-nav-btn:hover {
-            background: #3b82f6;
+            background: #9333ea;
             color: white;
         }
         
@@ -112,13 +112,13 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: rgba(59, 130, 246, 0.3);
+            background: rgba(147, 51, 234, 0.3);
             cursor: pointer;
             transition: background 0.3s ease;
         }
         
         .video-indicator.active {
-            background: #3b82f6;
+            background: #9333ea;
         }
         
         .video-list {
@@ -232,6 +232,122 @@
             background: rgba(34, 197, 94, 0.9);
             color: white;
         }
+        
+        /* Publications Section Styles */
+        .publication-item {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: shadow 0.3s ease;
+        }
+        
+        .publication-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .publication-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .publication-title a {
+            color: #9333ea;
+            text-decoration: none;
+        }
+        
+        .publication-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .publication-authors {
+            color: #6b7280;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .publication-authors .author-highlight {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .publication-journal {
+            color: #7c3aed;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .publication-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .publication-year {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .publication-citations {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .publication-type {
+            background: #ede9fe;
+            color: #6b21a8;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .publication-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .publication-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+        
+        .publication-link:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .publication-link.doi {
+            border-color: #fbbf24;
+            color: #92400e;
+        }
+        
+        .publication-link.pdf {
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+        
+        .publication-link.scholar {
+            border-color: #9333ea;
+            color: #7c3aed;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -243,7 +359,7 @@
                     <a href="../index.html" class="text-xl font-bold text-gray-900">Dr. Tomás Veloz</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="../index.html" class="text-blue-600 hover:text-blue-800">← Back to Home</a>
+                    <a href="../index.html" class="text-purple-600 hover:text-purple-800">← Back to Home</a>
                 </div>
             </div>
         </div>
@@ -254,49 +370,50 @@
         <!-- Header Section -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8 fade-in">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-blue-900 mb-4">Chemical Organization Theory</h1>
+                <h1 class="text-4xl font-bold text-purple-900 mb-4">Mathematical Modeling of Wicked Problems</h1>
                 <p class="text-xl text-gray-700 max-w-4xl mx-auto">
-                    Developing mathematical frameworks for analyzing self-organizing systems using reaction networks
+                    Modeling complex societal challenges using systems thinking and mathematical approaches
                 </p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">What is Chemical Organization Theory?</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">What are Wicked Problems?</h2>
                     <div class="prose prose-lg text-gray-700">
                         <p class="mb-4">
-                            Chemical Organization Theory (COT) provides a mathematical framework for understanding 
-                            self-organizing systems through the lens of reaction networks. It emerged from the need 
-                            to formalize how complex systems maintain their structure and identity over time despite 
-                            constant flux in their components.
+                            Wicked problems are complex societal challenges that resist traditional solution approaches. 
+                            Coined by Rittel and Webber in 1973, these problems are characterized by their lack of 
+                            definitive formulation, having no stopping rule, and possessing solutions that are neither 
+                            true nor false, but rather better or worse.
                         </p>
                         <p class="mb-4">
-                            At its core, COT identifies "organizations" - subsets of species that are both 
-                            <strong>closed</strong> (all reactions stay within the set) and <strong>self-maintaining</strong> 
-                            (the set can be sustained given sufficient resource flow). These mathematical structures 
-                            help us understand everything from metabolic networks to social systems.
+                            Dr. Veloz applies <strong>systemic modeling</strong> frameworks, particularly Chemical 
+                            Organization Theory and complex systems approaches, to tackle problems where reductionist 
+                            paradigms fail due to the systemic nature of the phenomena. These include 
+                            <strong>climate change</strong>, <strong>poverty</strong>, <strong>education inequality</strong>, 
+                            and <strong>public health crises</strong>.
                         </p>
                     </div>
                 </div>
                 
-                <div class="bg-blue-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-blue-900 mb-4">Key Concepts</h3>
-                    <ul class="space-y-3 text-blue-800">
+                <div class="bg-purple-50 p-6 rounded-lg">
+                    <h3 class="font-semibold text-purple-900 mb-4">Characteristics of Wicked Problems</h3>
+                    <ul class="space-y-3 text-purple-800">
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
-                            <span><strong>Closure:</strong> Reactions within the organization</span>
+                            <i class="fas fa-question-circle text-purple-600 mt-1"></i>
+                            <span><strong>No definitive formulation:</strong> Problem definition evolves</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-recycle text-blue-600 mt-1"></i>
-                            <span><strong>Self-maintenance:</strong> Sustainable production</span>
+                            <i class="fas fa-infinity text-purple-600 mt-1"></i>
+                            <span><strong>No stopping rule:</strong> Solutions are never final</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-network-wired text-blue-600 mt-1"></i>
-                            <span><strong>Hierarchies:</strong> Organizations within organizations</span>
+                            <i class="fas fa-balance-scale text-purple-600 mt-1"></i>
+                            <span><strong>Better/worse solutions:</strong> Not true/false</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-atom text-blue-600 mt-1"></i>
-                            <span><strong>Emergence:</strong> System-level properties</span>
+                            <i class="fas fa-snowflake text-purple-600 mt-1"></i>
+                            <span><strong>Unique problems:</strong> Each is essentially novel</span>
                         </li>
                     </ul>
                 </div>
@@ -328,45 +445,97 @@
 
         <!-- Research Applications -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Research Applications</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Application Domains</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="p-6 border-l-4 border-green-500 bg-green-50">
-                    <h3 class="font-semibold text-green-900 mb-2">Biological Systems</h3>
-                    <p class="text-green-800 text-sm">Metabolic networks, ecosystems, and cellular organization</p>
+                    <h3 class="font-semibold text-green-900 mb-2">Climate Change</h3>
+                    <p class="text-green-800 text-sm">Multi-scale modeling of climate systems and mitigation strategies</p>
                 </div>
                 <div class="p-6 border-l-4 border-blue-500 bg-blue-50">
-                    <h3 class="font-semibold text-blue-900 mb-2">Social Networks</h3>
-                    <p class="text-blue-800 text-sm">Community formation and social organization dynamics</p>
-                </div>
-                <div class="p-6 border-l-4 border-purple-500 bg-purple-50">
-                    <h3 class="font-semibold text-purple-900 mb-2">Economic Systems</h3>
-                    <p class="text-purple-800 text-sm">Market dynamics and economic organization</p>
+                    <h3 class="font-semibold text-blue-900 mb-2">Public Health</h3>
+                    <p class="text-blue-800 text-sm">Pandemic modeling, healthcare systems, and population health dynamics</p>
                 </div>
                 <div class="p-6 border-l-4 border-orange-500 bg-orange-50">
-                    <h3 class="font-semibold text-orange-900 mb-2">Cognitive Networks</h3>
-                    <p class="text-orange-800 text-sm">Knowledge structures and concept formation</p>
+                    <h3 class="font-semibold text-orange-900 mb-2">Education Policy</h3>
+                    <p class="text-orange-800 text-sm">STEAM education integration and learning system optimization</p>
                 </div>
                 <div class="p-6 border-l-4 border-red-500 bg-red-50">
-                    <h3 class="font-semibold text-red-900 mb-2">Technological Systems</h3>
-                    <p class="text-red-800 text-sm">Innovation networks and technology evolution</p>
+                    <h3 class="font-semibold text-red-900 mb-2">Urban Planning</h3>
+                    <p class="text-red-800 text-sm">Complex city dynamics and sustainable development modeling</p>
                 </div>
                 <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50">
-                    <h3 class="font-semibold text-indigo-900 mb-2">Sustainability</h3>
-                    <p class="text-indigo-800 text-sm">Resilient system design and circular economy</p>
+                    <h3 class="font-semibant text-indigo-900 mb-2">Social Inequality</h3>
+                    <p class="text-indigo-800 text-sm">Poverty dynamics and socio-economic system modeling</p>
+                </div>
+                <div class="p-6 border-l-4 border-purple-500 bg-purple-50">
+                    <h3 class="font-semibold text-purple-900 mb-2">Ecological Systems</h3>
+                    <p class="text-purple-800 text-sm">Biodiversity conservation and ecosystem resilience</p>
                 </div>
             </div>
         </div>
-        
+
+        <!-- Methodological Approach -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Systemic Modeling Framework</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Mathematical Tools</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-project-diagram text-purple-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Chemical Organization Theory</h4>
+                                <p class="text-gray-600 text-sm">Reaction networks for systemic interactions</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-chart-line text-purple-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Dynamical Systems</h4>
+                                <p class="text-gray-600 text-sm">Temporal evolution and stability analysis</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <i class="fas fa-network-wired text-purple-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Network Theory</h4>
+                                <p class="text-gray-600 text-sm">Complex interdependencies and emergent properties</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Systems Principles</h3>
+                    <div class="space-y-3">
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <h4 class="font-medium text-purple-900 mb-1">Holistic Perspective</h4>
+                            <p class="text-purple-700 text-sm">Understanding system-level emergent properties</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <h4 class="font-medium text-purple-900 mb-1">Multi-scale Analysis</h4>
+                            <p class="text-purple-700 text-sm">Linking micro, meso, and macro level dynamics</p>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <h4 class="font-medium text-purple-900 mb-1">Contextual Interactions</h4>
+                            <p class="text-purple-700 text-sm">Environment-system-stakeholder relationships</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Publications Section -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Publications</h2>
             <div class="space-y-6" id="publicationsList">
                 <!-- Publications will be populated by scraper -->
                 <div class="text-center py-12 text-gray-500">
-                    <i class="fas fa-book-open text-4xl mb-4"></i>
+                    <i class="fas fa-brain text-4xl mb-4"></i>
                     <p class="text-lg">Publications will be loaded automatically</p>
-                    <p class="text-sm">This section will be populated with COT-related research papers</p>
+                    <p class="text-sm">This section will be populated with wicked problems and systems modeling papers</p>
                 </div>
             </div>
             
@@ -395,6 +564,49 @@
             </div>
         </div>
 
+        <!-- Case Studies -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Current Research Projects</h2>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-green-500 pl-6 py-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Pandemic Response Modeling</h3>
+                    <p class="text-gray-700 mb-2">
+                        Developing systemic models for understanding and mitigating pandemic impacts across social, 
+                        economic, and health dimensions using COT frameworks.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-virus mr-2"></i>
+                        <span>COVID-19 • Public Health Policy • Social Systems</span>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-blue-500 pl-6 py-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">STEAM Education Integration</h3>
+                    <p class="text-gray-700 mb-2">
+                        Mathematical modeling of Science, Technology, Engineering, Arts, and Mathematics education 
+                        using enactive-ecological approaches.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Education Policy • Curriculum Design • Learning Systems</span>
+                    </div>
+                </div>
+
+                <div class="border-l-4 border-purple-500 pl-6 py-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Sustainability and Resilience</h3>
+                    <p class="text-gray-700 mb-2">
+                        Applying reaction network formalism to model ecological interactions and develop 
+                        frameworks for ecosystem resilience and sustainability.
+                    </p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-leaf mr-2"></i>
+                        <span>Ecosystem Modeling • Climate Change • Biodiversity</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- All Media Grid -->
         <div class="bg-white rounded-lg shadow-sm p-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Media</h2>
@@ -412,28 +624,28 @@
                     © 2025 Dr. Tomás Veloz. All rights reserved.
                 </div>
                 <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <a href="../index.html" class="text-blue-600 hover:text-blue-800">Back to Home</a>
+                    <a href="../index.html" class="text-purple-600 hover:text-purple-800">Back to Home</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Chemical Organization Theory carousel data - Auto-generated
+        // Wicked Problems carousel data - Auto-generated
         // Last updated: 2025-07-18
-        const chemicalorganizationtheoryCarouselData = [];
+        const wickedProblemsCarouselData = [];
         
         // Carousel configuration
-        const chemicalorganizationtheoryConfig = {
-        "name": "Chemical Organization Theory",
-        "type": "mixed",
-        "description": "Videos and images related to COT research"
-};
+        const wickedProblemsConfig = {
+            "name": "Mathematical Modeling of Wicked Problems",
+            "type": "mixed",
+            "description": "Videos and images related to wicked problems and systems modeling research"
+        };
 
         // Video carousel functionality
         let currentVideoSlide = 0;
         let videoInterval = null;
-        const videos = chemicalOrganizationTheoryCarouselData.filter(item => item.type === 'video');
+        const videos = wickedProblemsCarouselData.filter(item => item.type === 'video');
 
         function initializeVideoCarousel() {
             const container = document.getElementById('videoCarouselInner');
@@ -506,7 +718,7 @@
         function initializeMixedCarousel() {
             const container = document.getElementById('mixedCarousel');
             
-            chemicalOrganizationTheoryCarouselData.forEach(item => {
+            wickedProblemsCarouselData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'media-card';
                 
@@ -553,6 +765,96 @@
                 
                 container.appendChild(card);
             });
+        }
+
+        // Publications functionality (for scraper integration)
+        function populatePublications(publications) {
+            const container = document.getElementById('publicationsList');
+            const countElement = document.getElementById('publicationCount');
+            const citationsElement = document.getElementById('citationCount');
+            
+            if (!publications || publications.length === 0) {
+                return;
+            }
+
+            // Clear placeholder
+            container.innerHTML = '';
+            
+            // Update counts
+            const totalCitations = publications.reduce((sum, pub) => sum + (pub.citations || 0), 0);
+            countElement.textContent = `${publications.length} publications`;
+            citationsElement.textContent = `${totalCitations} citations`;
+
+            // Populate years filter
+            const years = [...new Set(publications.map(pub => pub.year))].sort((a, b) => b - a);
+            const yearFilter = document.getElementById('yearFilter');
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+
+            // Create publication items
+            publications.forEach(publication => {
+                const item = document.createElement('div');
+                item.className = 'publication-item';
+                item.setAttribute('data-year', publication.year || '');
+                item.setAttribute('data-type', publication.type || '');
+                
+                const authorsHtml = publication.authors ? 
+                    publication.authors.map(author => 
+                        author.toLowerCase().includes('veloz') ? 
+                        `<span class="author-highlight">${author}</span>` : author
+                    ).join(', ') : '';
+                
+                const linksHtml = publication.links ? 
+                    publication.links.map(link => 
+                        `<a href="${link.url}" target="_blank" class="publication-link ${link.type}">${link.label}</a>`
+                    ).join('') : '';
+
+                item.innerHTML = `
+                    <div class="publication-title">
+                        ${publication.url ? 
+                            `<a href="${publication.url}" target="_blank">${publication.title}</a>` : 
+                            publication.title}
+                    </div>
+                    ${authorsHtml ? `<div class="publication-authors">${authorsHtml}</div>` : ''}
+                    ${publication.journal ? `<div class="publication-journal">${publication.journal}</div>` : ''}
+                    <div class="publication-meta">
+                        ${publication.year ? `<span class="publication-year">${publication.year}</span>` : ''}
+                        ${publication.citations ? `<span class="publication-citations"><i class="fas fa-quote-left"></i> ${publication.citations}</span>` : ''}
+                        ${publication.type ? `<span class="publication-type">${publication.type}</span>` : ''}
+                    </div>
+                    ${linksHtml ? `<div class="publication-links">${linksHtml}</div>` : ''}
+                `;
+                
+                container.appendChild(item);
+            });
+
+            // Add filter functionality
+            setupPublicationFilters();
+        }
+
+        function setupPublicationFilters() {
+            const yearFilter = document.getElementById('yearFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            
+            function applyFilters() {
+                const selectedYear = yearFilter.value;
+                const selectedType = typeFilter.value;
+                const items = document.querySelectorAll('.publication-item');
+                
+                items.forEach(item => {
+                    const matchesYear = !selectedYear || item.getAttribute('data-year') === selectedYear;
+                    const matchesType = !selectedType || item.getAttribute('data-type') === selectedType;
+                    
+                    item.style.display = matchesYear && matchesType ? 'block' : 'none';
+                });
+            }
+            
+            yearFilter.addEventListener('change', applyFilters);
+            typeFilter.addEventListener('change', applyFilters);
         }
 
         // Initialize everything

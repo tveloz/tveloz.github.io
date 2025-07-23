@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chemical Organization Theory - Dr. Tomás Veloz</title>
+    <title>Quantum Cognition - Dr. Tomás Veloz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -89,9 +89,9 @@
         }
         
         .video-nav-btn {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid #3b82f6;
-            color: #3b82f6;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid #22c55e;
+            color: #22c55e;
             padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
@@ -99,7 +99,7 @@
         }
         
         .video-nav-btn:hover {
-            background: #3b82f6;
+            background: #22c55e;
             color: white;
         }
         
@@ -112,13 +112,13 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: rgba(59, 130, 246, 0.3);
+            background: rgba(34, 197, 94, 0.3);
             cursor: pointer;
             transition: background 0.3s ease;
         }
         
         .video-indicator.active {
-            background: #3b82f6;
+            background: #22c55e;
         }
         
         .video-list {
@@ -232,6 +232,122 @@
             background: rgba(34, 197, 94, 0.9);
             color: white;
         }
+        
+        /* Publications Section Styles */
+        .publication-item {
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            transition: shadow 0.3s ease;
+        }
+        
+        .publication-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .publication-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .publication-title a {
+            color: #22c55e;
+            text-decoration: none;
+        }
+        
+        .publication-title a:hover {
+            text-decoration: underline;
+        }
+        
+        .publication-authors {
+            color: #6b7280;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .publication-authors .author-highlight {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .publication-journal {
+            color: #059669;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        
+        .publication-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .publication-year {
+            background: #f3f4f6;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .publication-citations {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .publication-type {
+            background: #dcfce7;
+            color: #166534;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .publication-links {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .publication-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+        
+        .publication-link:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .publication-link.doi {
+            border-color: #fbbf24;
+            color: #92400e;
+        }
+        
+        .publication-link.pdf {
+            border-color: #ef4444;
+            color: #dc2626;
+        }
+        
+        .publication-link.scholar {
+            border-color: #22c55e;
+            color: #059669;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -243,7 +359,7 @@
                     <a href="../index.html" class="text-xl font-bold text-gray-900">Dr. Tomás Veloz</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="../index.html" class="text-blue-600 hover:text-blue-800">← Back to Home</a>
+                    <a href="../index.html" class="text-green-600 hover:text-green-800">← Back to Home</a>
                 </div>
             </div>
         </div>
@@ -254,49 +370,49 @@
         <!-- Header Section -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8 fade-in">
             <div class="text-center mb-8">
-                <h1 class="text-4xl font-bold text-blue-900 mb-4">Chemical Organization Theory</h1>
+                <h1 class="text-4xl font-bold text-green-900 mb-4">Quantum Cognition</h1>
                 <p class="text-xl text-gray-700 max-w-4xl mx-auto">
-                    Developing mathematical frameworks for analyzing self-organizing systems using reaction networks
+                    Applying quantum mathematical structures to model cognitive and linguistic phenomena
                 </p>
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div class="lg:col-span-2">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">What is Chemical Organization Theory?</h2>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">What is Quantum Cognition?</h2>
                     <div class="prose prose-lg text-gray-700">
                         <p class="mb-4">
-                            Chemical Organization Theory (COT) provides a mathematical framework for understanding 
-                            self-organizing systems through the lens of reaction networks. It emerged from the need 
-                            to formalize how complex systems maintain their structure and identity over time despite 
-                            constant flux in their components.
+                            Quantum Cognition applies the mathematical formalism of quantum theory to cognitive science, 
+                            without claiming that the brain operates quantum mechanically. This approach uses quantum 
+                            structures like Hilbert spaces, superposition, and entanglement as powerful tools to model 
+                            human reasoning, decision-making, and concept formation.
                         </p>
                         <p class="mb-4">
-                            At its core, COT identifies "organizations" - subsets of species that are both 
-                            <strong>closed</strong> (all reactions stay within the set) and <strong>self-maintaining</strong> 
-                            (the set can be sustained given sufficient resource flow). These mathematical structures 
-                            help us understand everything from metabolic networks to social systems.
+                            Dr. Veloz has developed methods to represent collections of concepts in Hilbert spaces and 
+                            demonstrated that various cognitive and linguistic phenomena exhibit quantum-like structures. 
+                            This includes modeling the <strong>conjunction fallacy</strong>, <strong>order effects</strong> 
+                            in judgment, and <strong>contextuality</strong> in human reasoning.
                         </p>
                     </div>
                 </div>
                 
-                <div class="bg-blue-50 p-6 rounded-lg">
-                    <h3 class="font-semibold text-blue-900 mb-4">Key Concepts</h3>
-                    <ul class="space-y-3 text-blue-800">
+                <div class="bg-green-50 p-6 rounded-lg">
+                    <h3 class="font-semibold text-green-900 mb-4">Key Quantum Concepts</h3>
+                    <ul class="space-y-3 text-green-800">
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
-                            <span><strong>Closure:</strong> Reactions within the organization</span>
+                            <i class="fas fa-superscript text-green-600 mt-1"></i>
+                            <span><strong>Superposition:</strong> Mental states as probability combinations</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-recycle text-blue-600 mt-1"></i>
-                            <span><strong>Self-maintenance:</strong> Sustainable production</span>
+                            <i class="fas fa-link text-green-600 mt-1"></i>
+                            <span><strong>Entanglement:</strong> Non-separable concept relationships</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-network-wired text-blue-600 mt-1"></i>
-                            <span><strong>Hierarchies:</strong> Organizations within organizations</span>
+                            <i class="fas fa-dice text-green-600 mt-1"></i>
+                            <span><strong>Contextuality:</strong> Context-dependent reasoning</span>
                         </li>
                         <li class="flex items-start space-x-2">
-                            <i class="fas fa-atom text-blue-600 mt-1"></i>
-                            <span><strong>Emergence:</strong> System-level properties</span>
+                            <i class="fas fa-wave-square text-green-600 mt-1"></i>
+                            <span><strong>Interference:</strong> Non-classical probability effects</span>
                         </li>
                     </ul>
                 </div>
@@ -328,45 +444,45 @@
 
         <!-- Research Applications -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6">Research Applications</h2>
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Cognitive Phenomena Modeled</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="p-6 border-l-4 border-green-500 bg-green-50">
-                    <h3 class="font-semibold text-green-900 mb-2">Biological Systems</h3>
-                    <p class="text-green-800 text-sm">Metabolic networks, ecosystems, and cellular organization</p>
-                </div>
                 <div class="p-6 border-l-4 border-blue-500 bg-blue-50">
-                    <h3 class="font-semibold text-blue-900 mb-2">Social Networks</h3>
-                    <p class="text-blue-800 text-sm">Community formation and social organization dynamics</p>
+                    <h3 class="font-semibold text-blue-900 mb-2">Decision Making</h3>
+                    <p class="text-blue-800 text-sm">Conjunction fallacy, disjunction effect, and preference reversals</p>
                 </div>
                 <div class="p-6 border-l-4 border-purple-500 bg-purple-50">
-                    <h3 class="font-semibold text-purple-900 mb-2">Economic Systems</h3>
-                    <p class="text-purple-800 text-sm">Market dynamics and economic organization</p>
+                    <h3 class="font-semibold text-purple-900 mb-2">Concept Combination</h3>
+                    <p class="text-purple-800 text-sm">Non-classical concept emergence and semantic compositionality</p>
+                </div>
+                <div class="p-6 border-l-4 border-green-500 bg-green-50">
+                    <h3 class="font-semibold text-green-900 mb-2">Memory & Recall</h3>
+                    <p class="text-green-800 text-sm">Context-dependent memory and interference effects</p>
                 </div>
                 <div class="p-6 border-l-4 border-orange-500 bg-orange-50">
-                    <h3 class="font-semibold text-orange-900 mb-2">Cognitive Networks</h3>
-                    <p class="text-orange-800 text-sm">Knowledge structures and concept formation</p>
+                    <h3 class="font-semibold text-orange-900 mb-2">Language Processing</h3>
+                    <p class="text-orange-800 text-sm">Word associations and meaning construction in natural language</p>
                 </div>
                 <div class="p-6 border-l-4 border-red-500 bg-red-50">
-                    <h3 class="font-semibold text-red-900 mb-2">Technological Systems</h3>
-                    <p class="text-red-800 text-sm">Innovation networks and technology evolution</p>
+                    <h3 class="font-semibold text-red-900 mb-2">Similarity Judgments</h3>
+                    <p class="text-red-800 text-sm">Non-metric similarity and triangle inequality violations</p>
                 </div>
                 <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50">
-                    <h3 class="font-semibold text-indigo-900 mb-2">Sustainability</h3>
-                    <p class="text-indigo-800 text-sm">Resilient system design and circular economy</p>
+                    <h3 class="font-semibold text-indigo-900 mb-2">Order Effects</h3>
+                    <p class="text-indigo-800 text-sm">Question order dependency and measurement disturbance</p>
                 </div>
             </div>
         </div>
-        
+
         <!-- Publications Section -->
         <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Key Publications</h2>
             <div class="space-y-6" id="publicationsList">
                 <!-- Publications will be populated by scraper -->
                 <div class="text-center py-12 text-gray-500">
-                    <i class="fas fa-book-open text-4xl mb-4"></i>
+                    <i class="fas fa-atom text-4xl mb-4"></i>
                     <p class="text-lg">Publications will be loaded automatically</p>
-                    <p class="text-sm">This section will be populated with COT-related research papers</p>
+                    <p class="text-sm">This section will be populated with Quantum Cognition research papers</p>
                 </div>
             </div>
             
@@ -395,6 +511,45 @@
             </div>
         </div>
 
+        <!-- Mathematical Framework -->
+        <div class="bg-white rounded-lg shadow-sm p-8 mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Mathematical Framework</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Hilbert Space Representation</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="text-gray-700 text-sm mb-2">
+                            Concepts are represented as vectors in a Hilbert space H, where:
+                        </p>
+                        <ul class="text-gray-600 text-sm space-y-1">
+                            <li>• State vectors: |ψ⟩ ∈ H</li>
+                            <li>• Measurement operators: Â</li>
+                            <li>• Probability: P(a) = |⟨a|ψ⟩|²</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Non-Classical Effects</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                            <span>Violation of classical probability laws</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-infinity text-blue-500"></i>
+                            <span>Contextual measurement outcomes</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-arrows-alt text-purple-500"></i>
+                            <span>Superposition of mental states</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- All Media Grid -->
         <div class="bg-white rounded-lg shadow-sm p-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Related Media</h2>
@@ -412,28 +567,28 @@
                     © 2025 Dr. Tomás Veloz. All rights reserved.
                 </div>
                 <div class="flex items-center space-x-4 mt-4 md:mt-0">
-                    <a href="../index.html" class="text-blue-600 hover:text-blue-800">Back to Home</a>
+                    <a href="../index.html" class="text-green-600 hover:text-green-800">Back to Home</a>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Chemical Organization Theory carousel data - Auto-generated
+        // Quantum Cognition carousel data - Auto-generated
         // Last updated: 2025-07-18
-        const chemicalorganizationtheoryCarouselData = [];
+        const quantumCognitionCarouselData = [];
         
         // Carousel configuration
-        const chemicalorganizationtheoryConfig = {
-        "name": "Chemical Organization Theory",
-        "type": "mixed",
-        "description": "Videos and images related to COT research"
-};
+        const quantumCognitionConfig = {
+            "name": "Quantum Cognition",
+            "type": "mixed",
+            "description": "Videos and images related to Quantum Cognition research"
+        };
 
         // Video carousel functionality
         let currentVideoSlide = 0;
         let videoInterval = null;
-        const videos = chemicalOrganizationTheoryCarouselData.filter(item => item.type === 'video');
+        const videos = quantumCognitionCarouselData.filter(item => item.type === 'video');
 
         function initializeVideoCarousel() {
             const container = document.getElementById('videoCarouselInner');
@@ -506,7 +661,7 @@
         function initializeMixedCarousel() {
             const container = document.getElementById('mixedCarousel');
             
-            chemicalOrganizationTheoryCarouselData.forEach(item => {
+            quantumCognitionCarouselData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'media-card';
                 
@@ -553,6 +708,96 @@
                 
                 container.appendChild(card);
             });
+        }
+
+        // Publications functionality (for scraper integration)
+        function populatePublications(publications) {
+            const container = document.getElementById('publicationsList');
+            const countElement = document.getElementById('publicationCount');
+            const citationsElement = document.getElementById('citationCount');
+            
+            if (!publications || publications.length === 0) {
+                return;
+            }
+
+            // Clear placeholder
+            container.innerHTML = '';
+            
+            // Update counts
+            const totalCitations = publications.reduce((sum, pub) => sum + (pub.citations || 0), 0);
+            countElement.textContent = `${publications.length} publications`;
+            citationsElement.textContent = `${totalCitations} citations`;
+
+            // Populate years filter
+            const years = [...new Set(publications.map(pub => pub.year))].sort((a, b) => b - a);
+            const yearFilter = document.getElementById('yearFilter');
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearFilter.appendChild(option);
+            });
+
+            // Create publication items
+            publications.forEach(publication => {
+                const item = document.createElement('div');
+                item.className = 'publication-item';
+                item.setAttribute('data-year', publication.year || '');
+                item.setAttribute('data-type', publication.type || '');
+                
+                const authorsHtml = publication.authors ? 
+                    publication.authors.map(author => 
+                        author.toLowerCase().includes('veloz') ? 
+                        `<span class="author-highlight">${author}</span>` : author
+                    ).join(', ') : '';
+                
+                const linksHtml = publication.links ? 
+                    publication.links.map(link => 
+                        `<a href="${link.url}" target="_blank" class="publication-link ${link.type}">${link.label}</a>`
+                    ).join('') : '';
+
+                item.innerHTML = `
+                    <div class="publication-title">
+                        ${publication.url ? 
+                            `<a href="${publication.url}" target="_blank">${publication.title}</a>` : 
+                            publication.title}
+                    </div>
+                    ${authorsHtml ? `<div class="publication-authors">${authorsHtml}</div>` : ''}
+                    ${publication.journal ? `<div class="publication-journal">${publication.journal}</div>` : ''}
+                    <div class="publication-meta">
+                        ${publication.year ? `<span class="publication-year">${publication.year}</span>` : ''}
+                        ${publication.citations ? `<span class="publication-citations"><i class="fas fa-quote-left"></i> ${publication.citations}</span>` : ''}
+                        ${publication.type ? `<span class="publication-type">${publication.type}</span>` : ''}
+                    </div>
+                    ${linksHtml ? `<div class="publication-links">${linksHtml}</div>` : ''}
+                `;
+                
+                container.appendChild(item);
+            });
+
+            // Add filter functionality
+            setupPublicationFilters();
+        }
+
+        function setupPublicationFilters() {
+            const yearFilter = document.getElementById('yearFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            
+            function applyFilters() {
+                const selectedYear = yearFilter.value;
+                const selectedType = typeFilter.value;
+                const items = document.querySelectorAll('.publication-item');
+                
+                items.forEach(item => {
+                    const matchesYear = !selectedYear || item.getAttribute('data-year') === selectedYear;
+                    const matchesType = !selectedType || item.getAttribute('data-type') === selectedType;
+                    
+                    item.style.display = matchesYear && matchesType ? 'block' : 'none';
+                });
+            }
+            
+            yearFilter.addEventListener('change', applyFilters);
+            typeFilter.addEventListener('change', applyFilters);
         }
 
         // Initialize everything

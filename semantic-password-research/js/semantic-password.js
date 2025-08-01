@@ -1,7 +1,19 @@
 // semantic-password.js
-// Complete Semantic Password Research Platform
+// Updated version with API proxy support
 
 console.log('🚀 Semantic Password Research Platform - Full Study Version');
+
+// Configuration - Update this with your API endpoint
+const API_CONFIG = {
+    // Option 1: Use your serverless function (replace with your actual URL)
+    CLAUDE_API_URL: 'https://your-project.vercel.app/api/claude',
+    
+    // Option 2: Use mock responses for testing
+    USE_MOCK_API: true, // Set to false when using real API
+    
+    // Option 3: Use a CORS proxy (not recommended for production)
+    // CLAUDE_API_URL: 'https://cors-anywhere.herokuapp.com/https://api.anthropic.com/v1/messages'
+};
 
 // Global state management
 let sessionData = {
@@ -25,7 +37,67 @@ let phaseStartTime = Date.now();
 let sessionStartTime = Date.now();
 let timerInterval = null;
 
-// Translations object
+// Mock API responses for testing
+const mockResponses = {
+    setupInitial: "I'd be happy to help you create a semantic password based on a personal story or memory! This is a fascinating approach to authentication.\n\nTo get started, I need you to share a detailed personal story, memory, or even a fictional character/scenario that only you would know the specific details about. This could be:\n\n- A childhood memory with specific details\n- A family story with particular elements\n- A fictional character you've created with unique traits\n- A special place with specific features\n- An important life event with memorable details\n\nThe key is to include enough specific details that would be hard for someone else to guess, but memorable enough for you to recall consistently. Think about:\n- Who was involved?\n- Where did it happen?\n- What specific objects, colors, sounds, or feelings were present?\n- What was the sequence of events?\n- What emotions or reactions occurred?\n\nPlease share your story with as much detail as you feel comfortable with. The more specific details you include, the more secure and unique your semantic password will be.",
+    
+    setupResponse: "That's a wonderful and detailed story! I can see several strong elements that will make for a robust semantic password:\n\n**Key Elements I've Identified:**\n- Specific characters and relationships\n- Detailed setting and environment\n- Particular objects and their characteristics\n- Emotional context and reactions\n- Sequence of events\n- Sensory details (sounds, colors, textures)\n\nThese elements create multiple layers of verification that would be very difficult for someone else to replicate without knowing your personal experience.\n\nYour semantic password setup is now complete! You have a rich foundation of interconnected details that can be verified through different types of questions - from high-level story recognition to specific detail verification.\n\nWould you like to test the verification process now?",
+
+    abstractVerification: {
+        "abstract_match": true,
+        "confidence": 75,
+        "core_elements_recognized": ["Main character relationship", "Primary setting", "Key emotional context", "Central conflict/challenge"],
+        "missing_core_elements": ["Specific objects mentioned", "Sensory details", "Exact sequence timing"],
+        "explanation": "Your summary captures the essential narrative and emotional core of the story, showing clear recognition of the main elements. However, some specific details that were prominent in the original story are not reflected in this summary, which suggests we should verify those particular elements through targeted questions.",
+        "requires_detailed_verification": true
+    },
+
+    secondaryQuestions: {
+        "questions": [
+            {
+                "id": 1,
+                "question": "What specific object was centrally featured in your story?",
+                "options": {
+                    "A": "Wooden chair",
+                    "B": "Metal table", 
+                    "C": "Glass window",
+                    "D": "Fabric curtain"
+                },
+                "correct_answers": ["A"],
+                "explanation": "The wooden chair was specifically mentioned as a key element",
+                "question_type": "object"
+            },
+            {
+                "id": 2,
+                "question": "What emotions were primarily experienced in this story?",
+                "options": {
+                    "A": "Excitement",
+                    "B": "Nostalgia",
+                    "C": "Anxiety", 
+                    "D": "Curiosity"
+                },
+                "correct_answers": ["B", "D"],
+                "explanation": "Both nostalgia and curiosity were key emotional elements",
+                "question_type": "emotion"
+            },
+            {
+                "id": 3,
+                "question": "What was the setting's primary characteristic?",
+                "options": {
+                    "A": "Outdoor garden",
+                    "B": "Indoor library",
+                    "C": "Crowded market",
+                    "D": "Empty hallway"
+                },
+                "correct_answers": ["B"],
+                "explanation": "The indoor library setting was specifically described",
+                "question_type": "location"
+            }
+        ]
+    }
+};
+
+// Translations object (same as before)
 const translations = {
     en: {
         title: "Semantic Password Research Platform",
@@ -68,7 +140,9 @@ const translations = {
         accessGranted: "✓ Access Granted",
         accessDenied: "✗ Access Denied",
         processing: "Processing...",
-        loading: "Loading..."
+        loading: "Loading...",
+        apiError: "API Error - Using Demo Mode",
+        demoMode: "Demo Mode Active"
     },
     es: {
         title: "Plataforma de Investigación de Contraseñas Semánticas",
@@ -111,7 +185,9 @@ const translations = {
         accessGranted: "✓ Acceso Concedido",
         accessDenied: "✗ Acceso Denegado",
         processing: "Procesando...",
-        loading: "Cargando..."
+        loading: "Cargando...",
+        apiError: "Error de API - Usando Modo Demo",
+        demoMode: "Modo Demo Activo"
     }
 };
 
@@ -149,64 +225,129 @@ function logEvent(eventType, data = {}) {
         timeFromStart: Date.now() - sessionStartTime,
         timeFromPhaseStart: Date.now() - phaseStartTime,
         currentPhase,
+        usingMockAPI: API_CONFIG.USE_MOCK_API,
         ...data
     };
 
-    // Store in localStorage for research purposes
-    const existingData = JSON.parse(localStorage.getItem('semanticPasswordResearch') || '[]');
-    existingData.push(eventData);
-    localStorage.setItem('semanticPasswordResearch', JSON.stringify(existingData));
+    try {
+        const existingData = JSON.parse(localStorage.getItem('semanticPasswordResearch') || '[]');
+        existingData.push(eventData);
+        localStorage.setItem('semanticPasswordResearch', JSON.stringify(existingData));
+    } catch (error) {
+        console.warn('Failed to save to localStorage:', error);
+    }
 
     console.log('📊 Research Event:', eventData);
     return eventData;
 }
 
-// Claude API integration
+// Mock Claude API for testing
+async function mockClaudeCall(messages) {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
+    
+    const lastMessage = messages[messages.length - 1];
+    const messageContent = lastMessage.content.toLowerCase();
+    
+    // Determine response type based on message content
+    if (messages.length === 1) {
+        return mockResponses.setupInitial;
+    } else if (messageContent.includes('story') || messageContent.includes('memory') || messageContent.includes('character')) {
+        return mockResponses.setupResponse;
+    } else {
+        return "Thank you for that additional detail! That adds more depth to your semantic password. The more specific information you provide, the more secure and memorable your authentication will be. Is there anything else you'd like to add to make your story even more detailed?";
+    }
+}
+
+// Updated Claude API integration with fallback
 async function callClaude(messages) {
     const startTime = Date.now();
-    logEvent('api_call_started', { messageCount: messages.length });
+    logEvent('api_call_started', { 
+        messageCount: messages.length,
+        usingMock: API_CONFIG.USE_MOCK_API 
+    });
     
     try {
-        const response = await fetch("https://api.anthropic.com/v1/messages", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                model: "claude-sonnet-4-20250514",
-                max_tokens: 1500,
-                messages: messages
-            })
-        });
+        let response, data;
+        
+        if (API_CONFIG.USE_MOCK_API) {
+            // Use mock API for testing
+            const mockResponse = await mockClaudeCall(messages);
+            data = { content: [{ text: mockResponse }] };
+            logEvent('mock_api_used');
+        } else {
+            // Use real API through proxy
+            response = await fetch(API_CONFIG.CLAUDE_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    messages: messages,
+                    max_tokens: 1500
+                })
+            });
 
-        if (!response.ok) {
-            throw new Error(`API request failed: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            data = await response.json();
         }
-
-        const data = await response.json();
+        
         const responseTime = Date.now() - startTime;
         
         logEvent('api_call_completed', { 
             responseTime,
-            responseLength: data.content[0].text.length
+            responseLength: data.content[0].text.length,
+            usingMock: API_CONFIG.USE_MOCK_API
         });
         
         return data.content[0].text;
+        
     } catch (error) {
         logEvent('api_call_error', { 
             error: error.message,
             responseTime: Date.now() - startTime
         });
-        console.error("Error calling Claude:", error);
+        
+        console.error("Error calling Claude API:", error);
+        
+        // Fallback to mock API if real API fails
+        if (!API_CONFIG.USE_MOCK_API) {
+            console.log("Falling back to mock API...");
+            API_CONFIG.USE_MOCK_API = true;
+            return mockClaudeCall(messages);
+        }
+        
         throw error;
     }
 }
 
-// Language update function
+// Show API status in UI
+function showAPIStatus() {
+    const statusDiv = document.createElement('div');
+    statusDiv.className = 'fixed top-4 right-4 bg-blue-100 border border-blue-300 text-blue-800 px-3 py-2 rounded-lg text-sm z-50';
+    statusDiv.innerHTML = `
+        <div class="flex items-center space-x-2">
+            <div class="w-2 h-2 bg-blue-500 rounded-full ${API_CONFIG.USE_MOCK_API ? 'animate-pulse' : ''}"></div>
+            <span>${API_CONFIG.USE_MOCK_API ? translations[sessionData.language || 'en'].demoMode : 'Live API'}</span>
+        </div>
+    `;
+    document.body.appendChild(statusDiv);
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        if (statusDiv.parentNode) {
+            statusDiv.parentNode.removeChild(statusDiv);
+        }
+    }, 5000);
+}
+
+// Language update function (same as before)
 function updateLanguage(lang) {
     const t = translations[lang];
     
-    // Update all text elements
     const updates = [
         ['main-title', 'title'],
         ['main-subtitle', 'subtitle'],
@@ -252,7 +393,6 @@ function updateLanguage(lang) {
         }
     });
 
-    // Update placeholders
     const participantInput = document.getElementById('participant-id');
     if (participantInput && t['participantPlaceholder']) {
         participantInput.placeholder = t['participantPlaceholder'];
@@ -263,7 +403,6 @@ function updateLanguage(lang) {
         abstractTextarea.placeholder = t['brieflyDescribe'];
     }
 
-    // Update mode dropdown options
     const modeSelect = document.getElementById('mode-select');
     if (modeSelect && t['verboseMode'] && t['silentMode']) {
         modeSelect.options[0].textContent = t['verboseMode'];
@@ -298,6 +437,7 @@ async function startSetup() {
     currentPhase = 'setup';
     showScreen('setup-screen');
     startTimer('elapsed-time');
+    showAPIStatus();
     logEvent('setup_phase_started');
 
     try {
@@ -324,7 +464,7 @@ async function startSetup() {
         });
     } catch (error) {
         logEvent('setup_error', { error: error.message });
-        alert("Failed to start setup. Please try again.");
+        alert("Failed to start setup. Please try again or check your internet connection.");
     }
 }
 
@@ -344,7 +484,6 @@ function updateConversationDisplay() {
                 : 'bg-gray-50 border-l-4 border-gray-400'
         }`;
         
-        const t = translations[sessionData.language || 'en'];
         messageDiv.innerHTML = `
             <div class="font-semibold text-sm mb-2 text-gray-600">
                 ${message.role === 'user' ? (sessionData.language === 'es' ? 'Tú' : 'You') : (sessionData.language === 'es' ? 'Asistente' : 'Assistant')}
@@ -469,11 +608,17 @@ async function verifyAbstractSummary() {
     `;
     
     try {
-        const languageInstruction = sessionData.language === 'es' 
-            ? "Responde en español. " 
-            : "Respond in English. ";
+        if (API_CONFIG.USE_MOCK_API) {
+            // Use mock response for abstract verification
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate processing time
+            abstractResult = mockResponses.abstractVerification;
+        } else {
+            // Use real API
+            const languageInstruction = sessionData.language === 'es' 
+                ? "Responde en español. " 
+                : "Respond in English. ";
 
-        const abstractPrompt = `
+            const abstractPrompt = `
 ${languageInstruction}You are verifying if a brief abstract summary captures the core semantic meaning of a detailed story.
 
 Original detailed story from setup:
@@ -512,12 +657,13 @@ Set requires_detailed_verification to true if confidence < 85 or if important co
 DO NOT output anything other than valid JSON.
 `;
 
-        const response = await callClaude([
-            { role: "user", content: abstractPrompt }
-        ]);
+            const response = await callClaude([
+                { role: "user", content: abstractPrompt }
+            ]);
 
-        let cleanResponse = response.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-        abstractResult = JSON.parse(cleanResponse);
+            let cleanResponse = response.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+            abstractResult = JSON.parse(cleanResponse);
+        }
 
         const verificationData = {
             confidence: abstractResult.confidence,
@@ -659,12 +805,18 @@ async function generateSecondaryQuestions() {
     logEvent('secondary_questions_generation_started');
     
     try {
-        const missingElements = abstractResult.missing_core_elements || [];
-        const languageInstruction = sessionData.language === 'es' 
-            ? "Create questions in Spanish. Question text, options, and explanations should be in Spanish. " 
-            : "Create questions in English. ";
+        if (API_CONFIG.USE_MOCK_API) {
+            // Use mock questions
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            secondaryQuestions = mockResponses.secondaryQuestions.questions;
+        } else {
+            // Use real API to generate questions
+            const missingElements = abstractResult.missing_core_elements || [];
+            const languageInstruction = sessionData.language === 'es' 
+                ? "Create questions in Spanish. Question text, options, and explanations should be in Spanish. " 
+                : "Create questions in English. ";
 
-        const questionPrompt = `
+            const questionPrompt = `
 ${languageInstruction}Based on the original semantic password setup and the verification results, create multiple choice questions to verify the missing or unclear elements.
 
 Original password setup conversation:
@@ -673,24 +825,14 @@ ${JSON.stringify(conversation, null, 2)}
 Primary verification results:
 - Missing elements: ${JSON.stringify(missingElements)}
 
-Create 5-7 multiple choice questions that test the specific elements that were missing or unclear. Follow these CRITICAL guidelines:
-
-ABSTRACTION LEVEL CONSISTENCY (Rosch's Natural Categories):
-- Keep ALL options at the same abstraction level (basic level categories)
-- If one option is "golden retriever" (basic level), others should be "labrador", "poodle", "beagle" 
-- NEVER mix "golden retriever" with "large dog" (superordinate) or "therapy animal" (functional description)
-- If one option is "treehouse" (basic level), others should be "cabin", "shed", "gazebo"
-- NEVER mix "treehouse" with "elevated outdoor structure" (descriptive/superordinate level)
+Create 3-5 multiple choice questions that test the specific elements that were missing or unclear. Follow these guidelines:
 
 QUESTION DESIGN:
 1. Focus on specific, verifiable details from the original story
-2. Have 4 options (A, B, C, D) all at the same categorical abstraction level
-3. Have 2-3 correct answers per question (increases combinatorial security)
-4. Include plausible but incorrect alternatives at the same abstraction level
-5. Test multiple types of details: objects, places, actions, emotions, sequences, relationships
-6. Include sensory details (colors, sounds, textures) when mentioned
-7. Test temporal relationships and sequences
-8. Include emotional context and personal reactions
+2. Have 4 options (A, B, C, D) 
+3. Have 1-2 correct answers per question
+4. Include plausible but incorrect alternatives
+5. Test different aspects: objects, emotions, sequences, relationships, sensory details
 
 Respond with ONLY a valid JSON object:
 {
@@ -699,12 +841,12 @@ Respond with ONLY a valid JSON object:
       "id": 1,
       "question": "<question text>",
       "options": {
-        "A": "<option text - basic level category>",
-        "B": "<option text - basic level category>", 
-        "C": "<option text - basic level category>",
-        "D": "<option text - basic level category>"
+        "A": "<option text>",
+        "B": "<option text>", 
+        "C": "<option text>",
+        "D": "<option text>"
       },
-      "correct_answers": ["A", "C"],
+      "correct_answers": ["A"],
       "explanation": "<why these are correct>",
       "question_type": "<object/color/emotion/sequence/relationship/location/time/reaction>"
     }
@@ -714,14 +856,14 @@ Respond with ONLY a valid JSON object:
 DO NOT output anything other than valid JSON.
 `;
 
-        const response = await callClaude([
-            { role: "user", content: questionPrompt }
-        ]);
+            const response = await callClaude([
+                { role: "user", content: questionPrompt }
+            ]);
 
-        let cleanResponse = response.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-        const questions = JSON.parse(cleanResponse);
-        
-        secondaryQuestions = questions.questions;
+            let cleanResponse = response.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+            const questions = JSON.parse(cleanResponse);
+            secondaryQuestions = questions.questions;
+        }
         
         const questionData = {
             questionCount: secondaryQuestions.length,
@@ -730,7 +872,6 @@ DO NOT output anything other than valid JSON.
         };
         
         logEvent('secondary_questions_generated', questionData);
-        
         setTimeout(() => startSecondaryVerification(), 1000);
         
     } catch (error) {
@@ -829,6 +970,9 @@ async function submitSecondaryVerification() {
     `;
     
     try {
+        // Simulate processing time
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
         let totalQuestions = secondaryQuestions.length;
         let correctQuestions = 0;
         let results = [];
@@ -1068,6 +1212,7 @@ function downloadSessionData() {
         sessionInfo: sessionData,
         totalEvents: sessionEvents.length,
         exportTimestamp: new Date().toISOString(),
+        apiMode: API_CONFIG.USE_MOCK_API ? 'mock' : 'live',
         events: sessionEvents
     };
     
@@ -1141,6 +1286,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✅ Platform loaded successfully!');
     console.log('📋 Session ID:', sessionData.sessionId);
+    console.log('🔧 API Mode:', API_CONFIG.USE_MOCK_API ? 'Mock/Demo' : 'Live');
     logEvent('page_loaded');
 });
 
@@ -1151,3 +1297,4 @@ window.addEventListener('beforeunload', () => {
 
 console.log('🎯 Semantic Password Research Platform initialized');
 console.log('🔬 Session tracking active');
+console.log('📡 API Configuration:', API_CONFIG.USE_MOCK_API ? 'Using Mock API for testing' : 'Using Live API');

@@ -18,137 +18,210 @@
         .spinner {
             animation: spin 1s linear infinite;
         }
+        .hidden { display: none !important; }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-indigo-50 to-purple-100 min-h-screen">
-    <div class="container mx-auto p-6">
+    <!-- Main Container -->
+    <div id="app" class="container mx-auto p-6">
         <div class="max-w-4xl mx-auto">
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <div class="flex justify-center mb-4">
-                    <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
+            
+            <!-- Consent Screen -->
+            <div id="consent-screen" class="fade-in">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="flex justify-center mb-4">
+                        <div class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 00-2-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h1 id="main-title" class="text-4xl font-bold text-gray-800 mb-4">
+                        Semantic Password Research Platform
+                    </h1>
+                    <p id="main-subtitle" class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Help us research a new authentication method based on personal stories
+                    </p>
+                </div>
+
+                <!-- Consent Form -->
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                    <h2 id="consent-title" class="text-2xl font-semibold text-gray-800 mb-4">
+                        Research Participation Consent
+                    </h2>
+                    
+                    <p id="consent-text" class="text-gray-700 mb-4">
+                        This research studies semantic password systems. Your participation is voluntary and data will be anonymized for research purposes.
+                    </p>
+                    
+                    <p id="consent-details" class="text-gray-600 text-sm mb-6">
+                        We collect: interaction patterns, response times, success rates, and anonymized story elements. 
+                        No personal information or actual stories are stored. Data will be used for academic research only.
+                    </p>
+                    
+                    <!-- Participant ID -->
+                    <div class="mb-6">
+                        <label id="participant-label" class="block text-sm font-medium text-gray-700 mb-2">
+                            Participant ID (optional)
+                        </label>
+                        <input type="text" id="participant-id" 
+                               placeholder="Enter your participant ID if provided by researcher"
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                    </div>
+                    
+                    <!-- Language and Mode Selection -->
+                    <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label id="language-label" class="block text-sm font-medium text-gray-700 mb-2">Language</label>
+                            <select id="language-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label id="mode-label" class="block text-sm font-medium text-gray-700 mb-2">Feedback Mode</label>
+                            <select id="mode-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
+                                <option value="verbose">Detailed Feedback</option>
+                                <option value="silent">Minimal Feedback</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Consent Checkbox -->
+                    <div class="flex items-center space-x-3 mb-6">
+                        <input type="checkbox" id="consent-checkbox" 
+                               class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
+                        <label for="consent-checkbox" id="consent-agree" class="text-gray-700">
+                            I agree to participate in this research study
+                        </label>
+                    </div>
+                    
+                    <!-- Start Button -->
+                    <div class="flex justify-center">
+                        <button onclick="startResearch()" id="start-button" disabled
+                                class="bg-gray-400 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2 cursor-not-allowed">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            <span id="start-text">Start Research Session</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Information Cards -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 id="how-it-works-title" class="text-2xl font-semibold text-gray-800 mb-4">How It Works</h2>
+                        <div class="space-y-3 text-gray-600">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
+                                <span id="setup-desc"><strong>Setup Phase:</strong> Share a detailed personal story, memory, or fictional character</span>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
+                                <span id="recognition-desc"><strong>Recognition Phase:</strong> Provide a brief "Remember when..." style summary</span>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
+                                <span id="verification-desc"><strong>Verification Phase:</strong> Answer specific questions about story elements</span>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
+                                <span id="auth-desc"><strong>Authentication:</strong> Access granted based on story recognition + precise details</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-6">
+                        <h2 id="research-focus-title" class="text-2xl font-semibold text-gray-800 mb-4">Research Focus Areas</h2>
+                        <div class="space-y-3 text-gray-600 text-sm">
+                            <p>🧠 <span id="focus-1">Natural human memory verification patterns</span></p>
+                            <p>📊 <span id="focus-2">Usability and user experience measurement</span></p>
+                            <p>🔒 <span id="focus-3">Security effectiveness vs traditional passwords</span></p>
+                            <p>⏱️ <span id="focus-4">Cognitive load and memorability assessment</span></p>
+                            <p>🎯 <span id="focus-5">Adaptive questioning based on confidence levels</span></p>
+                            <p>🌍 <span id="focus-6">Cross-linguistic authentication effectiveness</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Screen (initially hidden) -->
+            <div id="success-screen" class="hidden">
+                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
+                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </div>
-                </div>
-                <h1 class="text-4xl font-bold text-gray-800 mb-4" id="main-title">Semantic Password Research Platform</h1>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto" id="main-subtitle">
-                    Help us research a new authentication method based on personal stories
-                </p>
-            </div>
-
-            <!-- Consent Form -->
-            <div class="bg-white rounded-xl shadow-lg p-8 mb-6" id="consent-form">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Research Participation Consent</h2>
-                <p class="text-gray-700 mb-4">
-                    This research studies semantic password systems. Your participation is voluntary and data will be anonymized for research purposes.
-                </p>
-                <p class="text-gray-600 text-sm mb-6">
-                    We collect: interaction patterns, response times, success rates, and anonymized story elements. 
-                    No personal information or actual stories are stored. Data will be used for academic research only.
-                </p>
-                
-                <!-- Participant ID -->
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Participant ID (optional)</label>
-                    <input type="text" id="participant-id" placeholder="Enter your participant ID if provided by researcher"
-                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                </div>
-                
-                <!-- Language and Mode Selection -->
-                <div class="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Language</label>
-                        <select id="language-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-                            <option value="en">English</option>
-                            <option value="es">Español</option>
-                        </select>
+                    <h1 id="success-title" class="text-3xl font-bold text-gray-800 mb-4">Research Session Started!</h1>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                        <p class="text-gray-600 mb-2">Session ID:</p>
+                        <code id="session-id-display" class="bg-gray-100 px-3 py-1 rounded text-sm font-mono">Loading...</code>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Feedback Mode</label>
-                        <select id="mode-select" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500">
-                            <option value="verbose">Detailed Feedback</option>
-                            <option value="silent">Minimal Feedback</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Consent Checkbox -->
-                <div class="flex items-center space-x-3 mb-6">
-                    <input type="checkbox" id="consent-checkbox" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                    <label for="consent-checkbox" class="text-gray-700">I agree to participate in this research study</label>
-                </div>
-                
-                <!-- Start Button -->
-                <div class="flex justify-center">
-                    <button onclick="startResearch()" id="start-button" disabled
-                            class="bg-gray-400 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                        <span>Start Research Session</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Platform Information -->
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">How It Works</h2>
-                    <div class="space-y-3 text-gray-600">
-                        <div class="flex items-start space-x-3">
-                            <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
-                            <span><strong>Setup Phase:</strong> Share a detailed personal story, memory, or fictional character</span>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+                        <div>
+                            <p class="text-gray-600">Language:</p>
+                            <strong id="selected-language" class="text-gray-800">English</strong>
                         </div>
-                        <div class="flex items-start space-x-3">
-                            <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
-                            <span><strong>Recognition Phase:</strong> Provide a brief "Remember when..." style summary</span>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
-                            <span><strong>Verification Phase:</strong> Answer specific questions about story elements</span>
-                        </div>
-                        <div class="flex items-start space-x-3">
-                            <div class="w-5 h-5 bg-indigo-600 rounded-full mt-1 flex-shrink-0"></div>
-                            <span><strong>Authentication:</strong> Access granted based on story recognition + precise details</span>
+                        <div>
+                            <p class="text-gray-600">Mode:</p>
+                            <strong id="selected-mode" class="text-gray-800">Detailed</strong>
                         </div>
                     </div>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-6">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Research Focus Areas</h2>
-                    <div class="space-y-3 text-gray-600 text-sm">
-                        <p>🧠 Natural human memory verification patterns</p>
-                        <p>📊 Usability and user experience measurement</p>
-                        <p>🔒 Security effectiveness vs traditional passwords</p>
-                        <p>⏱️ Cognitive load and memorability assessment</p>
-                        <p>🎯 Adaptive questioning based on confidence levels</p>
-                        <p>🌍 Cross-linguistic authentication effectiveness</p>
+                    
+                    <p id="platform-note" class="text-gray-700 mb-8">
+                        The full semantic password authentication platform would load here. This demonstrates the consent process and data collection framework.
+                    </p>
+                    
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="downloadSessionData()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors">
+                            <span id="download-text">Download Session Data</span>
+                        </button>
+                        <button onclick="location.reload()" 
+                                class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-colors">
+                            <span id="new-session-text">Start New Session</span>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Loading Screen (hidden initially) -->
-            <div id="loading-screen" class="fixed inset-0 bg-indigo-600 flex items-center justify-center z-50" style="display: none;">
+            <!-- Loading Screen (initially hidden) -->
+            <div id="loading-screen" class="fixed inset-0 bg-indigo-600 flex items-center justify-center z-50 hidden">
                 <div class="text-center text-white">
                     <div class="w-16 h-16 border-4 border-white border-t-transparent rounded-full spinner mb-4 mx-auto"></div>
-                    <h2 class="text-2xl font-semibold mb-2">Starting Research Session</h2>
-                    <p class="text-indigo-200">Initializing semantic password platform...</p>
+                    <h2 id="loading-title" class="text-2xl font-semibold mb-2">Starting Research Session</h2>
+                    <p id="loading-desc" class="text-indigo-200">Initializing semantic password platform...</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Global variables
+        // ZERO REACT DEPENDENCIES - PURE JAVASCRIPT ONLY
+        
+        console.log('🚀 Semantic Password Research Platform - Pure JS Version');
+        
+        // Global state
         let sessionData = {
             sessionId: 'ses_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent,
             screenResolution: window.screen.width + 'x' + window.screen.height,
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            browserLanguage: navigator.language
+            browserLanguage: navigator.language,
+            version: '1.0-pure-js'
         };
 
         // Translations
@@ -159,29 +232,65 @@
                 consentTitle: "Research Participation Consent",
                 consentText: "This research studies semantic password systems. Your participation is voluntary and data will be anonymized for research purposes.",
                 consentDetails: "We collect: interaction patterns, response times, success rates, and anonymized story elements. No personal information or actual stories are stored. Data will be used for academic research only.",
-                participantId: "Participant ID (optional)",
+                participantLabel: "Participant ID (optional)",
                 participantPlaceholder: "Enter your participant ID if provided by researcher",
-                language: "Language",
-                mode: "Feedback Mode",
-                verbose: "Detailed Feedback",
-                silent: "Minimal Feedback",
-                agreeParticipate: "I agree to participate in this research study",
-                startResearch: "Start Research Session"
+                languageLabel: "Language",
+                modeLabel: "Feedback Mode",
+                verboseMode: "Detailed Feedback",
+                silentMode: "Minimal Feedback",
+                consentAgree: "I agree to participate in this research study",
+                startText: "Start Research Session",
+                howItWorksTitle: "How It Works",
+                setupDesc: "<strong>Setup Phase:</strong> Share a detailed personal story, memory, or fictional character",
+                recognitionDesc: "<strong>Recognition Phase:</strong> Provide a brief \"Remember when...\" style summary",
+                verificationDesc: "<strong>Verification Phase:</strong> Answer specific questions about story elements",
+                authDesc: "<strong>Authentication:</strong> Access granted based on story recognition + precise details",
+                researchFocusTitle: "Research Focus Areas",
+                focus1: "Natural human memory verification patterns",
+                focus2: "Usability and user experience measurement",
+                focus3: "Security effectiveness vs traditional passwords",
+                focus4: "Cognitive load and memorability assessment",
+                focus5: "Adaptive questioning based on confidence levels",
+                focus6: "Cross-linguistic authentication effectiveness",
+                successTitle: "Research Session Started!",
+                platformNote: "The full semantic password authentication platform would load here. This demonstrates the consent process and data collection framework.",
+                downloadText: "Download Session Data",
+                newSessionText: "Start New Session",
+                loadingTitle: "Starting Research Session",
+                loadingDesc: "Initializing semantic password platform..."
             },
             es: {
-                title: "Plataforma de Investigación de Contraseñas Semánticas", 
+                title: "Plataforma de Investigación de Contraseñas Semánticas",
                 subtitle: "Ayúdanos a investigar un nuevo método de autenticación basado en historias personales",
                 consentTitle: "Consentimiento de Participación en Investigación",
                 consentText: "Esta investigación estudia sistemas de contraseñas semánticas. Tu participación es voluntaria y los datos serán anonimizados para fines de investigación.",
                 consentDetails: "Recolectamos: patrones de interacción, tiempos de respuesta, tasas de éxito y elementos anonimizados de historias. No se almacena información personal o historias reales. Los datos se usarán solo para investigación académica.",
-                participantId: "ID de Participante (opcional)",
+                participantLabel: "ID de Participante (opcional)",
                 participantPlaceholder: "Ingresa tu ID de participante si te fue proporcionado por el investigador",
-                language: "Idioma",
-                mode: "Modo de Retroalimentación",
-                verbose: "Retroalimentación Detallada",
-                silent: "Retroalimentación Mínima",
-                agreeParticipate: "Acepto participar en este estudio de investigación",
-                startResearch: "Iniciar Sesión de Investigación"
+                languageLabel: "Idioma",
+                modeLabel: "Modo de Retroalimentación",
+                verboseMode: "Retroalimentación Detallada",
+                silentMode: "Retroalimentación Mínima",
+                consentAgree: "Acepto participar en este estudio de investigación",
+                startText: "Iniciar Sesión de Investigación",
+                howItWorksTitle: "Cómo Funciona",
+                setupDesc: "<strong>Fase de Configuración:</strong> Comparte una historia personal detallada, memoria o personaje ficticio",
+                recognitionDesc: "<strong>Fase de Reconocimiento:</strong> Proporciona un breve resumen estilo \"¿Recuerdas cuando...?\"",
+                verificationDesc: "<strong>Fase de Verificación:</strong> Responde preguntas específicas sobre elementos de la historia",
+                authDesc: "<strong>Autenticación:</strong> Acceso otorgado basado en reconocimiento de historia + detalles precisos",
+                researchFocusTitle: "Áreas de Investigación",
+                focus1: "Patrones naturales de verificación de memoria humana",
+                focus2: "Medición de usabilidad y experiencia de usuario",
+                focus3: "Efectividad de seguridad vs contraseñas tradicionales",
+                focus4: "Evaluación de carga cognitiva y memorabilidad",
+                focus5: "Preguntas adaptativas basadas en niveles de confianza",
+                focus6: "Efectividad de autenticación inter-lingüística",
+                successTitle: "¡Sesión de Investigación Iniciada!",
+                platformNote: "La plataforma completa de autenticación de contraseñas semánticas se cargaría aquí. Esto demuestra el proceso de consentimiento y el marco de recolección de datos.",
+                downloadText: "Descargar Datos de Sesión",
+                newSessionText: "Iniciar Nueva Sesión",
+                loadingTitle: "Iniciando Sesión de Investigación",
+                loadingDesc: "Inicializando plataforma de contraseñas semánticas..."
             }
         };
 
@@ -191,6 +300,7 @@
                 ...sessionData,
                 eventType,
                 timestamp: new Date().toISOString(),
+                timeFromStart: Date.now() - sessionStartTime,
                 ...data
             };
 
@@ -199,34 +309,74 @@
             existingData.push(eventData);
             localStorage.setItem('semanticPasswordResearch', JSON.stringify(existingData));
 
-            console.log('Research Event:', eventData);
+            console.log('📊 Research Event:', eventData);
             return eventData;
         }
+
+        // Update UI text based on language
+        function updateLanguage(lang) {
+            const t = translations[lang];
+            
+            // Update all text elements
+            document.getElementById('main-title').textContent = t.title;
+            document.getElementById('main-subtitle').textContent = t.subtitle;
+            document.getElementById('consent-title').textContent = t.consentTitle;
+            document.getElementById('consent-text').textContent = t.consentText;
+            document.getElementById('consent-details').textContent = t.consentDetails;
+            document.getElementById('participant-label').textContent = t.participantLabel;
+            document.getElementById('participant-id').placeholder = t.participantPlaceholder;
+            document.getElementById('language-label').textContent = t.languageLabel;
+            document.getElementById('mode-label').textContent = t.modeLabel;
+            document.getElementById('consent-agree').textContent = t.consentAgree;
+            document.getElementById('start-text').textContent = t.startText;
+            document.getElementById('how-it-works-title').textContent = t.howItWorksTitle;
+            document.getElementById('setup-desc').innerHTML = t.setupDesc;
+            document.getElementById('recognition-desc').innerHTML = t.recognitionDesc;
+            document.getElementById('verification-desc').innerHTML = t.verificationDesc;
+            document.getElementById('auth-desc').innerHTML = t.authDesc;
+            document.getElementById('research-focus-title').textContent = t.researchFocusTitle;
+            document.getElementById('focus-1').textContent = t.focus1;
+            document.getElementById('focus-2').textContent = t.focus2;
+            document.getElementById('focus-3').textContent = t.focus3;
+            document.getElementById('focus-4').textContent = t.focus4;
+            document.getElementById('focus-5').textContent = t.focus5;
+            document.getElementById('focus-6').textContent = t.focus6;
+            document.getElementById('success-title').textContent = t.successTitle;
+            document.getElementById('platform-note').textContent = t.platformNote;
+            document.getElementById('download-text').textContent = t.downloadText;
+            document.getElementById('new-session-text').textContent = t.newSessionText;
+            document.getElementById('loading-title').textContent = t.loadingTitle;
+            document.getElementById('loading-desc').textContent = t.loadingDesc;
+
+            // Update mode dropdown options
+            const modeSelect = document.getElementById('mode-select');
+            modeSelect.options[0].textContent = t.verboseMode;
+            modeSelect.options[1].textContent = t.silentMode;
+        }
+
+        // Initialize session timing
+        let sessionStartTime = Date.now();
 
         // Enable/disable start button based on consent
         document.getElementById('consent-checkbox').addEventListener('change', function() {
             const startButton = document.getElementById('start-button');
             if (this.checked) {
                 startButton.disabled = false;
-                startButton.className = startButton.className.replace('bg-gray-400', 'bg-indigo-600 hover:bg-indigo-700');
+                startButton.className = startButton.className
+                    .replace('bg-gray-400', 'bg-indigo-600 hover:bg-indigo-700')
+                    .replace('cursor-not-allowed', 'cursor-pointer');
             } else {
                 startButton.disabled = true;
-                startButton.className = startButton.className.replace('bg-indigo-600 hover:bg-indigo-700', 'bg-gray-400');
+                startButton.className = startButton.className
+                    .replace('bg-indigo-600 hover:bg-indigo-700', 'bg-gray-400')
+                    .replace('cursor-pointer', 'cursor-not-allowed');
             }
         });
 
         // Language switching
         document.getElementById('language-select').addEventListener('change', function() {
             const lang = this.value;
-            const t = translations[lang];
-            
-            document.getElementById('main-title').textContent = t.title;
-            document.getElementById('main-subtitle').textContent = t.subtitle;
-            
-            // Update other text elements
-            document.querySelector('h2').textContent = t.consentTitle;
-            document.querySelector('p').textContent = t.consentText;
-            
+            updateLanguage(lang);
             logEvent('language_changed', { newLanguage: lang });
         });
 
@@ -237,7 +387,8 @@
 
         // Start research session
         function startResearch() {
-            const participantId = document.getElementById('participant-id').value.trim() || 'anonymous_' + Math.random().toString(36).substr(2, 6);
+            const participantId = document.getElementById('participant-id').value.trim() || 
+                                 'anonymous_' + Math.random().toString(36).substr(2, 6);
             const language = document.getElementById('language-select').value;
             const mode = document.getElementById('mode-select').value;
             
@@ -256,75 +407,66 @@
             });
             
             // Show loading screen
-            document.getElementById('loading-screen').style.display = 'flex';
+            document.getElementById('loading-screen').classList.remove('hidden');
             
-            // Simulate loading then redirect to main platform
+            // Hide consent screen and show success after delay
             setTimeout(() => {
-                // For now, show a message that the full platform is loading
-                document.body.innerHTML = `
-                    <div class="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 flex items-center justify-center p-6">
-                        <div class="bg-white rounded-xl shadow-lg p-8 max-w-2xl text-center">
-                            <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <h1 class="text-3xl font-bold text-gray-800 mb-4">Research Session Started!</h1>
-                            <p class="text-gray-600 mb-6">
-                                Session ID: <code class="bg-gray-100 px-2 py-1 rounded text-sm">${sessionData.sessionId}</code>
-                            </p>
-                            <p class="text-gray-600 mb-6">
-                                Language: <strong>${language}</strong> | Mode: <strong>${mode}</strong>
-                            </p>
-                            <p class="text-gray-700 mb-8">
-                                The full semantic password authentication platform would load here. This demonstrates the consent process and data collection framework.
-                            </p>
-                            <div class="flex justify-center space-x-4">
-                                <button onclick="downloadSessionData()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
-                                    Download Session Data
-                                </button>
-                                <button onclick="location.reload()" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg">
-                                    Start New Session
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
+                document.getElementById('consent-screen').classList.add('hidden');
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('success-screen').classList.remove('hidden');
+                document.getElementById('success-screen').classList.add('fade-in');
                 
-                // Add download function to global scope
-                window.downloadSessionData = function() {
-                    const data = JSON.parse(localStorage.getItem('semanticPasswordResearch') || '[]');
-                    const sessionEvents = data.filter(event => event.sessionId === sessionData.sessionId);
-                    
-                    const exportData = {
-                        sessionInfo: sessionData,
-                        totalEvents: sessionEvents.length,
-                        exportTimestamp: new Date().toISOString(),
-                        events: sessionEvents
-                    };
-                    
-                    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `semantic_password_research_${sessionData.sessionId}.json`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                };
+                // Update success screen content
+                document.getElementById('session-id-display').textContent = sessionData.sessionId;
+                document.getElementById('selected-language').textContent = 
+                    language === 'en' ? 'English' : 'Español';
+                document.getElementById('selected-mode').textContent = 
+                    mode === 'verbose' ? (language === 'en' ? 'Detailed' : 'Detallado') : 
+                                        (language === 'en' ? 'Minimal' : 'Mínimo');
                 
+                logEvent('session_started');
             }, 2000);
         }
 
-        // Log page load
+        // Download session data
+        function downloadSessionData() {
+            const data = JSON.parse(localStorage.getItem('semanticPasswordResearch') || '[]');
+            const sessionEvents = data.filter(event => event.sessionId === sessionData.sessionId);
+            
+            const exportData = {
+                sessionInfo: sessionData,
+                totalEvents: sessionEvents.length,
+                exportTimestamp: new Date().toISOString(),
+                events: sessionEvents
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `semantic_password_research_${sessionData.sessionId}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            logEvent('data_downloaded');
+        }
+
+        // Initialize on page load
         window.addEventListener('load', () => {
+            console.log('✅ Platform loaded successfully!');
+            console.log('📋 Session ID:', sessionData.sessionId);
             logEvent('page_loaded');
         });
 
-        // Test console log to verify JavaScript is working
-        console.log('Semantic Password Research Platform loaded successfully');
-        console.log('Session ID:', sessionData.sessionId);
+        // Log page unload
+        window.addEventListener('beforeunload', () => {
+            logEvent('page_unloaded');
+        });
+
+        console.log('🎯 Pure JavaScript platform initialized');
+        console.log('🔬 Session tracking active');
     </script>
 </body>
 </html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Password Research - Data Analysis Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">🔬 Semantic Password Research Dashboard</h1>
+            <p class="text-gray-600">Upload collected research data files to analyze participant sessions and outcomes.</p>
+        </div>
+        
+        <!-- File Upload -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">📁 Upload Research Data</h2>
+            <input type="file" id="dataFiles" multiple accept=".json" 
+                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 mb-4">
+            <div id="uploadStatus" class="text-sm text-gray-600"></div>
+        </div>
+        
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Total Sessions</h3>
+                <div class="text-3xl font-bold text-blue-600" id="totalSessions">0</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Success Rate</h3>
+                <div class="text-3xl font-bold text-green-600" id="successRate">0%</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Avg. Duration</h3>
+                <div class="text-3xl font-bold text-purple-600" id="avgDuration">0m</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Completion Rate</h3>
+                <div class="text-3xl font-bold text-orange-600" id="completionRate">0%</div>
+            </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">📊 Authentication Success Rates</h2>
+                <canvas id="successChart"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">⏱️ Session Duration Distribution</h2>
+                <canvas id="durationChart"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">🌍 Language Usage</h2>
+                <canvas id="languageChart"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">🎯 Testing Mode Comparison</h2>
+                <canvas id="modeChart"></canvas>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">📈 Abstract Confidence Distribution</h2>
+                <canvas id="confidenceChart"></canvas>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">🎲 Secondary Verification Scores</h2>
+                <canvas id="secondaryChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Phase Analysis -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold mb-4">🔄 Phase Completion Analysis</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-600" id="setupCompletions">0</div>
+                    <div class="text-sm text-gray-600">Setup Completions</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="abstractCompletions">0</div>
+                    <div class="text-sm text-gray-600">Abstract Completions</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="secondaryCompletions">0</div>
+                    <div class="text-sm text-gray-600">Secondary Completions</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed Results Table -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">📋 Session Details</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto" id="resultsTable">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Session ID</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Language</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Mode</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Duration</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Result</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Abstract Conf.</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Detail Score</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-900">Events</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                                Upload data files to see session details
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Export Options -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-xl font-semibold mb-4">📥 Export Options</h2>
+            <div class="flex flex-wrap gap-4">
+                <button id="exportCSV" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                    Export to CSV
+                </button>
+                <button id="exportJSON" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                    Export Summary JSON
+                </button>
+                <button id="generateReport" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg">
+                    Generate Research Report
+                </button>
+                <button id="clearData" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">
+                    Clear All Data
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Complete data analysis implementation
+        let allSessionData = [];
+        let charts = {};
+        
+        document.getElementById('dataFiles').addEventListener('change', handleFileUpload);
+        document.getElementById('exportCSV').addEventListener('click', exportToCSV);
+        document.getElementById('exportJSON').addEventListener('click', exportToJSON);
+        document.getElementById('generateReport').addEventListener('click', generateReport);
+        document.getElementById('clearData').addEventListener('click', clearAllData);
+        
+        async function handleFileUpload(event) {
+            const files = event.target.files;
+            allSessionData = [];
+            
+            document.getElementById('uploadStatus').textContent = `Processing ${files.length} files...`;
+            
+            for (let file of files) {
+                try {
+                    const text = await file.text();
+                    const sessionData = JSON.parse(text);
+                    allSessionData.push(sessionData);
+                } catch (error) {
+                    console.error('Error parsing file:', file.name, error);
+                }
+            }
+            
+            document.getElementById('uploadStatus').textContent = 
+                `Loaded ${allSessionData.length} session files successfully.`;
+            
+            analyzeData();
+        }
+        
+        function analyzeData() {
+            if (allSessionData.length === 0) return;
+            
+            const analysis = processSessionData(allSessionData);
+            updateMetrics(analysis);
+            updateCharts(analysis);
+            updateTable(analysis.sessions);
+        }
+        
+        function processSessionData(sessionFiles) {
+            const sessions = [];
+            const events = [];
+            
+            sessionFiles.forEach(sessionFile => {
+                if (sessionFile.events) {
+                    events.push(...sessionFile.events);
+                    
+                    // Group events by session
+                    const sessionEvents = sessionFile.events;
+                    const sessionInfo = sessionFile.sessionInfo || {};
+                    
+                    const completedEvent = sessionEvents.find(e => e.eventType === 'session_completed');
+                    const consentEvent = sessionEvents.find(e => e.eventType === 'consent_given');
+                    const setupEvent = sessionEvents.find(e => e.eventType === 'setup_completed');
+                    const abstractEvent = sessionEvents.find(e => e.eventType === 'abstract_verification_completed');
+                    const secondaryEvent = sessionEvents.find(e => e.eventType === 'secondary_verification_completed');
+                    
+                    sessions.push({
+                        sessionId: sessionInfo.sessionId || 'unknown',
+                        participantId: sessionInfo.participantId || 'anonymous',
+                        language: consentEvent?.language || 'unknown',
+                        mode: consentEvent?.mode || 'unknown',
+                        startTime: consentEvent?.timestamp,
+                        endTime: completedEvent?.timestamp,
+                        duration: completedEvent?.totalDuration || 0,
+                        finalAccess: completedEvent?.finalAccess || false,
+                        abstractConfidence: completedEvent?.abstractConfidence || abstractEvent?.confidence,
+                        secondaryScore: completedEvent?.secondaryScore || secondaryEvent?.score,
+                        completed: !!completedEvent,
+                        setupCompleted: !!setupEvent,
+                        abstractCompleted: !!abstractEvent,
+                        secondaryCompleted: !!secondaryEvent,
+                        eventCount: sessionEvents.length
+                    });
+                }
+            });
+            
+            return {
+                sessions,
+                events,
+                totalSessions: sessions.length,
+                completedSessions: sessions.filter(s => s.completed).length,
+                successfulSessions: sessions.filter(s => s.finalAccess).length,
+                setupCompletions: sessions.filter(s => s.setupCompleted).length,
+                abstractCompletions: sessions.filter(s => s.abstractCompleted).length,
+                secondaryCompletions: sessions.filter(s => s.secondaryCompleted).length,
+                averageDuration: sessions.filter(s => s.duration > 0)
+                    .reduce((sum, s) => sum + s.duration, 0) / Math.max(1, sessions.filter(s => s.duration > 0).length),
+                languageDistribution: sessions.reduce((acc, s) => {
+                    acc[s.language] = (acc[s.language] || 0) + 1;
+                    return acc;
+                }, {}),
+                modeDistribution: sessions.reduce((acc, s) => {
+                    acc[s.mode] = (acc[s.mode] || 0) + 1;
+                    return acc;
+                }, {}),
+                confidenceDistribution: sessions.filter(s => s.abstractConfidence)
+                    .map(s => s.abstractConfidence),
+                secondaryScores: sessions.filter(s => s.secondaryScore)
+                    .map(s => s.secondaryScore)
+            };
+        }
+        
+        function updateMetrics(analysis) {
+            document.getElementById('totalSessions').textContent = analysis.totalSessions;
+            document.getElementById('successRate').textContent = 
+                `${(analysis.successfulSessions / Math.max(1, analysis.completedSessions) * 100).toFixed(1)}%`;
+            document.getElementById('avgDuration').textContent = 
+                `${Math.round(analysis.averageDuration / 60000)}m`;
+            document.getElementById('completionRate').textContent = 
+                `${(analysis.completedSessions / Math.max(1, analysis.totalSessions) * 100).toFixed(1)}%`;
+                
+            document.getElementById('setupCompletions').textContent = analysis.setupCompletions;
+            document.getElementById('abstractCompletions').textContent = analysis.abstractCompletions;
+            document.getElementById('secondaryCompletions').textContent = analysis.secondaryCompletions;
+        }
+        
+        function updateCharts(analysis) {
+            // Success Rate Chart
+            const successCtx = document.getElementById('successChart');
+            if (charts.success) charts.success.destroy();
+            charts.success = new Chart(successCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Success', 'Failure'],
+                    datasets: [{
+                        data: [analysis.successfulSessions, analysis.completedSessions - analysis.successfulSessions],
+                        backgroundColor: ['#10B981', '#EF4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+            
+            // Duration Distribution
+            const durationCtx = document.getElementById('durationChart');
+            if (charts.duration) charts.duration.destroy();
+            const durations = analysis.sessions.filter(s => s.duration > 0).map(s => Math.round(s.duration / 60000));
+            const durationBins = [0, 0, 0, 0, 0]; // <5min, 5-10min, 10-15min, 15-20min, >20min
+            durations.forEach(d => {
+                if (d < 5) durationBins[0]++;
+                else if (d < 10) durationBins[1]++;
+                else if (d < 15) durationBins[2]++;
+                else if (d < 20) durationBins[3]++;
+                else durationBins[4]++;
+            });
+            
+            charts.duration = new Chart(durationCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['<5min', '5-10min', '10-15min', '15-20min', '>20min'],
+                    datasets: [{
+                        label: 'Sessions',
+                        data: durationBins,
+                        backgroundColor: '#8B5CF6',
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Language Distribution
+            const languageCtx = document.getElementById('languageChart');
+            if (charts.language) charts.language.destroy();
+            charts.language = new Chart(languageCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(analysis.languageDistribution),
+                    datasets: [{
+                        data: Object.values(analysis.languageDistribution),
+                        backgroundColor: ['#3B82F6', '#F59E0B', '#10B981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+            
+            // Mode Comparison
+            const modeCtx = document.getElementById('modeChart');
+            if (charts.mode) charts.mode.destroy();
+            charts.mode = new Chart(modeCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(analysis.modeDistribution),
+                    datasets: [{
+                        label: 'Sessions',
+                        data: Object.values(analysis.modeDistribution),
+                        backgroundColor: ['#F59E0B', '#6B7280'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Confidence Distribution
+            const confidenceCtx = document.getElementById('confidenceChart');
+            if (charts.confidence) charts.confidence.destroy();
+            const confidenceBins = [0, 0, 0, 0, 0]; // 0-20, 20-40, 40-60, 60-80, 80-100
+            analysis.confidenceDistribution.forEach(c => {
+                const bin = Math.floor(c / 20);
+                confidenceBins[Math.min(bin, 4)]++;
+            });
+            
+            charts.confidence = new Chart(confidenceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                    datasets: [{
+                        label: 'Sessions',
+                        data: confidenceBins,
+                        backgroundColor: ['#EF4444', '#F59E0B', '#F59E0B', '#10B981', '#10B981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Secondary Scores
+            const secondaryCtx = document.getElementById('secondaryChart');
+            if (charts.secondary) charts.secondary.destroy();
+            const secondaryBins = [0, 0, 0, 0, 0]; // 0-20, 20-40, 40-60, 60-80, 80-100
+            analysis.secondaryScores.forEach(s => {
+                const bin = Math.floor(s / 20);
+                secondaryBins[Math.min(bin, 4)]++;
+            });
+            
+            charts.secondary = new Chart(secondaryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+                    datasets: [{
+                        label: 'Sessions',
+                        data: secondaryBins,
+                        backgroundColor: ['#EF4444', '#F59E0B', '#F59E0B', '#10B981', '#10B981'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateTable(sessions) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            sessions.forEach(session => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-4 py-3 text-sm font-mono">${session.sessionId.substring(0, 12)}...</td>
+                    <td class="px-4 py-3 text-sm">${session.language}</td>
+                    <td class="px-4 py-3 text-sm">${session.mode}</td>
+                    <td class="px-4 py-3 text-sm">${Math.round(session.duration / 60000)}m</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium ${
+                            session.finalAccess 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-red-100 text-red-800'
+                        }">
+                            ${session.finalAccess ? 'Success' : 'Failure'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm">${session.abstractConfidence ? session.abstractConfidence + '%' : 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm">${session.secondaryScore ? session.secondaryScore + '%' : 'N/A'}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">${session.eventCount}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        
+        function exportToCSV() {
+            if (allSessionData.length === 0) {
+                alert('No data to export. Please upload data files first.');
+                return;
+            }
+
+            const analysis = processSessionData(allSessionData);
+            const csvData = [
+                ['Session ID', 'Participant ID', 'Language', 'Mode', 'Duration (minutes)', 'Final Access', 'Abstract Confidence', 'Secondary Score', 'Setup Completed', 'Abstract Completed', 'Secondary Completed', 'Event Count']
+            ];
+
+            analysis.sessions.forEach(session => {
+                csvData.push([
+                    session.sessionId,
+                    session.participantId,
+                    session.language,
+                    session.mode,
+                    Math.round(session.duration / 60000),
+                    session.finalAccess ? 'Success' : 'Failure',
+                    session.abstractConfidence || 'N/A',
+                    session.secondaryScore || 'N/A',
+                    session.setupCompleted ? 'Yes' : 'No',
+                    session.abstractCompleted ? 'Yes' : 'No',
+                    session.secondaryCompleted ? 'Yes' : 'No',
+                    session.eventCount
+                ]);
+            });
+
+            const csvContent = csvData.map(row => row.map(cell => 
+                typeof cell === 'string' && cell.includes(',') ? `"${cell}"` : cell
+            ).join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `semantic_password_research_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function exportToJSON() {
+            if (allSessionData.length === 0) {
+                alert('No data to export. Please upload data files first.');
+                return;
+            }
+
+            const analysis = processSessionData(allSessionData);
+            const summary = {
+                exportDate: new Date().toISOString(),
+                totalSessions: analysis.totalSessions,
+                completedSessions: analysis.completedSessions,
+                successfulSessions: analysis.successfulSessions,
+                successRate: (analysis.successfulSessions / Math.max(1, analysis.completedSessions) * 100).toFixed(1),
+                averageDuration: Math.round(analysis.averageDuration / 60000),
+                languageDistribution: analysis.languageDistribution,
+                modeDistribution: analysis.modeDistribution,
+                phaseCompletions: {
+                    setup: analysis.setupCompletions,
+                    abstract: analysis.abstractCompletions,
+                    secondary: analysis.secondaryCompletions
+                },
+                sessions: analysis.sessions
+            };
+
+            const blob = new Blob([JSON.stringify(summary, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `semantic_password_research_summary_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function generateReport() {
+            if (allSessionData.length === 0) {
+                alert('No data to generate report. Please upload data files first.');
+                return;
+            }
+
+            const analysis = processSessionData(allSessionData);
+            const report = `
+# Semantic Password Research Report
+Generated: ${new Date().toLocaleString()}
+
+## Summary Statistics
+- **Total Sessions**: ${analysis.totalSessions}
+- **Completed Sessions**: ${analysis.completedSessions}
+- **Success Rate**: ${(analysis.successfulSessions / Math.max(1, analysis.completedSessions) * 100).toFixed(1)}%
+- **Average Duration**: ${Math.round(analysis.averageDuration / 60000)} minutes
+- **Completion Rate**: ${(analysis.completedSessions / Math.max(1, analysis.totalSessions) * 100).toFixed(1)}%
+
+## Phase Analysis
+- **Setup Completions**: ${analysis.setupCompletions} (${(analysis.setupCompletions / analysis.totalSessions * 100).toFixed(1)}%)
+- **Abstract Completions**: ${analysis.abstractCompletions} (${(analysis.abstractCompletions / analysis.totalSessions * 100).toFixed(1)}%)
+- **Secondary Completions**: ${analysis.secondaryCompletions} (${(analysis.secondaryCompletions / analysis.totalSessions * 100).toFixed(1)}%)
+
+## Language Distribution
+${Object.entries(analysis.languageDistribution).map(([lang, count]) => 
+    `- **${lang}**: ${count} sessions (${(count / analysis.totalSessions * 100).toFixed(1)}%)`
+).join('\n')}
+
+## Mode Distribution
+${Object.entries(analysis.modeDistribution).map(([mode, count]) => 
+    `- **${mode}**: ${count} sessions (${(count / analysis.totalSessions * 100).toFixed(1)}%)`
+).join('\n')}
+
+## Recommendations
+- ${analysis.completedSessions / analysis.totalSessions < 0.8 ? 'Consider simplifying the user experience to improve completion rates.' : 'Good completion rates indicate acceptable user experience.'}
+- ${analysis.successfulSessions / Math.max(1, analysis.completedSessions) < 0.6 ? 'Low success rates suggest authentication criteria may be too strict.' : 'Authentication success rates are within acceptable range.'}
+- ${analysis.averageDuration > 900000 ? 'Sessions are taking longer than 15 minutes - consider optimizing the flow.' : 'Session duration is reasonable for research purposes.'}
+
+---
+*This report is automatically generated from the collected research data.*
+            `.trim();
+
+            const blob = new Blob([report], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `semantic_password_research_report_${new Date().toISOString().split('T')[0]}.md`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all uploaded data? This cannot be undone.')) {
+                allSessionData = [];
+                
+                // Clear all metrics
+                document.getElementById('totalSessions').textContent = '0';
+                document.getElementById('successRate').textContent = '0%';
+                document.getElementById('avgDuration').textContent = '0m';
+                document.getElementById('completionRate').textContent = '0%';
+                document.getElementById('setupCompletions').textContent = '0';
+                document.getElementById('abstractCompletions').textContent = '0';
+                document.getElementById('secondaryCompletions').textContent = '0';
+                
+                // Clear table
+                document.getElementById('tableBody').innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                            Upload data files to see session details
+                        </td>
+                    </tr>
+                `;
+                
+                // Clear charts
+                Object.values(charts).forEach(chart => chart.destroy());
+                charts = {};
+                
+                document.getElementById('uploadStatus').textContent = '';
+                document.getElementById('dataFiles').value = '';
+            }
+        }
+    </script>
+</body>
+</html>

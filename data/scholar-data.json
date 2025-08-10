@@ -2,8 +2,6 @@
   "totalCitations": 0,
   "totalPublications": 0,
   "mostCitedPublications": [],
-  "lastUpdated": "2025-08-01T09:26:25.431Z",
-  "source": "Google Scholar Live Scraping",
-  "profileUrl": "https://scholar.google.com/citations?user=q7HbZQ4AAAAJ&hl=en",
-  "scrapingMethod": "HTTP with retries"
+  "lastUpdated": "2025-08-10T15:42:30.692Z",
+  "source": "Google Official API"
 }

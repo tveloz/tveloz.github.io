@@ -5,12 +5,16 @@
  * This script updates all sections of the website with fresh content
  */
 
+require('dotenv').config();
+
 const fs = require('fs');
 const path = require('path');
 const { GoogleScholarScraper } = require('./google-scholar-scraper');
 
 class ContentUpdater {
     constructor() {
+        this.apiKey = process.env.GOOGLE_API_KEY;
+        this.searchEngineId = process.env.CSE_ID;
         this.dataDir = path.join(__dirname, '../src/data');
         this.ensureDataDirectory();
         
